@@ -1,5 +1,5 @@
 // SuperSmashBrothers.cpp : Defines the entry point for the console application.
-//
+//Test
 
 #include "stdafx.h"
 #include "SDL.h"
