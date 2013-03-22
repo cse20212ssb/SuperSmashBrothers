@@ -10,7 +10,7 @@ class joystick_map {
 	public:
 		joystick_map(){}
 		int js_initialize();
-		void check_hats();
+		//void check_hats();
 		void check_buttons();
 		void check_axis();
 		
@@ -111,3 +111,4 @@ int joystick_map::js_initialize() {
 }
 
 #endif
+
