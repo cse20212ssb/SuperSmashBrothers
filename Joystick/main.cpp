@@ -6,7 +6,7 @@ int main() {
 	joystick_map joy;
 	if (joy.js_initialize() == 1) {
 		while (1) {
-			joy.check_hats();
+			joy.check_axis();
 			joy.check_buttons();
 		}
 	}
