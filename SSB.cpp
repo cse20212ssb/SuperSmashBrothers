@@ -33,6 +33,17 @@ int SSB::init() {
 
 	js_1 = SDL_JoystickOpen(0);
 	js_2 = SDL_JoystickOpen(1);
+	
+	if (!js_1) 
+		cout << "Joystick 1 failed to init" << endl;
+	if (!js_2) 
+		cout << "Joystick 2 failed to init" << endl;
+
+	if (!js_1 && !js_2) {
+		cout << "No controller was found" << endl;
+		return 0;
+	}
+	
 	return 1;
 }
 
