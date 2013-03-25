@@ -18,4 +18,9 @@ Expanded on the base character lass
 Experimented with SDL_Joystick functions
 Created file to map Joystick functions
 
-Total Hours: 7.5
+3/23/2013
+3:00 PM - 5:00 PM
+Added joystick functionality
+	Displays whatever the state of the joystick is
+
+Total Hours: 9.5
