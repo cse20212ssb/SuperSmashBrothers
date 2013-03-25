@@ -15,4 +15,4 @@ Events.o: ./Events/Events.cpp
 	g++ $(SDL) ./Events/Events.cpp -c
 
 clean:
-	rm -f *.o *~
+	rm -f *.o *~ main

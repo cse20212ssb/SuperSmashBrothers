@@ -25,8 +25,16 @@ Buttons 0, 3-7 are empty
 int Events::resolve() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
+		//To point at Character objects sent to constructor.
+		//Character *ptr;
 		switch (event.type) {
 			case SDL_JOYAXISMOTION:
+				/*
+				if (event.jaxis.which == 0)
+					ptr = player1;
+				else
+					ptr = player2;
+				*/
 				cout << "JOYSTICK: AXIS" << endl;
 				cout << "   EVENT: ";
 				if (event.jaxis.axis == 0)
@@ -42,17 +50,33 @@ int Events::resolve() {
 
 			case SDL_JOYBUTTONUP:
 			case SDL_JOYBUTTONDOWN:
+				/*
+				if (event.jbutton.which == 0)
+					ptr = player1;
+				else
+					ptr = player2;
+				*/
 				cout << "JOYSTICK: BUTTON" << endl;
 				cout << "   EVENT: ";
-				if (event.jbutton.button == 1) cout << "A";
-				else if (event.jbutton.button == 2) cout << "B";
-				else if (event.jbutton.button == 8) cout << "SELECT";
-				else if (event.jbutton.button == 9) cout << "START";
-				else cout << "MISSING BUTTON";
+				if (event.jbutton.state == SDL_PRESSED) {
+					if (event.jbutton.button == 1) cout << "A";
+					else if (event.jbutton.button == 2) cout << "B";
+					else if (event.jbutton.button == 8) cout << "SELECT";
+					else if (event.jbutton.button == 9) cout << "START";
+					else cout << "MISSING BUTTON";
+			
+					cout << " PRESSED";
+				}
+				else {
+					if (event.jbutton.button == 1) cout << "A";
+					else if (event.jbutton.button == 2) cout << "B";
+					else if (event.jbutton.button == 8) cout << "SELECT";
+					else if (event.jbutton.button == 9) cout << "START";
+					else cout << "MISSING BUTTON";
 		
-				if (event.jbutton.state == SDL_PRESSED) cout << " PRESSED";
-				else cout << " RELEASED";
-					cout << endl;					
+					cout << " RELEASED";
+				}
+				cout << endl;				
 			break;
 			
 			case SDL_QUIT:
