@@ -6,11 +6,10 @@ Megaman::Megaman(){
 	//Create the starting sprite for character
 	sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanStand.bmp");
 	//Establish the width and height of character
-	int width = 85;
-	int height = 102;
-	//Establish Source
-	srcX = 0;
-	srcY = 0;
+	width = 85;
+	height = 102;
+	srcX = 5;
+	srcY = 5;
 	//Establish position
 	dstX = 200;
 	dstY = 340;
@@ -37,6 +36,7 @@ int Megaman::getDstY(){return dstY;};
 
 void Megaman::moveLeft(){
 	dstX -= 10;
+	aniCounter++;
 	animate("left");
 };
 
@@ -63,26 +63,78 @@ void Megaman::checkPosition(){
 
 };
 
+void Megaman::stopMove(){
+	aniCounter = 0;
+	sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanStand.bmp");
+}
+
 void Megaman::animate(string action){
 	if(action == "right"){
 		switch(aniCounter){
-			case 2:
+			case 3:
 				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanR1.bmp");
 				break;
-			case 4:
+			case 6:
 				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanR2.bmp");
 				break;
-			case 5: 
+			case 9: 
 				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanR3.bmp");
 				break;
-			case 7:
+			case 12:
 				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanR4.bmp"); 
 				break;
-			case 9:
+			case 15:
 				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanR5.bmp");
 				break;
-			case 11:
-				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanStand.bmp");
+			case 18:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanR6.bmp");
+				break;
+			case 21:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanR7.bmp");
+				break;
+			case 24:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanR8.bmp");
+				break;
+			case 27:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanR9.bmp");
+				break;
+			case 30:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanR10.bmp");
+				aniCounter = 0;
+				break;
+		}
+	}
+	else if(action == "left"){
+		switch(aniCounter){
+			case 3:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanL1.bmp");
+				break;
+			case 6:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanL2.bmp");
+				break;
+			case 9: 
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanL3.bmp");
+				break;
+			case 12:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanL4.bmp"); 
+				break;
+			case 15:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanL5.bmp");
+				break;
+			case 18:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanL6.bmp");
+				break;
+			case 21:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanL7.bmp");
+				break;
+			case 24:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanL8.bmp");
+				break;
+			case 27:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanL9.bmp");
+				break;
+			case 30:
+				sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanL10.bmp");
 				aniCounter = 0;
 				break;
 		}

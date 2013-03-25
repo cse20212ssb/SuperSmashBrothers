@@ -25,6 +25,7 @@ public:
 	void specialAtk();
 	void checkPosition(); //Ensure character isn't going off screen with move or jump
 	void animate(string);
+	void stopMove();
 
 private:
 	//Length and width variables are used to determine hitbox
