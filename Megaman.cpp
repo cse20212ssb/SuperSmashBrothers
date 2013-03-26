@@ -10,7 +10,7 @@ Megaman::Megaman() {
 	int height = 102;
 	//Establish position
 	posX = 200;
-	posY = 340;
+	posY = 350;
 	//Establish counter
 	aniCounter = 0;
 }
@@ -37,7 +37,7 @@ void Megaman::setMoveDir(int dir) {
 }
 
 void Megaman::move() {
-	if (moveDir != 0) {
+	if (moveDir > 0) {
 		posX += moveDir * 10;
 		aniCounter++;
 	}

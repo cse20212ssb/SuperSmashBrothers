@@ -35,11 +35,11 @@ int Events::resolve() {
 				cout << "   EVENT: ";
 				if (event.jaxis.axis == 0)
 					//Horizontal movement
-					if (event.jaxis.value < 0) {
+					if (event.jaxis.value > 0) {
 						ptr->setMoveDir(1);
 						cout << "RIGHT";
 					}
-					else if (event.jaxis.value > 0) cout << "LEFT";
+					else if (event.jaxis.value < 0) cout << "LEFT";
 					else {
 						cout << "CENTERED";
 						ptr->setMoveDir(0);
