@@ -15,6 +15,7 @@ Megaman::Megaman() {
 	aniCounter = 0;
 }
 
+
 SDL_Surface *Megaman::getSprite(){
 	return sprite;
 };
