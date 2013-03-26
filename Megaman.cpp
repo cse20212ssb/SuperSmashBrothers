@@ -12,7 +12,7 @@ Megaman::Megaman(){
 	srcY = 5;
 	//Establish position
 	dstX = 200;
-	dstY = 340;
+	dstY = 350;
 	//Establish counter
 	aniCounter = 0;
 }
@@ -36,12 +36,14 @@ int Megaman::getDstY(){return dstY;};
 
 void Megaman::moveLeft(){
 	dstX -= 10;
+	dirSel = "left";
 	aniCounter++;
 	animate("left");
 };
 
 void Megaman::moveRight(){
 	dstX += 10;
+	dirSel = "right";
 	aniCounter++;
 	animate("right");
 };
@@ -65,7 +67,10 @@ void Megaman::checkPosition(){
 
 void Megaman::stopMove(){
 	aniCounter = 0;
-	sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanStand.bmp");
+	if(dirSel == "right")
+		sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanStand.bmp");
+	if(dirSel == "left")
+		sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanStandLeft.bmp");
 }
 
 void Megaman::animate(string action){

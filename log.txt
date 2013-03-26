@@ -1,0 +1,21 @@
+3/2/2013
+4:00 PM - 6:00 PM
+Hashed out final details
+Watched several tutorial videos on SDL
+
+3/10/2013
+1:00 PM - 4:00 PM
+Created basic classes that will outline the project
+Implemented an SDL_created window that responds to exit event
+
+3/18/2013
+7:30 PM - 9:00 PM
+Discussed hitbox implementation and created a basic class
+Expanded on the base character lass
+
+3/19/2013
+9:00 PM - 10:00 PM
+Experimented with SDL_Joystick functions
+Created file to map Joystick functions
+
+Total Hours: 7.5

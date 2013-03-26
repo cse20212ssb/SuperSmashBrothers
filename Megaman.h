@@ -40,7 +40,7 @@ private:
 	SDL_Surface *sprite;
 	//Counter for animation length
 	int aniCounter;
-	
+	string dirSel; //Determines which direction was just selected (0: left, 1: right)
 };
 
 #endif
