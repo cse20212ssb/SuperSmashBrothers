@@ -2,8 +2,12 @@
 
 using namespace std;
 
-Events::Events () {
-	SDL_JoystickEventState(SDL_ENABLE);	
+Events::Events() {
+	SDL_JoystickEventState(SDL_ENABLE);
+}
+
+void Events::add(BaseCharacter *obj) {
+	ptr = obj;
 }
 
 /*
@@ -25,22 +29,21 @@ Buttons 0, 3-7 are empty
 int Events::resolve() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
-		//To point at Character objects sent to constructor.
-		//Character *ptr;
 		switch (event.type) {
 			case SDL_JOYAXISMOTION:
-				/*
-				if (event.jaxis.which == 0)
-					ptr = player1;
-				else
-					ptr = player2;
-				*/
 				cout << "JOYSTICK: AXIS" << endl;
 				cout << "   EVENT: ";
 				if (event.jaxis.axis == 0)
-					if (event.jaxis.value < 0) cout << "RIGHT";
+					//Horizontal movement
+					if (event.jaxis.value < 0) {
+						ptr->setMoveDir(1);
+						cout << "RIGHT";
+					}
 					else if (event.jaxis.value > 0) cout << "LEFT";
-					else cout << "CENTERED";
+					else {
+						cout << "CENTERED";
+						ptr->setMoveDir(0);
+					}
 				else if (event.jaxis.axis == 1)
 					if (event.jaxis.value < 0) cout << "UP";
 					else if (event.jaxis.value > 0) cout << "DOWN";
@@ -50,12 +53,6 @@ int Events::resolve() {
 
 			case SDL_JOYBUTTONUP:
 			case SDL_JOYBUTTONDOWN:
-				/*
-				if (event.jbutton.which == 0)
-					ptr = player1;
-				else
-					ptr = player2;
-				*/
 				cout << "JOYSTICK: BUTTON" << endl;
 				cout << "   EVENT: ";
 				if (event.jbutton.state == SDL_PRESSED) {
