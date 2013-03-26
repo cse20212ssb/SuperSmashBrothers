@@ -19,6 +19,7 @@ class BaseCharacter{
 		virtual int getY(){}
 		virtual void setMoveDir(int){}
 		virtual void move(){}
+		virtual int isStanding(){}
 		virtual int getAniCounter(){}
 		virtual void setAniCounter(int){}
 		virtual void jump(){}

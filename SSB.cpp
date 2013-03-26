@@ -23,8 +23,8 @@ int SSB::init() {
 		return 0;
 	}
 
-	screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE);
-	map = SDL_LoadBMP("Images/background.bmp");
+	screen = SDL_SetVideoMode(1280, 720, 32, SDL_HWSURFACE);
+	map = SDL_LoadBMP("Images/Maps/FinalDest.bmp");
 
 	if (screen == NULL) {
 		cout << "Screen init failed" << endl;
@@ -60,27 +60,46 @@ void SSB::loop() {
 
 void SSB::render() {
 	SDL_FillRect(screen, NULL, 0);
-	switch(player->getAniCounter()){
-		case 2:
-			player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR1.bmp"));
-			break;
-		case 4:
-			player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR2.bmp"));
-			break;
-		case 5: 
-			player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR3.bmp"));
-			break;
-		case 7:
-			player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR4.bmp")); 
-			break;
-		case 9:
-			player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR5.bmp"));
-			break;
-		case 11:
-			player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanStand.bmp"));
-			player->setAniCounter(0);
-			break;
+	if (player->isStanding()) {
+		switch(player->getAniCounter()){
+			case 1:
+				player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR1.bmp"));
+				break;
+			case 2:
+				player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR2.bmp"));
+				break;
+			case 3: 
+				player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR3.bmp"));
+				break;
+			case 4:
+				player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR4.bmp")); 
+				break;
+			case 5:
+				player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR5.bmp"));
+				break;
+			case 6:
+				player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR6.bmp"));
+				break;
+			case 7:
+				player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR7.bmp"));
+				break;
+			case 8:
+				player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR8.bmp"));
+				break;
+			case 9:
+				player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanR9.bmp"));
+				break;
+			case 10:
+				player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanStand.bmp"));
+				player->setAniCounter(0);
+				break;
+		}
 	}
+	else {
+		player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanStand.bmp"));
+		player->setAniCounter(0);
+	}
+		
 	
 	SDL_Rect src;
 	src.x = 0;

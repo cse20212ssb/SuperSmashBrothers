@@ -43,6 +43,12 @@ void Megaman::move() {
 	}
 }
 
+int Megaman::isStanding() {
+	if (moveDir == 0)
+		return 1;
+	return 0;
+}
+
 int Megaman::getAniCounter(){
 	return aniCounter;
 }
