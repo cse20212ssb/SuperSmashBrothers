@@ -1,11 +1,16 @@
+#include <SDL/SDL.h>
 #include "Events.h" 
 
 using namespace std;
 
 int main() {
+	if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
+		cout << "SDL failed to initialize" << endl;
 	Events evt;
-	if (evt.initialize())
-		while (evt.do_something())
-			evt.handleEvents();
+	SDL_Joystick *joy;
+	joy = SDL_JoystickOpen(0);
+	if (!joy)
+		cout << "Joystick failed to initialize" << endl;
+	while (evt.resolve());
 	return 1;
 }

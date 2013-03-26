@@ -7,4 +7,4 @@ main.o:	main.cpp
 	g++ `sdl-config --libs` main.cpp -c 
 
 clean:
-	rm -f *~ *.o
+	rm -f *~ *.o main

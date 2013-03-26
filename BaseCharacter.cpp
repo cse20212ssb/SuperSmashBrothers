@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "stdafx.h"
 #include "BaseCharacter.h"
 
@@ -38,3 +39,10 @@ void BaseCharacter::specialAtk(){};
 void BaseCharacter::checkPosition(){};
 
 void BaseCharacter::animate(string action){};
+=======
+#include "BaseCharacter.h"
+
+BaseCharacter::BaseCharacter(){
+}
+
+>>>>>>> chan
