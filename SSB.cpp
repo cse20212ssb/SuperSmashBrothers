@@ -60,6 +60,7 @@ void SSB::loop() {
 
 void SSB::render() {
 	SDL_FillRect(screen, NULL, 0);
+	/*
 	if (!player->isStanding()) {
 		switch(player->getAniCounter()){
 			case 1:
@@ -91,7 +92,7 @@ void SSB::render() {
 				break;
 			case 10:
 				player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanStand.bmp"));
-				player->setAniCounter(0);
+				player->setAniCounter(1);
 				break;
 		}
 	}
@@ -99,21 +100,20 @@ void SSB::render() {
 		player->setSprite(SDL_LoadBMP("Images/Sprites/Megaman/MegamanStand.bmp"));
 		player->setAniCounter(0);
 	}
-	cout << "AniCounter: " << player->getAniCounter() << endl;
-		
 	
 	SDL_Rect src;
 	src.x = 0;
 	src.y = 0;
-	src.w = 85;//player->getWidth();
-	src.h = 102;//player->getHeight();
-
+	src.w = player->getWidth();
+	src.h = player->getHeight();
+	*/
+	SDL_Rect src = player->getSrc();
 	SDL_Rect dst;
 	dst.x = player->getX();
 	dst.y = player->getY();
 	dst.w = 0;
 	dst.h = 0;
-		
+
 	SDL_BlitSurface(map, NULL, screen, NULL);
 	SDL_BlitSurface(player->getSprite(), &src, screen, &dst);
 

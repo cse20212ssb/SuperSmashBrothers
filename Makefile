@@ -1,6 +1,8 @@
 SDL=`sdl-config --libs`
-OBJ=main.o Events.o Megaman.o BaseCharacter.o SSB.o
-EVENTS=./Events/Events
+OBJ=main.o Events.o Megaman.o SSB.o
+EVENTS=Events/Events
+BASE=Characters/BaseCharacter
+MEGA=Characters/Megaman
 
 all:	main
 
@@ -16,11 +18,9 @@ SSB.o:	SSB.cpp
 Events.o: $(EVENTS).cpp
 	g++ $(SDL) $(EVENTS).cpp -c
 
-Megaman.o: Megaman.cpp
-	g++ $(SDL) Megaman.cpp -c
-
-BaseCharacter.o: BaseCharacter.cpp
-	g++ $(SDL) BaseCharacter.cpp -c
+Megaman.o: $(MEGA).cpp $(BASE).h
+	g++ $(SDL) $(MEGA).cpp -c
 
 clean:
 	rm -f *.o *~ main
+	rm -f */*~

@@ -3,7 +3,7 @@
 
 #include <SDL/SDL.h>
 #include <iostream>
-#include "../BaseCharacter.h"
+#include "../Characters/BaseCharacter.h"
 
 using namespace std;
 

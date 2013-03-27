@@ -10,7 +10,7 @@ using namespace std;
 
 class BaseCharacter{
 	public:
-		BaseCharacter();
+		BaseCharacter(){}
 		virtual SDL_Surface *getSprite(){}
 		virtual void setSprite(SDL_Surface*){}
 		virtual int getHeight(){}
@@ -19,6 +19,7 @@ class BaseCharacter{
 		virtual int getY(){}
 		virtual void setMoveDir(int){}
 		virtual void move(){}
+		virtual SDL_Rect getSrc() {}
 		virtual int isStanding(){}
 		virtual int getAniCounter(){}
 		virtual void setAniCounter(int){}

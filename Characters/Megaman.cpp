@@ -3,14 +3,14 @@
 
 Megaman::Megaman() {
 	moveDir = 0;
-	//Create the starting sprite for character
-	sprite = SDL_LoadBMP("Images/Sprites/Megaman/MegamanStand.bmp");
+	//Create the sprite sheet
+	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Mega.bmp");
 	//Establish the width and height of character
-	int width = 85;
-	int height = 102;
+	width = 23;
+	height = 30;
 	//Establish position
 	posX = 200;
-	posY = 350;
+	posY = 380;
 	//Establish counter
 	aniCounter = 0;
 }
@@ -38,9 +38,31 @@ void Megaman::setMoveDir(int dir) {
 
 void Megaman::move() {
 	if (moveDir > 0) {
-		posX += moveDir * 10;
+		posX += moveDir * 4;
 		aniCounter++;
+		if (aniCounter == 20)
+			aniCounter = 0;
 	}
+	if (moveDir == 0) //If movement has stopped, animation reset
+		aniCounter = 0;
+}
+
+SDL_Rect Megaman::getSrc() {
+	SDL_Rect src;
+	if (moveDir == 0) {
+		src.x = 58;
+		src.y = 0;
+		src.h = 78;
+		src.w = 57;
+	}
+	else if (moveDir == 1) {
+		src.x = (2 + aniCounter/5) * 58;
+		src.y = 0;
+		src.h = 78;
+		src.w = 57;
+		
+	}
+	return src;
 }
 
 int Megaman::isStanding() {

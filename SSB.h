@@ -4,8 +4,8 @@
 #include <SDL/SDL.h>
 #include <iostream>
 #include "Events/Events.h"
-#include "Megaman.h"
-#include "BaseCharacter.h"
+#include "Characters/Megaman.h"
+#include "Characters/BaseCharacter.h"
 
 using namespace std;
 
