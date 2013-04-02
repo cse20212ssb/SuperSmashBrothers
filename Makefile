@@ -23,4 +23,4 @@ Megaman.o: $(MEGA).cpp $(BASE).h
 
 clean:
 	rm -f *.o *~ main
-	rm -f */*~
+	rm -f */*~ */*.o */main
