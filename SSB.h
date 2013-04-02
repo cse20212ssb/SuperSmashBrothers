@@ -16,7 +16,7 @@ class SSB {
 	
 	private:
 		int init();
-		int event();
+		int events();
 		void loop();
 		void render();
 		void cleanUp();

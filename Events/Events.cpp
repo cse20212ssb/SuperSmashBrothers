@@ -39,13 +39,20 @@ int Events::resolve() {
 						ptr->setMoveDir(1);
 						cout << "RIGHT";
 					}
-					else if (event.jaxis.value < 0) cout << "LEFT";
+					else if (event.jaxis.value < 0) {
+						ptr->setMoveDir(-1);
+						cout << "LEFT";
+					}
 					else {
 						cout << "CENTERED";
 						ptr->setMoveDir(0);
 					}
 				else if (event.jaxis.axis == 1)
-					if (event.jaxis.value < 0) cout << "UP";
+					//Vertical movement
+					if (event.jaxis.value < 0) {
+						cout << "UP";
+						ptr->addYVel(-5);
+					}
 					else if (event.jaxis.value > 0) cout << "DOWN";
 					else cout << "CENTERED";
 				cout << endl;
