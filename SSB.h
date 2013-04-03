@@ -1,8 +1,12 @@
 #ifndef SSB_H
 #define SSB_H
 
+//#include "stdafx.h"
+//#include "SDL.h"
 #include <SDL/SDL.h>
 #include <iostream>
+#include <vector>
+
 #include "Events/Events.h"
 #include "Entity.h"
 #include "Platform.h"
@@ -23,14 +27,12 @@ class SSB {
 		void render();
 		void cleanUp();
 
-		BaseCharacter *player;
-		Platform *pf;
+		BaseCharacter *player0, *player1;
 		
-		Entity *entityList[3];
+		vector<Entity*> entityList;
 
-		
 		SDL_Surface *screen, *map;
-		SDL_Joystick *js_1, *js_2;
+		SDL_Joystick *js_0, *js_1;
 	
 		Events queue;
 };		

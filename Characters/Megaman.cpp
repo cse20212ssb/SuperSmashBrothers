@@ -2,10 +2,10 @@
 #include "Megaman.h"
 #include <iostream>
 
-Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 60, 50){
+Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 58, 50){
 	//Create the sprite sheet
 	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Mega.bmp");
-	inAir = 1;
+	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 255, 255) );
 	/*
 	//Establish the width and height of character
 	width = 23;
@@ -14,25 +14,26 @@ Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 60, 50){
 	posX = 200;
 	posY = 380;
 	*/
-	//Establish counter
 }
 
 void Megaman::onCollision(Entity *B) {
 	if (B->getID() == 3) { //Platform
-		velY = 0;
-		inAir = 0;
-		posY = B->getTop() - height;
+		if (velY > 0 && getBot() > B->getTop() - 1 && getBot() < (B->getBot() + B->getTop()) / 2) {
+			velY = 0;
+			canJump = 1;
+			posY = B->getTop() - height;
+		}
 	}
 }
 
-void Megaman::leftAtk(){};
+void Megaman::leftAtk(){}
 
-void Megaman::rightAtk(){};
+void Megaman::rightAtk(){}
 
-void Megaman::upAtk(){};
+void Megaman::upAtk(){}
 
-void Megaman::downAtk(){};
+void Megaman::downAtk(){}
 
-void Megaman::specialAtk(){};
+void Megaman::specialAtk(){}
 
-void Megaman::checkPosition(){};
+void Megaman::checkPosition(){}

@@ -1,20 +1,23 @@
+//#include "stdafx.h"
 #include "Events.h"
 
 using namespace std;
-
-enum {PLATFORM_LAND};
 
 Events::Events() {
 	SDL_JoystickEventState(SDL_ENABLE);
 }
 
-void Events::add(BaseCharacter *obj) {
-	ptr = obj;
+//Adds characters to the Event object
+void Events::add(BaseCharacter *obj0, BaseCharacter *obj1) {
+	player0 = obj0;
+	player1 = obj1;
 }
 
+//Pushes collision event to queue
 void Events::addCollision(Entity *obj1, Entity *obj2) {
 	SDL_Event event;
 	event.type = SDL_USEREVENT;
+	//data type is *void, needs to be typecast
 	event.user.data1 = obj1;
 	event.user.data2 = obj2;
 	
@@ -44,31 +47,36 @@ int Events::resolve() {
 		switch (event.type) {
 			//Joystick axis motion
 			case SDL_JOYAXISMOTION:
-				//cout << "JOYSTICK: AXIS" << endl;
-				//cout << "   EVENT: ";
+				//Which joystick
+				if (event.jaxis.which == 0)
+					select = player0;
+				else
+					select = player1;
+
 				if (event.jaxis.axis == 0)
 					//Horizontal movement
 					if (event.jaxis.value > 0) {
-						ptr->setMoveDir(1);
+						select->setMoveDir(1);
 						//cout << "RIGHT";
 					}
 					else if (event.jaxis.value < 0) {
-						ptr->setMoveDir(-1);
+						select->setMoveDir(-1);
 						//cout << "LEFT";
 					}
 					else {
+						select->setMoveDir(0);
 						//cout << "CENTERED";
-						ptr->setMoveDir(0);
 					}
-				else if (event.jaxis.axis == 1)
+				else if (event.jaxis.axis == 1) {
 					//Vertical movement
 					if (event.jaxis.value < 0) {
 						//cout << "UP";
-						ptr->jump();
+						if (select->jumpable())
+							select->jump();
 					}
-					//else if (event.jaxis.value > 0) cout << "DOWN";
-					//else cout << "CENTERED";
-				//cout << endl;
+				}
+				//else if (event.jaxis.value > 0) cout << "DOWN";
+				//else cout << "CENTERED";
 			break;
 			/*
 			//Buttons and stuffz
@@ -101,8 +109,10 @@ int Events::resolve() {
 			case SDL_QUIT:
 				return 0;
 			break;
-		
+			
+			//Collision events
 			case SDL_USEREVENT:
+				//Typecast *void to *Entity
 				((Entity *)event.user.data1)->onCollision((Entity *)event.user.data2);
 				((Entity *)event.user.data2)->onCollision((Entity *)event.user.data1);
 				//cout << "COLLISION DETECTED" << endl;

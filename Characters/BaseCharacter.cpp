@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "BaseCharacter.h"
 
 BaseCharacter::BaseCharacter(int x, int y, int h, int w) : Entity(x, y, h, w){
@@ -5,6 +6,7 @@ BaseCharacter::BaseCharacter(int x, int y, int h, int w) : Entity(x, y, h, w){
 	maxVelX = 6;
 	maxVelY = 9;
 	aniCounter = 0;
+	canJump = 0;
 }
 
 void BaseCharacter::setMoveDir(int dir) {
@@ -42,7 +44,7 @@ void BaseCharacter::move() {
 
 	}
 	//Gravity
-	accelY = 0.75 * inAir;
+	accelY = 0.3;
 
 	velX += accelX;
 	velY += accelY;
@@ -60,5 +62,5 @@ void BaseCharacter::move() {
 
 void BaseCharacter::jump() {
 	velY = -maxVelY;
-	inAir = 1;
+	canJump = 0;
 }

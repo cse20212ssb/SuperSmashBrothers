@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "joystick_map.h"
 
 using namespace std;

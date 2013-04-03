@@ -1,8 +1,8 @@
-//Inherits from the Base Character Class
-
 #ifndef MEGAMAN_H
 #define MEGAMAN_H
 
+//#include "SDL.h"
+//#include "stdafx.h"
 #include "BaseCharacter.h"
 #include "../Entity.h"
 
