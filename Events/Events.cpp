@@ -2,6 +2,8 @@
 
 using namespace std;
 
+enum {PLATFORM_LAND};
+
 Events::Events() {
 	SDL_JoystickEventState(SDL_ENABLE);
 }
@@ -9,6 +11,16 @@ Events::Events() {
 void Events::add(BaseCharacter *obj) {
 	ptr = obj;
 }
+
+void Events::addCollision(Entity *obj1, Entity *obj2) {
+	SDL_Event event;
+	event.type = SDL_USEREVENT;
+	event.user.data1 = obj1;
+	event.user.data2 = obj2;
+	
+	SDL_PushEvent(&event);
+}
+	
 
 /*
 Axis #0
@@ -30,6 +42,7 @@ int Events::resolve() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
+			//Joystick axis motion
 			case SDL_JOYAXISMOTION:
 				cout << "JOYSTICK: AXIS" << endl;
 				cout << "   EVENT: ";
@@ -51,13 +64,13 @@ int Events::resolve() {
 					//Vertical movement
 					if (event.jaxis.value < 0) {
 						cout << "UP";
-						ptr->addYVel(-5);
+						ptr->jump();
 					}
 					else if (event.jaxis.value > 0) cout << "DOWN";
 					else cout << "CENTERED";
 				cout << endl;
 			break;
-
+			//Buttons and stuffz
 			case SDL_JOYBUTTONUP:
 			case SDL_JOYBUTTONDOWN:
 				cout << "JOYSTICK: BUTTON" << endl;
@@ -85,6 +98,11 @@ int Events::resolve() {
 			
 			case SDL_QUIT:
 				return 0;
+			break;
+		
+			case SDL_USEREVENT:
+				((Entity *)event.user.data1)->onCollision((Entity *)event.user.data2);
+				((Entity *)event.user.data2)->onCollision((Entity *)event.user.data1);
 			break;
 		}
 	}

@@ -23,7 +23,11 @@ void BaseCharacter::drawTo(SDL_Surface *surf) {
 	dst.h = 0;
 	dst.w = 0;
 
-	SDL_BlitSurface(sprite, &src, screen, &dst);
+	SDL_BlitSurface(getSprite(), &src, surf, &dst);
+}
+
+SDL_Surface * BaseCharacter::getSprite() {
+	return sprite;
 }
 
 void BaseCharacter::move() {
@@ -57,6 +61,7 @@ void BaseCharacter::move() {
 
 void BaseCharacter::jump() {
 	velY = -maxVelY;
+	inAir = 1;
 }
 
 	

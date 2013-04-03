@@ -43,38 +43,41 @@ int SSB::init() {
 		cout << "No controller was found" << endl;
 		return 0;
 	}
+
+	pf = new Platform (0, 200, 10, 500);
+
 	//BaseCharacter*
-	player = new Megaman();
+	player = new Megaman(280, 350);
 	queue.add(player);
+
+	entityList[0] = player;
+	entityList[1] = pf;
 	
 	return 1;
 }
 
 int SSB::events() {
-	for (int i = 0; i < entityList.size(); i++) {
-		for (int j = i + 1; j < entityList.size(); j++) {
-			if (entityList[i].collides(entityList[j]) {
-				entityList[j].collides(entityList[i];
-			}
-		}
-	}
-
 	return queue.resolve();
 }
 
 void SSB::loop() {
-	//World events
-	player->addYVel(1); //Gravity
-
 	//Everything else
 	player->move();
+
+	for (int i = 0; i < 2; i++) {
+		for (int j = i + 1; j < 2; j++) {
+			if (entityList[i]->collides(entityList[j])) {
+				queue.addCollision(entityList[i], entityList[j]);
+			}
+		}
+	}
 }
 
 void SSB::render() {
 	SDL_FillRect(screen, NULL, 0);
 	SDL_BlitSurface(map, NULL, screen, NULL);
 
-	player->drawTo(screen)
+	player->drawTo(screen);
 
 	SDL_Flip(screen);
 }

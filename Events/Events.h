@@ -4,6 +4,7 @@
 #include <SDL/SDL.h>
 #include <iostream>
 #include "../Characters/BaseCharacter.h"
+#include "../Entity.h"
 
 using namespace std;
 
@@ -11,6 +12,7 @@ class Events {
 	public:
 		Events();
 		int resolve();
+		void addCollision(Entity *, Entity *);
 		void add(BaseCharacter *);
 	private:
 		BaseCharacter *ptr;

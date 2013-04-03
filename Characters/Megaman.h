@@ -4,11 +4,16 @@
 #define MEGAMAN_H
 
 #include "BaseCharacter.h"
+#include "../Entity.h"
 
 class Megaman : public BaseCharacter{
 	public:
-		Megaman();
-		virtual SDL_Surface *getSprite();
+		Megaman() {}
+		Megaman(int x, int y);
+		//virtual SDL_Surface *getSprite();
+
+		virtual void onCollision(Entity *);
+		virtual int getID() {return 2;}
 		
 		virtual void leftAtk();
 		virtual void rightAtk();

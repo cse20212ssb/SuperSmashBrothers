@@ -4,6 +4,8 @@
 #include <SDL/SDL.h>
 #include <iostream>
 #include "Events/Events.h"
+#include "Entity.h"
+#include "Platform.h"
 #include "Characters/Megaman.h"
 #include "Characters/BaseCharacter.h"
 
@@ -22,6 +24,10 @@ class SSB {
 		void cleanUp();
 
 		BaseCharacter *player;
+		Platform *pf;
+		
+		Entity *entityList[3];
+
 		
 		SDL_Surface *screen, *map;
 		SDL_Joystick *js_1, *js_2;
