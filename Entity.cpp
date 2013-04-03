@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "Entity.h"
 #include <iostream>
 
@@ -20,11 +21,11 @@ Entity::Entity(int x, int y, int h, int w) {
 	accelY = 0;
 }
 
-void Entity::update() {
+void Entity::updateBorders() {
 	top = posY;
-	bot = posY + height - 1;
+	bot = posY + height;
 	left = posX;
-	right = posX + width - 1;
+	right = posX + width;
 }
 
 SDL_Surface * Entity::getSprite() {

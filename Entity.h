@@ -1,6 +1,8 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+//#include "stdafx.h"
+//#include "SDL.h"
 #include <SDL/SDL.h>
 
 class Entity {
@@ -15,7 +17,7 @@ class Entity {
 		virtual void drawTo(SDL_Surface *) {}
 		SDL_Surface *getSprite();
 
-		void update();
+		void updateBorders();
 		
 		int getTop() {return top;}
 		int getBot() {return bot;}

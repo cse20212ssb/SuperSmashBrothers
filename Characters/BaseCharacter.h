@@ -1,11 +1,10 @@
 #ifndef BASECHARACTER_H
 #define BASECHARACTER_H
 
+//#include "SDL.h"
+//#include "stdafx.h"
 #include <SDL/SDL.h>
 #include "../Entity.h"
-//#include "stdafx.h"
-//#include "SDL.h"
-//#include "string"
 
 using namespace std;
 
@@ -23,6 +22,7 @@ class BaseCharacter : public Entity{
 
 		void move();
 		void jump();
+		int jumpable() {return canJump;}
 		
 		virtual void leftAtk() {}
 		virtual void rightAtk() {}
@@ -34,7 +34,7 @@ class BaseCharacter : public Entity{
 		//Keeps track of the animation
 		double aniCounter;
 		//If in air == 1
-		int inAir;
+		int canJump;
 };
 
 #endif

@@ -1,6 +1,8 @@
 #ifndef JOYSTICK_MAP_H
 #define JOYSTICK_MAP_H
 
+//#include "SDL.h"
+//#include "stdafx.h"
 #include <SDL/SDL.h>
 #include <iostream>
 

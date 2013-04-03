@@ -1,5 +1,5 @@
+//#include "stdafx.h"
 #include "SSB.h"
-#include <SDL/SDL.h>
 
 int main() {
 	SSB game;

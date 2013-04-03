@@ -1,20 +1,8 @@
-/* Basic HitBox class to be linked with character objects
-
-USAGE:
-class _Character Name_ {
-	public: 
-		...
-	private:
-		HitBox<_Character Name_> hb;
-		...
-}
-//Default Constructor
-	hb = HitBox<_Character Name_> (*this)
-*/
-
-
 #ifndef HITBOX_H
 #define HITBOX_H
+
+//#include "SDL.h"
+//#include "stdafx.h"
 
 using namespace std;
 
