@@ -1,8 +1,9 @@
 #include "BaseCharacter.h"
 
 BaseCharacter::BaseCharacter(int x, int y, int h, int w) : Entity(x, y, h, w){
+	setMoveDir(0);
 	maxVelX = 6;
-	maxVelY = 6;
+	maxVelY = 9;
 	aniCounter = 0;
 }
 
@@ -26,13 +27,9 @@ void BaseCharacter::drawTo(SDL_Surface *surf) {
 	SDL_BlitSurface(getSprite(), &src, surf, &dst);
 }
 
-SDL_Surface * BaseCharacter::getSprite() {
-	return sprite;
-}
-
 void BaseCharacter::move() {
 	if (moveDir != 0) {
-		accelX = 1.25 * moveDir;
+		accelX = .75 * moveDir;
 	}
 	else {
 		if (velX > 0) accelX = -1;
@@ -41,6 +38,8 @@ void BaseCharacter::move() {
 			velX = 0;
 			accelX = 0;
 		}
+
+
 	}
 	//Gravity
 	accelY = 0.75 * inAir;
@@ -54,7 +53,7 @@ void BaseCharacter::move() {
 	if (velY < -maxVelY) velY = -maxVelY;
 
 	posX += velX;
-	posY += velX;
+	posY += velY;
 
 	aniCounter += velX / 8;
 }
@@ -63,15 +62,3 @@ void BaseCharacter::jump() {
 	velY = -maxVelY;
 	inAir = 1;
 }
-
-	
-
-
-
-
-
-
-
-
-
-

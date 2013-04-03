@@ -13,6 +13,9 @@ class Entity {
 		virtual int getID() {return 0;}
 
 		virtual void drawTo(SDL_Surface *) {}
+		SDL_Surface *getSprite();
+
+		void update();
 		
 		int getTop() {return top;}
 		int getBot() {return bot;}

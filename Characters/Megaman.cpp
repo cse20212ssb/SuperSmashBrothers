@@ -1,9 +1,11 @@
 //#include "stdafx.h"
 #include "Megaman.h"
+#include <iostream>
 
-Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 120, 100){
+Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 60, 50){
 	//Create the sprite sheet
 	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Mega.bmp");
+	inAir = 1;
 	/*
 	//Establish the width and height of character
 	width = 23;
@@ -19,7 +21,7 @@ void Megaman::onCollision(Entity *B) {
 	if (B->getID() == 3) { //Platform
 		velY = 0;
 		inAir = 0;
-		posY = B->getTop() + height;
+		posY = B->getTop() - height;
 	}
 }
 

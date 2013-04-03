@@ -13,7 +13,6 @@ class BaseCharacter : public Entity{
 	public:
 		BaseCharacter() {}
 		BaseCharacter(int, int, int, int);
-		SDL_Surface *getSprite();
 
 		virtual void onCollision(Entity *) {}
 		virtual int getID() {return 1;}

@@ -23,8 +23,8 @@ int SSB::init() {
 		return 0;
 	}
 
-	screen = SDL_SetVideoMode(1280, 720, 32, SDL_HWSURFACE);
-	map = SDL_LoadBMP("Images/Maps/FinalDest.bmp");
+	screen = SDL_SetVideoMode(800, 400, 32, SDL_HWSURFACE);
+	map = SDL_LoadBMP("Images/Maps/basic.bmp");
 
 	if (screen == NULL) {
 		cout << "Screen init failed" << endl;
@@ -44,10 +44,10 @@ int SSB::init() {
 		return 0;
 	}
 
-	pf = new Platform (0, 200, 10, 500);
+	pf = new Platform (100, 300 , 20, 400);
 
 	//BaseCharacter*
-	player = new Megaman(280, 350);
+	player = new Megaman(100, 50);
 	queue.add(player);
 
 	entityList[0] = player;
@@ -63,6 +63,7 @@ int SSB::events() {
 void SSB::loop() {
 	//Everything else
 	player->move();
+	player->update();
 
 	for (int i = 0; i < 2; i++) {
 		for (int j = i + 1; j < 2; j++) {
@@ -78,6 +79,7 @@ void SSB::render() {
 	SDL_BlitSurface(map, NULL, screen, NULL);
 
 	player->drawTo(screen);
+	pf->drawTo(screen);
 
 	SDL_Flip(screen);
 }

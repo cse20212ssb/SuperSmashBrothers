@@ -44,32 +44,33 @@ int Events::resolve() {
 		switch (event.type) {
 			//Joystick axis motion
 			case SDL_JOYAXISMOTION:
-				cout << "JOYSTICK: AXIS" << endl;
-				cout << "   EVENT: ";
+				//cout << "JOYSTICK: AXIS" << endl;
+				//cout << "   EVENT: ";
 				if (event.jaxis.axis == 0)
 					//Horizontal movement
 					if (event.jaxis.value > 0) {
 						ptr->setMoveDir(1);
-						cout << "RIGHT";
+						//cout << "RIGHT";
 					}
 					else if (event.jaxis.value < 0) {
 						ptr->setMoveDir(-1);
-						cout << "LEFT";
+						//cout << "LEFT";
 					}
 					else {
-						cout << "CENTERED";
+						//cout << "CENTERED";
 						ptr->setMoveDir(0);
 					}
 				else if (event.jaxis.axis == 1)
 					//Vertical movement
 					if (event.jaxis.value < 0) {
-						cout << "UP";
+						//cout << "UP";
 						ptr->jump();
 					}
-					else if (event.jaxis.value > 0) cout << "DOWN";
-					else cout << "CENTERED";
-				cout << endl;
+					//else if (event.jaxis.value > 0) cout << "DOWN";
+					//else cout << "CENTERED";
+				//cout << endl;
 			break;
+			/*
 			//Buttons and stuffz
 			case SDL_JOYBUTTONUP:
 			case SDL_JOYBUTTONDOWN:
@@ -95,6 +96,7 @@ int Events::resolve() {
 				}
 				cout << endl;				
 			break;
+			*/
 			
 			case SDL_QUIT:
 				return 0;
@@ -103,6 +105,7 @@ int Events::resolve() {
 			case SDL_USEREVENT:
 				((Entity *)event.user.data1)->onCollision((Entity *)event.user.data2);
 				((Entity *)event.user.data2)->onCollision((Entity *)event.user.data1);
+				//cout << "COLLISION DETECTED" << endl;
 			break;
 		}
 	}
