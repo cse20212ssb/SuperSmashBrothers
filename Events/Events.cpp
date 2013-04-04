@@ -47,7 +47,7 @@ int Events::resolve() {
 		switch (event.type) {
 			//Joystick axis motion
 			case SDL_JOYAXISMOTION:
-				//Which joystick and player
+				//Which joystick
 				if (event.jaxis.which == 0)
 					select = player0;
 				else
@@ -72,10 +72,8 @@ int Events::resolve() {
 				//Vertical Movement
 				else if (event.jaxis.axis == 1) {
 					//Up
-					if (event.jaxis.value < 0) {
-						//cout << "UP";
-						if (select->jumpable())
-							select->jump();
+					if (select->jumpable())
+						select->jump();
 					}
 					//Down
 					else if (event.jaxis.value > 0) {

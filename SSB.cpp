@@ -67,7 +67,7 @@ int SSB::init() {
 	entityList.push_back(pf3);
 	entityList.push_back(pf4);
 	entityList.push_back(pf5);
-	
+
 	return 1;
 }
 
