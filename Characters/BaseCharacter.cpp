@@ -6,7 +6,7 @@ BaseCharacter::BaseCharacter(int x, int y, int h, int w) : Entity(x, y, h, w){
 	maxVelX = 6;
 	maxVelY = 9;
 	aniCounter = 0;
-	canJump = 0;
+	jumpCount = 0;
 }
 
 void BaseCharacter::setMoveDir(int dir) {
@@ -58,7 +58,25 @@ void BaseCharacter::move() {
 	posY += velY;
 }
 
+void BaseCharacter::fastFallCrouch() {
+	if (jumpCount > 0)
+		velY += 5;
+	//Crouch
+}
+
+int BaseCharacter::jumpable() {
+	if (!canJump)
+		return 0;
+	if (jumpCount >= 2)
+		return 0;
+	return 1;
+}
 void BaseCharacter::jump() {
-	velY = -maxVelY;
-	canJump = 0;
+	//First jump
+	if (jumpCount == 0)
+		velY = -2*maxVelY/3;
+	//Second jump
+	if (jumpCount == 1)
+		velY = -3*maxVelY/4;
+	jumpCount++;
 }

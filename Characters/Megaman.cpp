@@ -18,6 +18,7 @@ void Megaman::onCollision(Entity *B) {
 				velY = -velY / 10;
 			else
 				velY = 0;
+			jumpCount = 0;
 			canJump = 1;
 			posY = B->getTop() - height;
 		}

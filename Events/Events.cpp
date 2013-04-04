@@ -73,15 +73,19 @@ int Events::resolve() {
 				//Vertical Movement
 				else if (event.jaxis.axis == 1) {
 					//Up
-					if (select->jumpable()) {
-						select->jump();
+					if (event.jaxis.value < 0) {
+						if (select->jumpable()) {
+							select->jump();
+							select->setCanJump(0);
+						}
 					}
 					//Down
 					else if (event.jaxis.value > 0) {
-						 //cout << "DOWN";
+						select->fastFallCrouch();
 					}
 					//Centred
 					else {
+						select->setCanJump(1);
 						//cout << "CENTERED";
 					}
 				}

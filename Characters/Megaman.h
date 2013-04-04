@@ -10,8 +10,8 @@ class Megaman : public BaseCharacter{
 	public:
 		Megaman() {}
 		Megaman(int x, int y);
-		//virtual SDL_Surface *getSprite();
 
+		//Behavior on collision
 		virtual void onCollision(Entity *);
 		virtual int getID() {return 2;}
 		

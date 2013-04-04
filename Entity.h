@@ -15,7 +15,7 @@ class Entity {
 		Entity(int, int, int, int);
 		//Checks if it has collided with a certain entity
 		int collides(Entity *);
-		//Collision behavior
+		//Behavior on collision
 		virtual void onCollision(Entity *){}
 		virtual int getID() {return 0;}
 

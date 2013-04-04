@@ -13,6 +13,7 @@ class BaseCharacter : public Entity{
 		BaseCharacter() {}
 		BaseCharacter(int, int, int, int);
 
+		//Behavior on collision
 		virtual void onCollision(Entity *) {}
 		virtual int getID() {return 1;}
 
@@ -22,7 +23,11 @@ class BaseCharacter : public Entity{
 
 		void move();
 		void jump();
-		int jumpable() {return canJump;}
+		//If possible to jump
+		int jumpable();
+		//If it can jump
+		void setCanJump(int n) {canJump = n;}
+		void fastFallCrouch();
 		
 		virtual void leftAtk() {}
 		virtual void rightAtk() {}
@@ -33,7 +38,8 @@ class BaseCharacter : public Entity{
 	protected:
 		//Keeps track of the animation
 		double aniCounter;
-		//If in air == 1
+		//Keeps track of jumps (max of two)
+		int jumpCount;
 		int canJump;
 };
 
