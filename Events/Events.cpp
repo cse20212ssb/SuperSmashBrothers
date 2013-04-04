@@ -47,36 +47,45 @@ int Events::resolve() {
 		switch (event.type) {
 			//Joystick axis motion
 			case SDL_JOYAXISMOTION:
-				//Which joystick
+				//Which joystick and player
 				if (event.jaxis.which == 0)
 					select = player0;
 				else
 					select = player1;
-
+				//Horizontal movement
 				if (event.jaxis.axis == 0)
-					//Horizontal movement
+					//Right
 					if (event.jaxis.value > 0) {
 						select->setMoveDir(1);
 						//cout << "RIGHT";
 					}
+					//Left
 					else if (event.jaxis.value < 0) {
 						select->setMoveDir(-1);
 						//cout << "LEFT";
 					}
+					//Centered
 					else {
 						select->setMoveDir(0);
 						//cout << "CENTERED";
 					}
+				//Vertical Movement
 				else if (event.jaxis.axis == 1) {
-					//Vertical movement
+					//Up
 					if (event.jaxis.value < 0) {
 						//cout << "UP";
 						if (select->jumpable())
 							select->jump();
 					}
+					//Down
+					else if (event.jaxis.value > 0) {
+						 //cout << "DOWN";
+					}
+					//Centred
+					else {
+						//cout << "CENTERED";
+					}
 				}
-				//else if (event.jaxis.value > 0) cout << "DOWN";
-				//else cout << "CENTERED";
 			break;
 			/*
 			//Buttons and stuffz

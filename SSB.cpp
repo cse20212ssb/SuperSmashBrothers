@@ -46,19 +46,27 @@ int SSB::init() {
 		return 0;
 	}
 
-	Platform *pf0 = new Platform(100, 300 , 20, 400, 1);
-	Platform *pf1 = new Platform(350, 143, 20, 100, 0);
-	Platform *pf2 = new Platform(150, 225, 20, 100, 0);
+	Platform *pf0 = new Platform(200, 350 , 20, 400, 1);
+	Platform *pf1 = new Platform(250, 250, 20, 100, 0);
+	Platform *pf2 = new Platform(450, 250, 20, 100, 0);
+	Platform *pf3 = new Platform(350, 150, 20, 100, 0);
+	Platform *pf4 = new Platform(50, 100, 20, 100, 0);
+	Platform *pf5 = new Platform(650, 100, 20, 100, 0);
 
-	player0 = new Megaman(150, 50);
-	player1 = new Megaman(200, 50);
+	player0 = new Megaman(250, 50);
+	player1 = new Megaman(450, 50);
+	//Adds players to the events class
 	queue.add(player0, player1);
 	
+	//Holds all entities created
 	entityList.push_back(player0);
 	entityList.push_back(player1);
 	entityList.push_back(pf0);
 	entityList.push_back(pf1);
 	entityList.push_back(pf2);
+	entityList.push_back(pf3);
+	entityList.push_back(pf4);
+	entityList.push_back(pf5);
 	
 	return 1;
 }
@@ -94,5 +102,8 @@ void SSB::render() {
 }
 
 void SSB::cleanUp() {
-	delete screen, map, js_0, js_1, player0, player1;
+	delete screen, map, js_0, js_1;
+	for (int i = 0; i < entityList.size(); i++) {
+		delete entityList[i];
+	}
 }

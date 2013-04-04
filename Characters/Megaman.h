@@ -16,7 +16,7 @@ class Megaman : public BaseCharacter{
 		virtual int getID() {return 2;}
 		
 		virtual void leftAtk();
-		virtual void rightAtk();
+  		virtual void rightAtk();
 		virtual void upAtk();
 		virtual void downAtk();
 		virtual void specialAtk();

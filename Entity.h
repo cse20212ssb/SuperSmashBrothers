@@ -1,3 +1,7 @@
+/*
+Base class for all objects with movement and/or borders
+*/
+
 #ifndef ENTITY_H
 #define ENTITY_H
 
@@ -9,8 +13,9 @@ class Entity {
 	public:
 		Entity() {}
 		Entity(int, int, int, int);
-
+		//Checks if it has collided with a certain entity
 		int collides(Entity *);
+		//Collision behavior
 		virtual void onCollision(Entity *){}
 		virtual int getID() {return 0;}
 
@@ -23,6 +28,11 @@ class Entity {
 		int getBot() {return bot;}
 		int getLeft() {return left;}
 		int getRight() {return right;}
+
+		void addVelX(double inc) {velX += inc;}
+		void addVelY(double inc) {velY += inc;}
+		double getVelX() {return velX;}
+		double getVelY() {return velY;}
 
 	protected:
 		SDL_Surface *sprite;

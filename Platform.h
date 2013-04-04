@@ -11,7 +11,7 @@ using namespace std;
 class Platform : public Entity {
 	public:
 		Platform() {}
-		Platform(int x, int y, int h, int w, int size);
+		Platform(int, int, int, int, int);
 
 		virtual void onCollision(Entity *) {}
 		virtual int getID() {return 3;}

@@ -31,5 +31,5 @@ Entity.o: Entity.cpp
 	g++ $(SDL) Entity.cpp -c
 
 clean:
-	rm -f *.o *~ main
+	rm -f *.o *~
 	rm -f */*~

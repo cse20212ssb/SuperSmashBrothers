@@ -13,6 +13,7 @@ void BaseCharacter::setMoveDir(int dir) {
 	moveDir = dir;
 }
 
+//Draws onto specified surface
 void BaseCharacter::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
 	src.x = 0; //Something with aniCounter
@@ -29,6 +30,7 @@ void BaseCharacter::drawTo(SDL_Surface *surf) {
 	SDL_BlitSurface(getSprite(), &src, surf, &dst);
 }
 
+//Movement in both x and y directions
 void BaseCharacter::move() {
 	if (moveDir != 0) {
 		accelX = .75 * moveDir;
@@ -40,8 +42,6 @@ void BaseCharacter::move() {
 			velX = 0;
 			accelX = 0;
 		}
-
-
 	}
 	//Gravity
 	accelY = 0.3;
@@ -56,8 +56,6 @@ void BaseCharacter::move() {
 
 	posX += velX;
 	posY += velY;
-
-	aniCounter += velX / 8;
 }
 
 void BaseCharacter::jump() {
