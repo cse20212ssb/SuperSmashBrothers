@@ -53,7 +53,7 @@ int Events::resolve() {
 				else
 					select = player1;
 				//Horizontal movement
-				if (event.jaxis.axis == 0)
+				if (event.jaxis.axis == 0) {
 					//Right
 					if (event.jaxis.value > 0) {
 						select->setMoveDir(1);
@@ -69,10 +69,11 @@ int Events::resolve() {
 						select->setMoveDir(0);
 						//cout << "CENTERED";
 					}
+				}
 				//Vertical Movement
 				else if (event.jaxis.axis == 1) {
 					//Up
-					if (select->jumpable())
+					if (select->jumpable()) {
 						select->jump();
 					}
 					//Down
@@ -123,7 +124,7 @@ int Events::resolve() {
 				((Entity *)event.user.data1)->onCollision((Entity *)event.user.data2);
 				((Entity *)event.user.data2)->onCollision((Entity *)event.user.data1);
 				//cout << "COLLISION DETECTED" << endl;
-			break;
+			break; 
 		}
 	}
 	return 1;
