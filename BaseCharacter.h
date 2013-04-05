@@ -1,36 +1,48 @@
 #ifndef BASECHARACTER_H
 #define BASECHARACTER_H
 
-#include "stdafx.h"
 #include "SDL.h"
-#include "string"
+#include "stdafx.h"
+//#include <SDL/SDL.h>
+#include "Entity.h"
+#include <vector>
 
 using namespace std;
 
-class BaseCharacter{
-public:
-	BaseCharacter(void);
-	virtual SDL_Surface *getSprite();
-	virtual int getHeight();
-	virtual int getWidth();
-	virtual int getSrcX();
-	virtual int getSrcY();
-	virtual int getDstX();
-	virtual int getDstY();
-	virtual void moveLeft();
-	virtual void moveRight(); 
-	virtual void jump();
-	virtual void leftAtk();
-	virtual void rightAtk();
-	virtual void upAtk();
-	virtual void downAtk();
-	virtual void specialAtk();
-	virtual void checkPosition(); //Ensure character isn't going off screen with move or jump
-	virtual void animate(string);
+class BaseCharacter : public Entity{
+	public:
+		BaseCharacter() {}
+		BaseCharacter(int, int, int, int);
+
+		//Behavior on collision
+		virtual void onCollision(Entity *) {}
+		virtual int getID() {return 1;}
+
+		void setMoveDir(int);
+
+		virtual void drawTo(SDL_Surface *);
+
+		virtual void move();
+		void jump();
+		//If possible to jump
+		int jumpable();
+		//If it can jump
+		void setCanJump(int n) {canJump = n;}
+		void fastFallCrouch();
+		
+		virtual void leftAtk() {}
+		virtual void rightAtk() {}
+		virtual void upAtk(){}
+		virtual void downAtk() {}
+		virtual void specialAtk() {}
 	
-private:
-	SDL_Surface *sprite;
+	protected:
+		//Keeps track of the animation
+		double aniCounter;
+		//Keeps track of jumps (max of two)
+		int jumpCount;
+		int canJump;
+		vector<Entity*> projectileList;
 };
 
 #endif
-

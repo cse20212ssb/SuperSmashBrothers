@@ -1,46 +1,29 @@
-//Inherits from the Base Character Class
-
 #ifndef MEGAMAN_H
 #define MEGAMAN_H
 
+//#include "SDL.h"
+//#include "stdafx.h"
 #include "BaseCharacter.h"
+#include "Entity.h"
 
-class Megaman:BaseCharacter{
-public:
-	Megaman();
-	SDL_Surface *getSprite();
-	int getHeight();
-	int getWidth();
-	int getSrcX();
-	int getSrcY();
-	int getDstX();
-	int getDstY();
-	void moveLeft(); //Moves character left (accepts x-coordinate position)
-	void moveRight();
-	void jump();
-	void leftAtk();
-	void rightAtk();
-	void upAtk();
-	void downAtk();
-	void specialAtk();
-	void checkPosition(); //Ensure character isn't going off screen with move or jump
-	void animate(string);
-	void stopMove();
+class Megaman : public BaseCharacter{
+	public:
+		Megaman() {}
+		Megaman(int x, int y);
 
-private:
-	//Length and width variables are used to determine hitbox
-	int height;
-	int width;
-	//The original location
-	int srcX;
-	int srcY;
-	//The destination location
-	int dstX;
-	int dstY;
-	SDL_Surface *sprite;
-	//Counter for animation length
-	int aniCounter;
-	string dirSel; //Determines which direction was just selected (0: left, 1: right)
+
+		//Behavior on collision
+		virtual void onCollision(Entity *);
+		virtual int getID() {return 2;}
+		
+		virtual void leftAtk();
+  		virtual void rightAtk();
+		virtual void upAtk();
+		virtual void downAtk();
+		virtual void specialAtk();
+
+		virtual void checkPosition(); //Ensure character isn't going off screen with move or jump
+	
 };
 
 #endif

@@ -1,115 +1,109 @@
-// SuperSmashBrothers.cpp : Defines the entry point for the console application.
-//Test
-
-//#include <SDL/SDL.h>
-
 #include "stdafx.h"
-#include "SDL.h"
-#include "BaseCharacter.h"
-#include "Megaman.h"
-#include "Link.h"
+#include "SSB.h"
 
-//Declare basic SDL variables
-SDL_Surface *screen = NULL;
-SDL_Surface *background = NULL;
-SDL_Event event;
+using namespace std;
 
-//Establish variable to determine if the window is running
-bool running = true; 
-
-//Function to create surfaces
-void apply_surface(int x, int y, SDL_Surface* source, SDL_Surface* destination){
-	//Rectangle for positioning
-	SDL_Rect rect;
-	rect.x = x;
-	rect.y = y;
-
-	//Placing the surface
-	SDL_BlitSurface(source,NULL, destination,&rect);
-}
-
-//Function to draw sprites
-void draw_sprite(int srcX, int srcY, int dstX, 
-				 int dstY, int width, int height, 
-				 SDL_Surface* source, SDL_Surface* destination){
-	SDL_Rect src;
-	src.x = srcX;
-	src.y = srcY;
-	src.w = width;
-	src.h = height;
-
-	SDL_Rect dst;
-	dst.x = dstX;
-	dst.y = dstY;
-	dst.w = width;
-	dst.h = height;
-
-	SDL_BlitSurface(source, &src, destination, &dst);
-}
-
-int main(int argc, char* argv[]){
-	//Initialization
-	SDL_Init(SDL_INIT_VIDEO);
-	
-	//To register holding down a key
-	bool keys[323] = {false};
-
-	//Load Items
-	screen = SDL_SetVideoMode(1280, 720, 32, SDL_HWSURFACE);
-	background = SDL_LoadBMP("Images/Maps/FinalDest.bmp");
-	Megaman p1; 
-
-	/*How would I do something like this?
-	int charSel = 1;
-	if(charSel == 1)
-		Megaman p1; 
-	else
-		Link p1;
-	*/
-	
-
-	//Game loop
-	while (running){
-		if(SDL_PollEvent(&event)){
-			//Check for exit
-			if(event.type == SDL_QUIT){
-				running = false;
-			}
-
-			//Register key being held down
-			if(event.type == SDL_KEYDOWN){
-				keys[event.key.keysym.sym] = true;
-			}
-
-			//Register key being released
-			if(event.type == SDL_KEYUP){
-				keys[event.key.keysym.sym] = false;
-				p1.stopMove();
-			}
+void SSB::execute() {
+	if (init()) {
+		//Main game loop
+		int running = 1;
+		while (running) {
+			running = events();
+			loop();
+			render();
 		}
-		
-
-		//Move left correspondingly
-		if(keys[SDLK_LEFT]){
-			p1.moveLeft();
-		}
-
-		//Move right correspondingly
-		if(keys[SDLK_RIGHT]){
-			p1.moveRight();
-		}
-
-		//Make the sprite transparent
-		SDL_SetColorKey(p1.getSprite(),SDL_SRCCOLORKEY,SDL_MapRGB(p1.getSprite()->format, 255, 255, 255));
-
-		//Apply surfaces
-		apply_surface(0,0,background,screen); //Background onto the screen
-		draw_sprite(p1.getSrcX(),p1.getSrcY(),p1.getDstX(),p1.getDstY(),p1.getWidth(),p1.getHeight(),p1.getSprite(),screen);
-
-		//Update screen
-		SDL_Flip(screen);
+		cleanUp();
 	}
+	else cout << "SSB init failed" << endl;
 
 	SDL_Quit();
-	return 0;
+}
+
+int SSB::init() {
+	if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
+		cout << "SDL init failed" << endl;
+		return 0;
+	}
+
+	screen = SDL_SetVideoMode(800, 400, 32, SDL_HWSURFACE);
+	map = SDL_LoadBMP("Images/Maps/basic.bmp");
+
+	if (screen == NULL) {
+		cout << "Screen init failed" << endl;
+		return 0;
+	}
+
+	js_0 = SDL_JoystickOpen(0);
+	js_1 = SDL_JoystickOpen(1);
+	
+	if (!js_0) 
+		cout << "Joystick 1 failed to init" << endl;
+	if (!js_1) 
+		cout << "Joystick 2 failed to init" << endl;
+
+	if (!js_0 && !js_1) {
+		cout << "No controller was found" << endl;
+		return 0;
+	}
+
+	Platform *pf0 = new Platform(200, 350 , 20, 400, 1);
+	Platform *pf1 = new Platform(250, 250, 20, 100, 0);
+	Platform *pf2 = new Platform(450, 250, 20, 100, 0);
+	Platform *pf3 = new Platform(350, 150, 20, 100, 0);
+	Platform *pf4 = new Platform(50, 100, 20, 100, 0);
+	Platform *pf5 = new Platform(650, 100, 20, 100, 0);
+
+	player0 = new Megaman(250, 50);
+	player1 = new Megaman(450, 50);
+	//Adds players to the events class
+	queue.add(player0, player1);
+	
+	//Holds all entities created
+	entityList.push_back(player0);
+	entityList.push_back(player1);
+	entityList.push_back(pf0);
+	entityList.push_back(pf1);
+	entityList.push_back(pf2);
+	entityList.push_back(pf3);
+	entityList.push_back(pf4);
+	entityList.push_back(pf5);
+
+	return 1;
+}
+
+int SSB::events() {
+	return queue.resolve();
+}
+
+//Update everything
+void SSB::loop() {
+	player0->move();
+	player0->updateBorders();
+	player1->move();
+	player1->updateBorders();
+
+	for (int i = 0; i < entityList.size(); i++) {
+		for (int j = i + 1; j < entityList.size(); j++) {
+			if (entityList[i]->collides(entityList[j])) {
+				queue.addCollision(entityList[i], entityList[j]);
+			}
+		}
+	}
+}
+
+void SSB::render() {
+	SDL_FillRect(screen, NULL, 0);
+	SDL_BlitSurface(map, NULL, screen, NULL);
+
+	for (int i = 0; i < entityList.size(); i++)
+		entityList[i]->drawTo(screen);
+
+	SDL_Flip(screen);
+}
+
+void SSB::cleanUp() {
+	delete screen, map, js_0, js_1;
+	for (int i = 0; i < entityList.size(); i++) {
+		delete entityList[i];
+	}
 }
