@@ -1,5 +1,6 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "Events.h"
+#include <iostream>
 
 using namespace std;
 
@@ -47,46 +48,84 @@ int Events::resolve() {
 		switch (event.type) {
 			//Joystick axis motion
 			case SDL_JOYAXISMOTION:
+				cout << event.jaxis.value << endl;
 				//Which joystick
 				if (event.jaxis.which == 0)
 					select = player0;
 				else
 					select = player1;
-
-				if (event.jaxis.axis == 0)
-					//Horizontal movement
-					if (event.jaxis.value > 0) {
+				//Horizontal movement
+				if (event.jaxis.axis == 0) {
+					//Right
+					if (event.jaxis.value > -257) {
 						select->setMoveDir(1);
-						//cout << "RIGHT";
+						select->setDir(1);
+						select->setSprite(1);
+						cout << "RIGHT";
 					}
-					else if (event.jaxis.value < 0) {
+					//Left
+					else if (event.jaxis.value < -257) {
 						select->setMoveDir(-1);
-						//cout << "LEFT";
+						select->setDir(-1);
+						select->setSprite(-1);
+						cout << "LEFT";
 					}
+					//Centered
 					else {
+						cout << "CENTERED";
 						select->setMoveDir(0);
-						//cout << "CENTERED";
-					}
-				else if (event.jaxis.axis == 1) {
-					//Vertical movement
-					if (event.jaxis.value < 0) {
-						//cout << "UP";
-						if (select->jumpable())
-							select->jump();
+						
 					}
 				}
-				//else if (event.jaxis.value > 0) cout << "DOWN";
-				//else cout << "CENTERED";
+				//Vertical Movement
+				else if (event.jaxis.axis == 1) {
+					//Up
+					if (event.jaxis.value < -257) {
+						if (select->jumpable()) {
+							select->jump();
+							select->setCanJump(0);
+						}
+					}
+					//Down
+					else if (event.jaxis.value > -257) {
+						select->fastFallCrouch();
+					}
+					//Centered
+					else {
+						select->setCanJump(1);
+						//cout << "CENTERED";
+					}
+				}
 			break;
-			/*
+			
 			//Buttons and stuffz
 			case SDL_JOYBUTTONUP:
+				if (event.jbutton.state == SDL_RELEASED) {
+					if (event.jbutton.button == 1){
+						select -> releaseAtk();
+						cout << "A RELEASED";
+					}
+					if (event.jbutton.button == 2){
+						select -> releaseSpecialAtk();
+						cout << "B RELEASED";
+					}
+				}
+				break;
+
 			case SDL_JOYBUTTONDOWN:
 				cout << "JOYSTICK: BUTTON" << endl;
 				cout << "   EVENT: ";
 				if (event.jbutton.state == SDL_PRESSED) {
-					if (event.jbutton.button == 1) cout << "A";
-					else if (event.jbutton.button == 2) cout << "B";
+					if (event.jbutton.button == 1){
+						select -> Atk();
+						cout << "A";
+					}
+					else if (event.jbutton.button == 2){
+						select -> specialAtk();
+						cout << "B";
+					}
+
+
 					else if (event.jbutton.button == 8) cout << "SELECT";
 					else if (event.jbutton.button == 9) cout << "START";
 					else cout << "MISSING BUTTON";
@@ -104,7 +143,6 @@ int Events::resolve() {
 				}
 				cout << endl;				
 			break;
-			*/
 			
 			case SDL_QUIT:
 				return 0;
@@ -116,7 +154,7 @@ int Events::resolve() {
 				((Entity *)event.user.data1)->onCollision((Entity *)event.user.data2);
 				((Entity *)event.user.data2)->onCollision((Entity *)event.user.data1);
 				//cout << "COLLISION DETECTED" << endl;
-			break;
+			break; 
 		}
 	}
 	return 1;

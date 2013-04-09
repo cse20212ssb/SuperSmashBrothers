@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "../stdafx.h"
 #include "BaseCharacter.h"
 
 BaseCharacter::BaseCharacter(int x, int y, int h, int w) : Entity(x, y, h, w){

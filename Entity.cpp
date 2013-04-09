@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Entity.h"
 #include <iostream>
 
@@ -19,6 +19,9 @@ Entity::Entity(int x, int y, int h, int w) {
 	velY = 0;
 	accelX = 0;
 	accelY = 0;
+
+	aniCounter = 0;
+	srcXVal = 0;
 }
 
 void Entity::updateBorders() {
