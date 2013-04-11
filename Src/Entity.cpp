@@ -48,6 +48,3 @@ void Entity::setMoveDir(int dir) {
 		faceDir = dir;
 	moveDir = dir;
 }
-
-
-

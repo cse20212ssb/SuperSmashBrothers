@@ -15,12 +15,12 @@ void Events::add(BaseCharacter *obj0, BaseCharacter *obj1) {
 }
 
 //Pushes collision event to queue
-void Events::addCollision(Entity *obj1, Entity *obj2) {
+void Events::addCollision(Entity *obj0, Entity *obj1) {
 	SDL_Event event;
 	event.type = SDL_USEREVENT;
 	//data type is *void, needs to be typecast
-	event.user.data1 = obj1;
-	event.user.data2 = obj2;
+	event.user.data1 = obj0;
+	event.user.data2 = obj1;
 	
 	SDL_PushEvent(&event);
 }
@@ -45,14 +45,16 @@ Buttons 0, 3-7 are empty
 int Events::resolve() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
+		BaseCharacter *select;
+
 		switch (event.type) {
 			//Joystick axis motion
 			case SDL_JOYAXISMOTION:
-				//Which joystick
 				if (event.jaxis.which == 0)
 					select = player0;
 				else
 					select = player1;
+
 				//Horizontal movement
 				if (event.jaxis.axis == 0) {
 					//Right
@@ -92,6 +94,10 @@ int Events::resolve() {
 			
 			case SDL_JOYBUTTONDOWN:
 			case SDL_JOYBUTTONUP:
+				if (event.button.which == 0)
+					select = player0;
+				else
+					select = player1;
 				//Button down
 				if (event.jbutton.state == SDL_RELEASED) {
 					if (event.jbutton.button == 1){

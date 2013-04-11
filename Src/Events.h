@@ -17,8 +17,7 @@ class Events {
 		void add(BaseCharacter *, BaseCharacter *);
 
 	private:
-		BaseCharacter *player0, *player1, *select;
-		int registered;
+		BaseCharacter *player0, *player1;
 		
 };
 

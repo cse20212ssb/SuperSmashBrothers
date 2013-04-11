@@ -85,7 +85,7 @@ void Megaman::drawTo(SDL_Surface *surf) {
 
 	//If left or right
 	if (faceDir == 1) src.y = 33;
-	else if (faceDir == -1) src.y = 0;
+	else src.y = 0;
 
 	src.h = height;
 	src.w = width;
