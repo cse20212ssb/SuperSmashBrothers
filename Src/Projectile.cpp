@@ -1,17 +1,18 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Projectile.h"
 
 using namespace std;
 
-Projectile::Projectile(int x,int y, int h, int w, int iVel, int type) : Entity (x, y, h, w) {
-	velX = iVel;
-	if (type == 0)
-		sprite = SDL_LoadBMP("Images/platform_small.bmp");
+Projectile::Projectile(int x,int y, int h, int w, int t_vel, int t_type) : Entity (x, y, h, w) {
+	velX = t_vel;
+	type = t_type;
+	sprite = SDL_LoadBMP("../Images/Sprites/Projectiles.bmp");
+
 }
 
 void Projectile::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
-	src.x = 0; //Something with aniCounter
+	src.x = 0;
 	src.y = 0;
 	src.h = height;
 	src.w = width;

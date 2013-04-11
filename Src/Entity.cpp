@@ -1,6 +1,5 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Entity.h"
-#include <iostream>
 
 using namespace std;
 
@@ -21,7 +20,6 @@ Entity::Entity(int x, int y, int w, int h) {
 	accelY = 0;
 
 	aniCounter = 0;
-	srcXVal = 0;
 }
 
 void Entity::updateBorders() {
@@ -44,3 +42,12 @@ int Entity::collides(Entity *b) {
 
 	return 1;
 }
+
+void Entity::setMoveDir(int dir) {
+	if (dir != 0) 
+		faceDir = dir;
+	moveDir = dir;
+}
+
+
+

@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Events.h"
 #include <iostream>
 
@@ -48,7 +48,6 @@ int Events::resolve() {
 		switch (event.type) {
 			//Joystick axis motion
 			case SDL_JOYAXISMOTION:
-				//cout << event.jaxis.value << endl;
 				//Which joystick
 				if (event.jaxis.which == 0)
 					select = player0;
@@ -57,20 +56,15 @@ int Events::resolve() {
 				//Horizontal movement
 				if (event.jaxis.axis == 0) {
 					//Right
-					if (event.jaxis.value > 0) {
+					if (event.jaxis.value > -257) {
 						select->setMoveDir(1);
-						//select->setSprite(1);
-						//cout << "RIGHT";
 					}
 					//Left
-					else if (event.jaxis.value < 0) {
+					else if (event.jaxis.value < -257) {
 						select->setMoveDir(-1);
-						//select->setSprite(-1);
-						//cout << "LEFT";
 					}
 					//Centered
 					else {
-						//cout << "CENTERED";
 						select->setMoveDir(0);
 						
 					}
@@ -78,14 +72,14 @@ int Events::resolve() {
 				//Vertical Movement
 				else if (event.jaxis.axis == 1) {
 					//Up
-					if (event.jaxis.value < 0) {
+					if (event.jaxis.value < -257) {
 						if (select->jumpable()) {
 							select->jump();
 							select->setCanJump(0);
 						}
 					}
 					//Down
-					else if (event.jaxis.value > 0) {
+					else if (event.jaxis.value > -257) {
 						select->fastFallCrouch();
 					}
 					//Centered
@@ -96,50 +90,38 @@ int Events::resolve() {
 				}
 			break;
 			
-			//Buttons and stuffz
+			case SDL_JOYBUTTONDOWN:
 			case SDL_JOYBUTTONUP:
+				//Button down
 				if (event.jbutton.state == SDL_RELEASED) {
 					if (event.jbutton.button == 1){
-						select -> releaseAtk();
-						//cout << "A RELEASED";
+						//select->releaseAtk();
 					}
 					if (event.jbutton.button == 2){
-						select -> releaseSpecialAtk();
-						//cout << "B RELEASED";
+						select->releaseSpecialAtk();
 					}
 				}
-				break;
-
-			case SDL_JOYBUTTONDOWN:
-				//cout << "JOYSTICK: BUTTON" << endl;
-				//cout << "   EVENT: ";
+				//Button up
 				if (event.jbutton.state == SDL_PRESSED) {
 					if (event.jbutton.button == 1){
-						select -> Atk();
-						//cout << "A";
+						//select->Atk();
 					}
 					else if (event.jbutton.button == 2){
-						select -> specialAtk();
-						//cout << "B";
+						select->specialAtk();
 					}
 
 
-					else if (event.jbutton.button == 8) {} //cout << "SELECT";
-					else if (event.jbutton.button == 9) {} //cout << "START";
-					else {} //cout << "MISSING BUTTON";
-			
-					//cout << " PRESSED";
+					else if (event.jbutton.button == 8) {}
+					else if (event.jbutton.button == 9) {}
+					else {} 
 				}
 				else {
-					if (event.jbutton.button == 1) {} //cout << "A";
-					else if (event.jbutton.button == 2) {} //cout << "B";
-					else if (event.jbutton.button == 8) {} //cout << "SELECT";
-					else if (event.jbutton.button == 9) {} //cout << "START";
-					else {} //cout << "MISSING BUTTON";
-		
-					//cout << " RELEASED";
-				}
-				//cout << endl;				
+					if (event.jbutton.button == 1) {} 
+					else if (event.jbutton.button == 2) {} 
+					else if (event.jbutton.button == 8) {} 
+					else if (event.jbutton.button == 9) {} 
+					else {}
+				}			
 			break;
 			
 			case SDL_QUIT:
@@ -151,7 +133,6 @@ int Events::resolve() {
 				//Typecast *void to *Entity
 				((Entity *)event.user.data1)->onCollision((Entity *)event.user.data2);
 				((Entity *)event.user.data2)->onCollision((Entity *)event.user.data1);
-				//cout << "COLLISION DETECTED" << endl;
 			break; 
 		}
 	}

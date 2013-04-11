@@ -5,10 +5,9 @@ Base class for all objects with movement and/or borders
 #ifndef ENTITY_H
 #define ENTITY_H
 
-//#include "stdafx.h"
-//#include "SDL.h"
-#include <iostream>
-#include <SDL/SDL.h>
+#include "stdafx.h"
+#include "SDL.h"
+//#include <SDL/SDL.h>
 
 using namespace std;
 
@@ -38,12 +37,7 @@ class Entity {
 		double getVelX() {return velX;}
 		double getVelY() {return velY;}
 
-		int getaniCounter() {return aniCounter;}
-		void setaniCounter(int n) {aniCounter = n;}
-		void incrementaniCounter() {aniCounter++;}
-		void setsrcXVal(int n) {srcXVal = n;}
-
-		void setMoveDir(int dir) {moveDir = dir;}
+		void setMoveDir(int dir);
 		int getMoveDir() {return moveDir;}
 
 	protected:
@@ -58,12 +52,12 @@ class Entity {
 		double accelX, accelY;
 		double maxVelX, maxVelY;
 		
-		//Keeps track of position
+		//Direction of movement
 		int moveDir;
+		//Direction object is facing
+		int faceDir;
 		//Keeps track of the animation
 		int aniCounter;
-		//Keeps track of position
-		int srcXVal;
 };
 
 #endif

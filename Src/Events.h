@@ -1,10 +1,9 @@
 #ifndef EVENTS_H
 #define EVENTS_H
 
-//#include "SDL.h"
-//#include "stdafx.h"
-#include <SDL/SDL.h>
-#include <iostream>
+#include "SDL.h"
+#include "stdafx.h"
+//#include <SDL/SDL.h>
 #include "BaseCharacter.h"
 #include "Entity.h"
 
