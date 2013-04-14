@@ -23,6 +23,12 @@ void Megaman::onCollision(Entity *B) {
 			posY = B->getTop() - height;
 		}
 	}
+
+	if (B->getID() == 4) {
+		addVelX(B->getVelX() / 10);
+		addVelY(B->getVelY() / 10);
+		delete B;
+	}
 	
 	/*
 	//Other Character
@@ -45,13 +51,21 @@ void Megaman::specialAtk() {
 	}
 	
 	//Create a new projectile and add it to list
-	Projectile *pj = new Projectile(posX, posY+17, 5, 5, vel, 0);
+	Projectile *pj = new Projectile(new_posX, posY+17, 5, 5, vel, 0);
 	projectileList.push_back(pj);
 	isSpecial = 1;
 }
 
 void Megaman::releaseSpecialAtk() {
 	isSpecial = 0;
+}
+
+void Megaman::Atk() {
+	isAtk = 1;
+}
+
+void Megaman::releaseAtk() {
+	isAtk = 0;
 }
 
 //Draws onto specified surface

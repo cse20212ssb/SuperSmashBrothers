@@ -7,6 +7,7 @@ BaseCharacter::BaseCharacter(int x, int y, int w, int h) : Entity(x, y, w, h){
 	setMoveDir(0);
 	maxVelX = 3;
 	maxVelY = 9;
+	faceDir = -1;
 	jumpCount = 0;
 	isSpecial = 0;
 }
@@ -42,8 +43,8 @@ void BaseCharacter::move() {
 	if (velY > maxVelY) velY = maxVelY;
 	if (velY < -maxVelY) velY = -maxVelY;
 
-	posX += velX;
 	posY += velY;
+	posX += velX;
 }
 
 void BaseCharacter::fastFallCrouch() {
