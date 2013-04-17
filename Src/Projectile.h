@@ -20,6 +20,7 @@ class Projectile : public Entity{
 		virtual void drawTo(SDL_Surface *);
 	private:
 		int type;
+		
 };
 
 #endif

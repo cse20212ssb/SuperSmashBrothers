@@ -39,6 +39,7 @@ class Entity {
 
 		void setMoveDir(int dir);
 		int getMoveDir() {return moveDir;}
+		int getIsGone(){return isGone;}
 
 	protected:
 		SDL_Surface *sprite;
@@ -58,6 +59,7 @@ class Entity {
 		int faceDir;
 		//Keeps track of the animation
 		int aniCounter;
+		int isGone;
 };
 
 #endif

@@ -5,9 +5,9 @@ using namespace std;
 
 Platform::Platform(int x,int y, int w, int h, int size) : Entity (x, y, w, h) {
 	if (size == 0)
-		sprite = SDL_LoadBMP("../Images/platform_small.bmp");
+		sprite = SDL_LoadBMP("Images/platform_small.bmp");
 	else if (size == 1)
-		sprite = SDL_LoadBMP("../Images/platform_big.bmp");
+		sprite = SDL_LoadBMP("Images/platform_big.bmp");
 }
 
 void Platform::drawTo(SDL_Surface *surf) {

@@ -4,7 +4,7 @@
 //height and width are constant to Megaman
 Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 31, 33){
 	//Load sprite sheet
-	sprite = SDL_LoadBMP("../Images/Sprites/Megaman/Megaman.bmp");
+	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Megaman.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 }
 
@@ -23,12 +23,6 @@ void Megaman::onCollision(Entity *B) {
 			posY = B->getTop() - height;
 		}
 	}
-
-	if (B->getID() == 4) {
-		addVelX(B->getVelX() / 10);
-		addVelY(B->getVelY() / 10);
-		delete B;
-	}
 	
 	/*
 	//Other Character
@@ -41,31 +35,29 @@ void Megaman::onCollision(Entity *B) {
 
 void Megaman::specialAtk() {
 	int new_posX = posX;
-	int vel = 12;
+	int vel = 5;
 	if(faceDir == 1) {
-		vel = 12;
+		vel = 10;
 		new_posX += width;
 	}
 	else if(faceDir == -1) {
-		vel = -12;
+		vel = -10;
 	}
-	
+	Projectile *pj;
 	//Create a new projectile and add it to list
-	Projectile *pj = new Projectile(new_posX, posY+17, 5, 5, vel, 0);
+	if(faceDir == 1){
+		pj = new Projectile(posX+21, posY+17, 5, 5, vel, 0);
+	}
+	else{
+		pj = new Projectile(posX, posY+17, 5, 5, vel, 0);
+	}
+
 	projectileList.push_back(pj);
 	isSpecial = 1;
 }
 
 void Megaman::releaseSpecialAtk() {
 	isSpecial = 0;
-}
-
-void Megaman::Atk() {
-	isAtk = 1;
-}
-
-void Megaman::releaseAtk() {
-	isAtk = 0;
 }
 
 //Draws onto specified surface

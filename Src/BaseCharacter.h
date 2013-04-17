@@ -16,7 +16,7 @@ class BaseCharacter : public Entity{
 
 		//Behavior on collision
 		virtual void onCollision(Entity *) {}
-		virtual int getID() {return 1;}
+		virtual int getID() {return 2;}
 		virtual void drawTo(SDL_Surface *) {}
 
 		virtual void move();
@@ -33,6 +33,9 @@ class BaseCharacter : public Entity{
 		virtual void downAtk() {}
 		virtual void specialAtk() {}
 		virtual void releaseSpecialAtk() {}
+		vector<Entity*> getProjectileList() {return projectileList;}
+		void removeProj(int);
+		void offScreen();
 
 	protected:
 		//Keeps track of jumps (max of two)

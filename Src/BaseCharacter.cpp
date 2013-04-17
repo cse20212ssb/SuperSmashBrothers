@@ -7,7 +7,6 @@ BaseCharacter::BaseCharacter(int x, int y, int w, int h) : Entity(x, y, w, h){
 	setMoveDir(0);
 	maxVelX = 3;
 	maxVelY = 9;
-	faceDir = -1;
 	jumpCount = 0;
 	isSpecial = 0;
 }
@@ -43,8 +42,8 @@ void BaseCharacter::move() {
 	if (velY > maxVelY) velY = maxVelY;
 	if (velY < -maxVelY) velY = -maxVelY;
 
-	posY += velY;
 	posX += velX;
+	posY += velY;
 }
 
 void BaseCharacter::fastFallCrouch() {
@@ -71,3 +70,14 @@ void BaseCharacter::jump() {
 	jumpCount++;
 }
 
+void BaseCharacter::removeProj(int loc) {
+	projectileList.erase(projectileList.begin()+loc);
+}
+
+void BaseCharacter::offScreen(){
+	if(posX > 800) posX = 0;
+	else if(posX < 0) posX = 800;
+	
+	if(posY < 0) posY = 400;
+	else if(posY > 400) posY = 0;
+}

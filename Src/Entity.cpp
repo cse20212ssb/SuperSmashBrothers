@@ -36,7 +36,6 @@ SDL_Surface * Entity::getSprite() {
 int Entity::collides(Entity *b) {
 	if (getBot() < b->getTop()) return 0;
 	if (getTop() > b->getBot()) return 0;
-
 	if (getRight() < b->getLeft()) return 0;
 	if (getLeft() > b->getRight()) return 0;
 
