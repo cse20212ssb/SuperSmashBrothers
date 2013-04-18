@@ -18,14 +18,17 @@ class Megaman : public BaseCharacter{
 		virtual int getID() {return 2;}
 		virtual void drawTo(SDL_Surface *);
 		
-		virtual void Atk() {}
+		virtual void Atk();
 		virtual void upAtk() {}
 		virtual void downAtk() {}
 
-		virtual void releaseAtk() {}
+		virtual void releaseAtk();
 
 		virtual void specialAtk();
 		virtual void releaseSpecialAtk();
+
+	private:
+		int originalWidth;
 	
 };
 

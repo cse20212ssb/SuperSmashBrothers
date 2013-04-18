@@ -27,8 +27,8 @@ int SSB::init() {
 	}
 
 
-	screen = SDL_SetVideoMode(800, 400, 32, SDL_HWSURFACE);
-	map = SDL_LoadBMP("Images/Maps/basic.bmp");
+	screen = SDL_SetVideoMode(800, 550, 32, SDL_HWSURFACE);
+	map = SDL_LoadBMP("Images/Maps/Battlefield.bmp");
 
 	if (screen == NULL) {
 		cout << "Screen init failed" << endl;
@@ -48,15 +48,17 @@ int SSB::init() {
 		return 0;
 	}
 
-	Platform *pf0 = new Platform(200, 350 , 400, 20, 1);
-	Platform *pf1 = new Platform(250, 250, 100, 20, 0);
-	Platform *pf2 = new Platform(450, 250, 100, 20, 0);
-	Platform *pf3 = new Platform(350, 150, 100, 20, 0);
-	Platform *pf4 = new Platform(50, 100, 100, 20, 0);
-	Platform *pf5 = new Platform(650, 100, 100, 20, 0);
+	//Large base platform
+	Platform *pf0 = new Platform(150, 400 , 400, 20, 1);
+	//Floating Platforms
+	Platform *pf1 = new Platform(160, 310, 154, 28, 0);
+	Platform *pf2 = new Platform(480, 310, 154, 28, 0);
+	Platform *pf3 = new Platform(325, 235, 154, 28, 0);
+	Platform *pf4 = new Platform(150, 150, 154, 28, 0);
+	Platform *pf5 = new Platform(550, 150, 154, 28, 0);
 	
-	player0 = new Megaman(250, 50);
-	player1 = new Megaman(450, 50);
+	player0 = new Megaman(330, 50);
+	player1 = new Megaman(430, 50);
 	//Adds players to the events class
 	
 	queue.add(player0, player1);
@@ -143,9 +145,17 @@ void SSB::loop() {
 		}
 
 		//Player 2 Projectiles
-		for (int j  = 0; j < ptr1.size(); j++) {
-			if (entityList[i]->collides(ptr1[j]))
+		for (int j = 0; j < ptr1.size(); j++) {
+			cout << entityList[i]->collides(ptr1[j]) << endl;
+			if (ptr1[j]->collides(entityList[i])){
 				queue.addCollision(entityList[i], ptr1[j]);
+			}
+		}
+
+		for (int k = 0; k < ptr1.size(); k++) {
+				if(ptr1[k]->getIsGone() == 1){
+					player1->removeProj(k);
+				}
 		}
 	}
 }

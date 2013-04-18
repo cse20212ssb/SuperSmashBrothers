@@ -8,6 +8,7 @@ Platform::Platform(int x,int y, int w, int h, int size) : Entity (x, y, w, h) {
 		sprite = SDL_LoadBMP("Images/platform_small.bmp");
 	else if (size == 1)
 		sprite = SDL_LoadBMP("Images/platform_big.bmp");
+	SDL_SetColorKey(getSprite(),SDL_SRCCOLORKEY,SDL_MapRGB(getSprite()->format, 255, 255, 255));
 }
 
 void Platform::drawTo(SDL_Surface *surf) {

@@ -7,8 +7,8 @@ using namespace std;
 Projectile::Projectile(int x,int y, int h, int w, int t_vel, int t_type) : Entity (x, y, h, w) {
 	velX = t_vel;
 	type = t_type;
-	sprite = SDL_LoadBMP("Images/Sprites/Projectiles.bmp");
-
+	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Sword.bmp");
+	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Projectiles.bmp");
 }
 
 void Projectile::drawTo(SDL_Surface *surf) {

@@ -101,7 +101,7 @@ int Events::resolve() {
 				//Button down
 				if (event.jbutton.state == SDL_RELEASED) {
 					if (event.jbutton.button == 1){
-						//select->releaseAtk();
+						select->releaseAtk();
 					}
 					if (event.jbutton.button == 2){
 						select->releaseSpecialAtk();
@@ -110,7 +110,7 @@ int Events::resolve() {
 				//Button up
 				if (event.jbutton.state == SDL_PRESSED) {
 					if (event.jbutton.button == 1){
-						//select->Atk();
+						select->Atk();
 					}
 					else if (event.jbutton.button == 2){
 						select->specialAtk();

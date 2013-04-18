@@ -6,6 +6,8 @@ Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 31, 33){
 	//Load sprite sheet
 	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Megaman.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
+	originalWidth = width;
+	isAtk = 0;
 }
 
 void Megaman::onCollision(Entity *B) {
@@ -60,6 +62,14 @@ void Megaman::releaseSpecialAtk() {
 	isSpecial = 0;
 }
 
+void Megaman::Atk() {
+	isAtk = 1;
+}
+
+void Megaman::releaseAtk(){
+	isAtk = 0;
+}
+
 //Draws onto specified surface
 void Megaman::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
@@ -69,6 +79,10 @@ void Megaman::drawTo(SDL_Surface *surf) {
 		src.x = 4 * width;
 		//If jumping and special attacking
 		if (isSpecial) src.x += width * 13;
+		//If jumping and attacking
+		else if(isAtk){
+			src.x = width * 18;
+		}
 	}
 	//if on ground
 	else if (moveDir != 0) {
@@ -82,19 +96,39 @@ void Megaman::drawTo(SDL_Surface *surf) {
 		else src.x = width;
 		//If running and special attacking
 		if (isSpecial) src.x += width * 13;
+		//If running and attacking
+		else if(isAtk){
+			src.x = width * 10;
+		}
 	}
 	else {
 		//If standing and special attacking
-		if (isSpecial) src.x = width * 9;
-		else src.x = 0;
+		if (isSpecial){
+			src.x = width * 9;
+		}
+		//If standing and attacking
+		else if(isAtk){
+			src.x = width * 10;
+		}
+		
+		else{
+			width = originalWidth;
+			src.x = 0;
+		}
 	}
 
 	//If left or right
 	if (faceDir == 1) src.y = 33;
 	else src.y = 0;
 
+	if(isAtk){
+		src.w = width*2;
+	}
+	else{
+		src.w = width;
+	}
 	src.h = height;
-	src.w = width;
+	
 
 	SDL_Rect dst;
 	dst.x = posX;
