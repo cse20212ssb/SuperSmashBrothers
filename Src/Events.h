@@ -18,6 +18,7 @@ class Events {
 
 	private:
 		BaseCharacter *player0, *player1;
+		int btnA, btnB;
 		
 };
 

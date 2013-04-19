@@ -1,5 +1,9 @@
 #include "stdafx.h"
 #include "Megaman.h"
+#include <iostream>
+
+using namespace std;
+
 
 //height and width are constant to Megaman
 Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 31, 33){
@@ -8,6 +12,7 @@ Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 31, 33){
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 	originalWidth = width;
 	isAtk = 0;
+	firstPress = 0;
 }
 
 void Megaman::onCollision(Entity *B) {
@@ -68,12 +73,20 @@ void Megaman::Atk() {
 
 void Megaman::releaseAtk(){
 	isAtk = 0;
+	if(firstPress != 0)
+		posX += 30;
+	firstPress = 0;
 }
 
 //Draws onto specified surface
 void Megaman::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
-
+	
+	if(isAtk && faceDir == -1) 
+		firstPress++;
+	if(isAtk && firstPress == 1)
+		posX -= 30;
+	
 	//if in air
 	if (jumpCount > 0 || velY > 3) {
 		src.x = 4 * width;

@@ -29,6 +29,7 @@ class Megaman : public BaseCharacter{
 
 	private:
 		int originalWidth;
+		int firstPress;
 	
 };
 

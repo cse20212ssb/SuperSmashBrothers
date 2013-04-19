@@ -98,22 +98,26 @@ int Events::resolve() {
 					select = player0;
 				else
 					select = player1;
-				//Button down
+				//Button up
 				if (event.jbutton.state == SDL_RELEASED) {
 					if (event.jbutton.button == 1){
 						select->releaseAtk();
+						btnA = 0;
 					}
 					if (event.jbutton.button == 2){
 						select->releaseSpecialAtk();
+						btnB = 0;
 					}
 				}
-				//Button up
+				//Button down
 				if (event.jbutton.state == SDL_PRESSED) {
-					if (event.jbutton.button == 1){
+					if (event.jbutton.button == 1 && btnB == 0){
 						select->Atk();
+						btnA = 1;
 					}
-					else if (event.jbutton.button == 2){
+					else if (event.jbutton.button == 2 && btnA == 0){
 						select->specialAtk();
+						btnB = 1;
 					}
 
 
