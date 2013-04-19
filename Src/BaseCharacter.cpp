@@ -5,6 +5,7 @@ using namespace std;
 
 BaseCharacter::BaseCharacter(int x, int y, int w, int h) : Entity(x, y, w, h){
 	setMoveDir(0);
+	faceDir = 1;
 	maxVelX = 3;
 	maxVelY = 9;
 	jumpCount = 0;
@@ -16,6 +17,9 @@ void BaseCharacter::move() {
 	//Loop through all projectiles and provide movement
 	for(int i = 0; i < projectileList.size(); i++){
 		projectileList[i] -> move();
+		projectileList[i]->updateBorders();
+		if (projectileList[i]->getRight() > 800 || projectileList[i]->getLeft() < 0 || projectileList[i]->getIsGone())
+			removeProj(i);
 	}
 
 	if (moveDir != 0) {
@@ -44,6 +48,9 @@ void BaseCharacter::move() {
 
 	posX += velX;
 	posY += velY;
+
+	updateBorders();
+	offScreen();
 }
 
 void BaseCharacter::fastFallCrouch() {
@@ -70,8 +77,8 @@ void BaseCharacter::jump() {
 	jumpCount++;
 }
 
-void BaseCharacter::removeProj(int loc) {
-	projectileList.erase(projectileList.begin()+loc);
+void BaseCharacter::removeProj(int index) {
+	projectileList.erase(projectileList.begin()+index);
 }
 
 void BaseCharacter::offScreen(){

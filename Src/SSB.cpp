@@ -85,78 +85,27 @@ void SSB::loop() {
 	vector<Entity*> ptr0 = player0->getProjectileList();
 	vector<Entity*> ptr1 = player1->getProjectileList();
 
-	player0->move();
-	player0->offScreen();
-	player0->updateBorders();
-	player1->move();
-	player1->offScreen();
-	player1->updateBorders();
-
-	//Update Projectile Location Info
-	for (int j = 0; j < ptr0.size(); j++) {
-			ptr0[j]->updateBorders();
-	}
-	for (int j = 0; j < ptr1.size(); j++) {
-			ptr1[j]->updateBorders();
-	}
-
-	//Delete projectiles if they go off screen
-	for (int j = 0; j < ptr0.size(); j++) {
-		if(ptr0[j]->getRight() > 800 || ptr0[j]->getLeft() < 0){
-			player0->removeProj(j);
-		}
-	}
-	for (int j = 0; j < ptr1.size(); j++) {
-			if(ptr1[j]->getRight() > 800 || ptr1[j]->getLeft() < 0)
-				player1->removeProj(j);
-	}
-
+	player0->move(); //Also moves projectiles belonging to player0
+	player1->move(); 
 
 	//Check for collisions
 	for (int i = 0; i < entityList.size(); i++) {
+		//Platforms and characters
 		for (int j = i + 1; j < entityList.size(); j++) {
-			if (entityList[i]->collides(entityList[j])) {
+			if (entityList[i]->collides(entityList[j])) 
 				queue.addCollision(entityList[i], entityList[j]);
-			}
 		}
-
-		//Variables for projectile collision
-		ptr0 = player0->getProjectileList();
-		ptr1 = player1->getProjectileList();
 
 		//Player 1 Projectiles
 		for (int j = 0; j < ptr0.size(); j++) {
-			cout << entityList[i]->collides(ptr0[j]) << endl;
-			if (ptr0[j]->collides(entityList[i])){
-				/*
-				cout << "Left: " << ptr0[j]->getLeft() << endl;
-				cout << "Right: " << ptr0[j]->getRight() << endl;
-				cout << "Top: " << ptr0[j]->getTop() << endl;
-				cout << "Bot: " << ptr0[j]->getBot() << endl;
-				*/
+			if (ptr0[j]->collides(entityList[i]) && entityList[i] != player0)
 				queue.addCollision(entityList[i], ptr0[j]);
-			}
-		}
-
-		for (int k = 0; k < ptr0.size(); k++) {
-				if(ptr0[k]->getIsGone() == 1){
-					player0->removeProj(k);
-					cout << "Projectile Removed" << endl;
-				}
 		}
 
 		//Player 2 Projectiles
 		for (int j = 0; j < ptr1.size(); j++) {
-			cout << entityList[i]->collides(ptr1[j]) << endl;
-			if (ptr1[j]->collides(entityList[i])){
+			if (ptr1[j]->collides(entityList[i]) && entityList[i] != player0)
 				queue.addCollision(entityList[i], ptr1[j]);
-			}
-		}
-
-		for (int k = 0; k < ptr1.size(); k++) {
-				if(ptr1[k]->getIsGone() == 1){
-					player1->removeProj(k);
-				}
 		}
 	}
 }

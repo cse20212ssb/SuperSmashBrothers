@@ -31,19 +31,19 @@ void Projectile::onCollision(Entity *obj){
 	if (obj->getID() == 2) {
 		//If bottom border is in a certain range of the platform
 		if ((posX > obj->getLeft() && posX < obj->getRight()) && (posY < obj->getBot() && posY > obj->getTop())) {
-			cout << "posX: " << posX << " obj left: " << obj->getLeft() << " obj Right: " << obj->getRight() <<endl;
-			cout << "posY: " << posY << " obj bot: " << obj->getBot() << " obj Top: " << obj->getTop() <<endl;
+			//cout << "posX: " << posX << " obj left: " << obj->getLeft() << " obj Right: " << obj->getRight() <<endl;
+			//cout << "posY: " << posY << " obj bot: " << obj->getBot() << " obj Top: " << obj->getTop() <<endl;
 			isGone = 1;		
-			cout << "onCollision isGone is " << isGone << endl;
+			//cout << "onCollision isGone is " << isGone << endl;
 		}
 	}
 	if (obj->getID() == 3) {
 		//If bottom border is in a certain range of the platform
 		if ((posX > obj->getLeft() && posX < obj->getRight()) && (posY < obj->getBot() && posY > obj->getTop())) {
-			cout << "posX: " << posX << " obj left: " << obj->getLeft() << " obj Right: " << obj->getRight() <<endl;
-			cout << "posY: " << posY << " obj bot: " << obj->getBot() << " obj Top: " << obj->getTop() <<endl;
+			//cout << "posX: " << posX << " obj left: " << obj->getLeft() << " obj Right: " << obj->getRight() <<endl;
+			//cout << "posY: " << posY << " obj bot: " << obj->getBot() << " obj Top: " << obj->getTop() <<endl;
 			isGone = 1;		
-			cout << "onCollision isGone is " << isGone << endl;
+			//cout << "onCollision isGone is " << isGone << endl;
 		}
 	}
 }

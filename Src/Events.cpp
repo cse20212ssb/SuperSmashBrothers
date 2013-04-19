@@ -6,6 +6,8 @@ using namespace std;
 
 Events::Events() {
 	SDL_JoystickEventState(SDL_ENABLE);
+	btnA = 0;
+	btnB = 0;
 }
 
 //Adds characters to the Event object
