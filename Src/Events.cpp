@@ -52,23 +52,27 @@ int Events::resolve() {
 			case SDL_JOYAXISMOTION:
 				if (event.jaxis.which == 0)
 					select = player0;
+					//cout << "First player Selected" << endl;
 				else
 					select = player1;
+					//cout << "Second player Selected" << endl;
 
 				//Horizontal movement
 				if (event.jaxis.axis == 0) {
 					//Right
 					if (event.jaxis.value > -257) {
 						select->setMoveDir(1);
+						//cout << "Moving right" << endl;
 					}
 					//Left
 					else if (event.jaxis.value < -257) {
 						select->setMoveDir(-1);
+						//cout << "Moving left" << endl;
 					}
 					//Centered
 					else {
 						select->setMoveDir(0);
-						
+						//cout << "Movement Reset" << endl;
 					}
 				}
 				//Vertical Movement
@@ -78,11 +82,13 @@ int Events::resolve() {
 						if (select->jumpable()) {
 							select->jump();
 							select->setCanJump(0);
+							//cout << "Jumping" << endl;
 						}
 					}
 					//Down
 					else if (event.jaxis.value > -257) {
 						select->fastFallCrouch();
+						//cout << "Rapid fall" << endl;
 					}
 					//Centered
 					else {
@@ -101,23 +107,27 @@ int Events::resolve() {
 				//Button up
 				if (event.jbutton.state == SDL_RELEASED) {
 					if (event.jbutton.button == 1){
-						select->releaseAtk();
+						//select->releaseAtk();
 						btnA = 0;
+						//cout << "BUTTON A RELEASED" << endl;
 					}
 					if (event.jbutton.button == 2){
 						select->releaseSpecialAtk();
 						btnB = 0;
+						//cout << "Button B RELEASED" << endl;
 					}
 				}
 				//Button down
 				if (event.jbutton.state == SDL_PRESSED) {
 					if (event.jbutton.button == 1 && btnB == 0){
-						select->Atk();
+						//select->Atk();
 						btnA = 1;
+						//cout << "BUTTON A PRESSED" << endl;
 					}
 					else if (event.jbutton.button == 2 && btnA == 0){
 						select->specialAtk();
 						btnB = 1;
+						//cout << "BUTTON B RELEASED" << endl;
 					}
 
 

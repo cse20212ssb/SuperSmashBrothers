@@ -141,6 +141,7 @@ void SSB::loop() {
 		for (int k = 0; k < ptr0.size(); k++) {
 				if(ptr0[k]->getIsGone() == 1){
 					player0->removeProj(k);
+					cout << "Projectile Removed" << endl;
 				}
 		}
 
