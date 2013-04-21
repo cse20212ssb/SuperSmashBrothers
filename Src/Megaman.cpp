@@ -40,19 +40,14 @@ void Megaman::onCollision(Entity *B) {
 }
 
 void Megaman::specialAtk() {
-	int new_posX = posX;
-	int vel = 5;
-	if(faceDir == 1) {
-		vel = 10;
-		new_posX += width;
-	}
-	else if(faceDir == -1) {
-		vel = -10;
-	}
+	int vel;
+	if(faceDir == 1) vel = 10;
+	else vel = -10;
+
 	Projectile *pj;
 	//Create a new projectile and add it to list
 	if(faceDir == 1){
-		pj = new Projectile(posX+21, posY+17, 5, 5, vel, 0);
+		pj = new Projectile(posX + width, posY+17, 5, 5, vel, 0);
 	}
 	else{
 		pj = new Projectile(posX, posY+17, 5, 5, vel, 0);
@@ -69,11 +64,6 @@ void Megaman::releaseSpecialAtk() {
 //Draws onto specified surface
 void Megaman::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
-	
-	if(isAtk && faceDir == -1) 
-		firstPress++;
-	if(isAtk && firstPress == 1)
-		posX -= 30;
 	
 	//if in air
 	if (jumpCount > 0 || velY > 3) {
@@ -109,11 +99,9 @@ void Megaman::drawTo(SDL_Surface *surf) {
 	if (faceDir == 1) src.y = 33;
 	else src.y = 0;
 
-
 	src.w = width;
 	src.h = height;
 	
-
 	SDL_Rect dst;
 	dst.x = posX;
 	dst.y = posY;

@@ -104,7 +104,7 @@ void SSB::loop() {
 
 		//Player 2 Projectiles
 		for (int j = 0; j < ptr1.size(); j++) {
-			if (ptr1[j]->collides(entityList[i]) && entityList[i] != player0)
+			if (ptr1[j]->collides(entityList[i]) && entityList[i] != player1)
 				queue.addCollision(entityList[i], ptr1[j]);
 		}
 	}

@@ -5,7 +5,10 @@ BASE=BaseCharacter
 MEGA=Megaman
 PROJ=Projectile
 
-all:	main
+all:	script main
+
+script:
+	./toLinux.sh
 
 main:	$(OBJ)
 	g++ $(SDL) $(OBJ) -o main
@@ -37,3 +40,4 @@ Projectile.o: $(PROJ).cpp
 clean:
 	rm -f *.o *~ main
 	rm -f */*~
+	./toWindows.sh
