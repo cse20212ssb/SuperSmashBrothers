@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Megaman.h"
 #include <iostream>
 
@@ -6,12 +6,10 @@ using namespace std;
 
 
 //height and width are constant to Megaman
-Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 31, 33){
+Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 33, 31){
 	//Load sprite sheet
 	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Megaman.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
-	originalWidth = width;
-	firstPress = 0;
 }
 
 void Megaman::onCollision(Entity *B) {
@@ -19,14 +17,29 @@ void Megaman::onCollision(Entity *B) {
 	if (B->getID() == 3) {
 		//If bottom border is in a certain range of the platform
 		if (velY > 0 && getBot() > B->getTop() - 5 && getBot() < (B->getBot() + B->getTop()) / 2) {
-		//if (velY > 0 && getBot() > B->getTop() - 7 && getBot() < B->getTop() + 7) {
-			if (velY > 3)
-				velY = -velY / 5;
-			else
+			if (!isSpecDown) {
+				//Gives the character a "bounce"
+				if (velY > 3)
+					velY = -velY / 5;
+				else
+					velY = 0;
+				jumpCount = 0;
+				canJump = 1;
+				posY = B->getTop() - height;
+				//No longer fastfalling
+				isFastFall = 0;
+			}
+			else {
 				velY = 0;
-			jumpCount = 0;
-			canJump = 1;
-			posY = B->getTop() - height;
+				posY = B->getTop() - height;
+				Projectile *pj0 = new Projectile(posX + width + 5, posY + 25, 6, 12, 3, 2);
+				Projectile *pj1 = new Projectile(posX - 15, posY + 25, 6, 12, -3, 1);
+				projectileList.push_back(pj0);
+				projectileList.push_back(pj1);
+				isSpecDown = 0;
+				isFastFall = 0;
+			}
+				
 		}
 	}
 	
@@ -40,21 +53,21 @@ void Megaman::onCollision(Entity *B) {
 }
 
 void Megaman::specialAtk() {
-	int vel;
-	if(faceDir == 1) vel = 10;
-	else vel = -10;
+	int vel = faceDir * 10;
+	cout << vel << endl;
 
 	Projectile *pj;
 	//Create a new projectile and add it to list
-	if(faceDir == 1){
-		pj = new Projectile(posX + width, posY+17, 5, 5, vel, 0);
+	if (!isFastFall) {
+		if(faceDir == 1)
+			pj = new Projectile(posX + width, posY + 15, 6, 12, vel, 0);
+		else
+			pj = new Projectile(posX, posY + 15, 6, 12, vel, 0);
+		projectileList.push_back(pj);
+		isSpecial = 1;
 	}
-	else{
-		pj = new Projectile(posX, posY+17, 5, 5, vel, 0);
-	}
-
-	projectileList.push_back(pj);
-	isSpecial = 1;
+	else
+		isSpecDown = 1;
 }
 
 void Megaman::releaseSpecialAtk() {
@@ -90,7 +103,6 @@ void Megaman::drawTo(SDL_Surface *surf) {
 			src.x = width * 9;
 		}
 		else{
-			width = originalWidth;
 			src.x = 0;
 		}
 	}

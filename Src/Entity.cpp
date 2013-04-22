@@ -1,9 +1,9 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Entity.h"
 
 using namespace std;
 
-Entity::Entity(int x, int y, int w, int h) {
+Entity::Entity(int x, int y, int h, int w) {
 	posX = x;
 	posY = y;
 	height = h;

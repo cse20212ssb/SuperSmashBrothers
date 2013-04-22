@@ -1,9 +1,10 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "BaseCharacter.h"
+#include <iostream>
 
 using namespace std;
 
-BaseCharacter::BaseCharacter(int x, int y, int w, int h) : Entity(x, y, w, h){
+BaseCharacter::BaseCharacter(int x, int y, int h, int w) : Entity(x, y, h, w){
 	setMoveDir(0);
 	faceDir = 1;
 	maxVelX = 3;
@@ -16,7 +17,7 @@ BaseCharacter::BaseCharacter(int x, int y, int w, int h) : Entity(x, y, w, h){
 void BaseCharacter::move() {
 	//Loop through all projectiles and provide movement
 	for(int i = 0; i < projectileList.size(); i++){
-		projectileList[i] -> move();
+		projectileList[i]->move();
 		projectileList[i]->updateBorders();
 		if (projectileList[i]->getRight() > 800 || projectileList[i]->getLeft() < 0 || projectileList[i]->getIsGone())
 			removeProj(i);
@@ -53,9 +54,10 @@ void BaseCharacter::move() {
 	offScreen();
 }
 
-void BaseCharacter::fastFallCrouch() {
+void BaseCharacter::fastFall() {
 	if (jumpCount > 0)
 		velY += 5;
+	isFastFall = 1;
 	//Crouch
 }
 
@@ -78,6 +80,7 @@ void BaseCharacter::jump() {
 }
 
 void BaseCharacter::removeProj(int index) {
+	cout << "Deleted" << endl;
 	projectileList.erase(projectileList.begin()+index);
 }
 

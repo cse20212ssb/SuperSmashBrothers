@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Projectile.h"
 #include <iostream>
 
@@ -8,11 +8,13 @@ Projectile::Projectile(int x,int y, int h, int w, int t_vel, int t_type) : Entit
 	velX = t_vel;
 	type = t_type;
 	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Projectiles.bmp");
+	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
+	isGone = 0;
 }
 
 void Projectile::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
-	src.x = 0;
+	src.x = 12 * type;
 	src.y = 0;
 	src.h = height;
 	src.w = width;
@@ -27,29 +29,16 @@ void Projectile::drawTo(SDL_Surface *surf) {
 }
 
 void Projectile::onCollision(Entity *obj){
-	//How to deal with collisions with the player
-	if (obj->getID() == 2) {
-		//If bottom border is in a certain range of the platform
-		if ((posX > obj->getLeft() && posX < obj->getRight()) && (posY < obj->getBot() && posY > obj->getTop())) {
-			//cout << "posX: " << posX << " obj left: " << obj->getLeft() << " obj Right: " << obj->getRight() <<endl;
-			//cout << "posY: " << posY << " obj bot: " << obj->getBot() << " obj Top: " << obj->getTop() <<endl;
-			isGone = 1;		
-			//cout << "onCollision isGone is " << isGone << endl;
-		}
-	}
-	if (obj->getID() == 3) {
-		//If bottom border is in a certain range of the platform
-		if ((posX > obj->getLeft() && posX < obj->getRight()) && (posY < obj->getBot() && posY > obj->getTop())) {
-			//cout << "posX: " << posX << " obj left: " << obj->getLeft() << " obj Right: " << obj->getRight() <<endl;
-			//cout << "posY: " << posY << " obj bot: " << obj->getBot() << " obj Top: " << obj->getTop() <<endl;
-			isGone = 1;		
-			//cout << "onCollision isGone is " << isGone << endl;
-		}
-	}
+	if (!obj->getID() == 3 || !type == 1) isGone = 1;
 }
 
 void Projectile::move() {
-	posX += velX;
+	if (type == 0)
+		posX += velX;
+	else if (type == 1 || type == 2) {
+		posX += velX;
+		velX *= .9;
+		if (velX < .3 && velX > 0) isGone = 1;
+		if (velX > -.3 && velX < 0) isGone = 1;
+	}
 }
-
-//Make sure to clear/free the projectiles

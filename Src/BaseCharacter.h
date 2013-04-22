@@ -1,9 +1,9 @@
 #ifndef BASECHARACTER_H
 #define BASECHARACTER_H
 
-#include "SDL.h"
-#include "stdafx.h"
-//#include <SDL/SDL.h>
+//#include "SDL.h"
+//#include "stdafx.h"
+#include <SDL/SDL.h>
 #include "Entity.h"
 #include <vector>
 
@@ -25,7 +25,7 @@ class BaseCharacter : public Entity{
 		int jumpable();
 		//If it can jump
 		void setCanJump(int n) {canJump = n;}
-		void fastFallCrouch();
+		void fastFall();
 		
 		virtual void Atk() {}
 		virtual void releaseAtk() {}
@@ -43,8 +43,10 @@ class BaseCharacter : public Entity{
 		int canJump;
 		vector<Entity*> projectileList;
 		int isJump;
+		int isFastFall;
 		int isAtk;
 		int isSpecial;
+		int isSpecDown;
 };
 
 #endif

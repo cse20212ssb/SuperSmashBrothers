@@ -1,19 +1,19 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Platform.h"
 
 using namespace std;
 
-Platform::Platform(int x,int y, int w, int h, int size) : Entity (x, y, w, h) {
+Platform::Platform(int x,int y, int h, int w, int size) : Entity (x, y, h, w) {
 	if (size == 0)
 		sprite = SDL_LoadBMP("Images/platform_small.bmp");
 	else if (size == 1)
 		sprite = SDL_LoadBMP("Images/platform_big.bmp");
-	SDL_SetColorKey(getSprite(),SDL_SRCCOLORKEY,SDL_MapRGB(getSprite()->format, 255, 255, 255));
+	//SDL_SetColorKey(getSprite(),SDL_SRCCOLORKEY,SDL_MapRGB(getSprite()->format, 255, 255, 255));
 }
 
 void Platform::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
-	src.x = 0; //Something with aniCounter
+	src.x = 0; 
 	src.y = 0;
 	src.h = height;
 	src.w = width;

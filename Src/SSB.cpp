@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "SSB.h"
 #include <iostream>
 
@@ -27,8 +27,8 @@ int SSB::init() {
 	}
 
 
-	screen = SDL_SetVideoMode(800, 550, 32, SDL_HWSURFACE);
-	map = SDL_LoadBMP("Images/Maps/Battlefield.bmp");
+	screen = SDL_SetVideoMode(800, 400, 32, SDL_HWSURFACE);
+	map = SDL_LoadBMP("Images/Maps/basic.bmp");
 
 	if (screen == NULL) {
 		cout << "Screen init failed" << endl;
@@ -49,13 +49,13 @@ int SSB::init() {
 	}
 
 	//Large base platform
-	Platform *pf0 = new Platform(150, 400 , 400, 20, 1);
+	Platform *pf0 = new Platform(200, 300, 20, 400, 1);
 	//Floating Platforms
-	Platform *pf1 = new Platform(160, 310, 154, 28, 0);
-	Platform *pf2 = new Platform(480, 310, 154, 28, 0);
-	Platform *pf3 = new Platform(325, 235, 154, 28, 0);
-	Platform *pf4 = new Platform(150, 150, 154, 28, 0);
-	Platform *pf5 = new Platform(550, 150, 154, 28, 0);
+	//Platform *pf1 = new Platform(150, 300, 200, 20, 0);
+	//Platform *pf2 = new Platform(250, 300, 200, 20, 0);
+	//Platform *pf3 = new Platform(175, 250, 200, 20, 0);
+	//Platform *pf4 = new Platform(50, 150, 200, 20, 0);
+	//Platform *pf5 = new Platform(300, 150, 200, 20, 0);
 	
 	player0 = new Megaman(330, 50);
 	player1 = new Megaman(430, 50);
@@ -67,11 +67,11 @@ int SSB::init() {
 	entityList.push_back(player0);
 	entityList.push_back(player1);
 	entityList.push_back(pf0);
-	entityList.push_back(pf1);
-	entityList.push_back(pf2);
-	entityList.push_back(pf3);
-	entityList.push_back(pf4);
-	entityList.push_back(pf5);
+	//entityList.push_back(pf1);
+	//entityList.push_back(pf2);
+	//entityList.push_back(pf3);
+	//entityList.push_back(pf4);
+	//entityList.push_back(pf5);
 	return 1;
 }
 
@@ -97,15 +97,19 @@ void SSB::loop() {
 		}
 
 		//Player 1 Projectiles
-		for (int j = 0; j < ptr0.size(); j++) {
-			if (ptr0[j]->collides(entityList[i]) && entityList[i] != player0)
-				queue.addCollision(entityList[i], ptr0[j]);
+		if (entityList[i] != player0) {
+			for (int j = 0; j < ptr0.size(); j++) {
+				if (ptr0[j]->collides(entityList[i]))
+					queue.addCollision(entityList[i], ptr0[j]);
+			}
 		}
 
 		//Player 2 Projectiles
-		for (int j = 0; j < ptr1.size(); j++) {
-			if (ptr1[j]->collides(entityList[i]) && entityList[i] != player1)
-				queue.addCollision(entityList[i], ptr1[j]);
+		if (entityList[i] != player1) {
+			for (int j = 0; j < ptr1.size(); j++) {
+				if (ptr1[j]->collides(entityList[i]))
+					queue.addCollision(entityList[i], ptr1[j]);
+			}
 		}
 	}
 }
