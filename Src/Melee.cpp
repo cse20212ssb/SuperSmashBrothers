@@ -1,0 +1,54 @@
+#include "stdafx.h"
+#include "Melee.h"
+#include "Entity.h"
+#include "BaseCharacter.h"
+#include <iostream>
+
+using namespace std;
+
+Melee::Melee(int x,int y, int h, int w, int t_type, int dir) : Entity (x, y, h, w) {
+	faceDir = dir;
+	type = t_type;
+	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Sword.bmp");
+	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
+	meleeGone = 0;
+}
+
+void Melee::drawTo(SDL_Surface *surf) {
+	SDL_Rect src;
+	src.x = 0;
+	if(faceDir == 1)
+		src.y = 0;
+	else
+		src.y = height/2;
+	
+	src.h = height/2;
+	src.w = width;
+
+	SDL_Rect dst;
+	dst.x = posX;
+	dst.y = posY;
+	dst.h = 0;
+	dst.w = 0;
+
+	SDL_BlitSurface(getSprite(), &src, surf, &dst);
+}
+
+void Melee::onCollision(Entity *obj){
+	//How to deal with collisions with the player
+	if (obj->getID() == 2) {
+		//Right sword range
+			if (((getLeft() > obj->getLeft() && getLeft() < obj->getRight()) || (getRight() > obj->getLeft() && getRight() < obj->getRight())) && (posY < obj->getBot() && posY > obj->getTop())) {
+				//If collides, cause recoil
+				if(faceDir == 1)
+						obj->rightRecoil();
+				else
+						obj->leftRecoil();
+				//cout << "posX: " << posX << " obj left: " << obj->getLeft() << " obj Right: " << obj->getRight() <<endl;
+				//cout << "posY: " << posY << " obj bot: " << obj->getBot() << " obj Top: " << obj->getTop() <<endl;
+				//cout << "onCollision isGone is " << isGone << endl;
+			}
+	}
+}
+
+

@@ -1,0 +1,18 @@
+03-31 0700 - 0900
+	Drew heirarchy with the HitBox class
+
+04-03 0400 - 0900
+	Scrapped HitBox class
+	Expanded on class inheritance heirarchy
+		Entity - All objects that move and have a border (hitbox)
+		BaseCharacter - All character objects (jump, attack)
+	Added gravity, jump, collision detection functionality
+	*2 hours wasted looking at cats
+
+04-03 1030 - 1230
+	Fixed bugs with gravity and collision detection 
+	Made jump prettier/add double jump
+
+04-10 1500-2000
+	Fixed bugs with animation
+	Added special attack functionality

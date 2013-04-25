@@ -1,0 +1,163 @@
+#include "stdafx.h"
+#include "Events.h"
+#include <iostream>
+
+using namespace std;
+
+Events::Events() {
+	SDL_JoystickEventState(SDL_ENABLE);
+	btnA = 0;
+	btnB = 0;
+}
+
+//Adds characters to the Event object
+void Events::add(BaseCharacter *obj0, BaseCharacter *obj1) {
+	player0 = obj0;
+	player1 = obj1;
+}
+
+//Pushes collision event to queue
+void Events::addCollision(Entity *obj0, Entity *obj1) {
+	SDL_Event event;
+	event.type = SDL_USEREVENT;
+	//data type is *void, needs to be typecast
+	event.user.data1 = obj0;
+	event.user.data2 = obj1;
+	
+	SDL_PushEvent(&event);
+}
+	
+
+/*
+Axis #0
+Right: -32768
+Left: 32767
+
+Axis #1
+Up : -32768
+Down: 32767
+
+Button 1: A
+Button 2: B
+Button 8: Select
+Button 9: Start
+Buttons 0, 3-7 are empty
+*/
+
+int Events::resolve() {
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		BaseCharacter *select;
+
+		switch (event.type) {
+			//Joystick axis motion
+			case SDL_JOYAXISMOTION:
+				if (event.jaxis.which == 0)
+					select = player0;
+					//cout << "First player Selected" << endl;
+				else
+					select = player1;
+					//cout << "Second player Selected" << endl;
+
+				//Horizontal movement
+				if (event.jaxis.axis == 0) {
+					//Right
+					if (event.jaxis.value > -257) {
+						select->setMoveDir(1);
+						//cout << "Moving right" << endl;
+					}
+					//Left
+					else if (event.jaxis.value < -257) {
+						select->setMoveDir(-1);
+						//cout << "Moving left" << endl;
+					}
+					//Centered
+					else {
+						select->setMoveDir(0);
+						//cout << "Movement Reset" << endl;
+					}
+				}
+				//Vertical Movement
+				else if (event.jaxis.axis == 1) {
+					//Up
+					if (event.jaxis.value < -257) {
+						if (select->jumpable()) {
+							select->jump();
+							select->setCanJump(0);
+							//cout << "Jumping" << endl;
+						}
+					}
+					//Down
+					else if (event.jaxis.value > -257) {
+						select->fastFallCrouch();
+						//cout << "Rapid fall" << endl;
+					}
+					//Centered
+					else {
+						select->setCanJump(1);
+						//cout << "CENTERED";
+					}
+				}
+			break;
+			
+			case SDL_JOYBUTTONDOWN:
+			case SDL_JOYBUTTONUP:
+				if (event.button.which == 0)
+					select = player0;
+				else
+					select = player1;
+				//Button up
+				if (event.jbutton.state == SDL_RELEASED) {
+					if (event.jbutton.button == 1){
+						select->releaseAtk();
+						btnA = 0;
+						//cout << "BUTTON A RELEASED" << endl;
+					}
+					if (event.jbutton.button == 2){
+						select->releaseSpecialAtk();
+						btnB = 0;
+						//cout << "Button B RELEASED" << endl;
+					}
+				}
+				//Button down
+				if (event.jbutton.state == SDL_PRESSED) {
+					if (event.jbutton.button == 1 && btnB == 0){
+						select->Atk();
+						btnA = 1;
+						//cout << "BUTTON A PRESSED" << endl;
+					}
+					else if (event.jbutton.button == 2 && btnA == 0){
+						select->specialAtk();
+						btnB = 1;
+						//cout << "BUTTON B RELEASED" << endl;
+					}
+
+
+					else if (event.jbutton.button == 8) {}
+					else if (event.jbutton.button == 9) {}
+					else {} 
+				}
+				else {
+					if (event.jbutton.button == 1) {} 
+					else if (event.jbutton.button == 2) {} 
+					else if (event.jbutton.button == 8) {} 
+					else if (event.jbutton.button == 9) {} 
+					else {}
+				}			
+			break;
+			
+			case SDL_QUIT:
+				return 0;
+			break;
+			
+			//Collision events
+			case SDL_USEREVENT:
+				//Typecast *void to *Entity
+				((Entity *)event.user.data1)->onCollision((Entity *)event.user.data2);
+				((Entity *)event.user.data2)->onCollision((Entity *)event.user.data1);
+			break; 
+		}
+	}
+	return 1;
+}
+
