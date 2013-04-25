@@ -45,19 +45,18 @@ Buttons 0, 3-7 are empty
 
 int Events::resolve() {
 	SDL_Event event;
+	BaseCharacter *select;
 	while (SDL_PollEvent(&event)) {
-		BaseCharacter *select;
 		switch (event.type) {
-			if (event.jaxis.which == 0)
-				select = player0;
-			else
-				select = player1;
 			//Joystick axis motion
 			case SDL_JOYAXISMOTION:
+				if (event.jaxis.which == 0)
+					select = player0;
+				else
+					select = player1;
 				//Horizontal movement
 				if (event.jaxis.axis == 0) {
 					//Right
-					cout << event.jaxis.value << endl;
 					if (event.jaxis.value > -257)
 						select->setMoveDir(1);
 					//Left
@@ -83,7 +82,11 @@ int Events::resolve() {
 			break;
 			
 			case SDL_JOYBUTTONDOWN:
-			case SDL_JOYBUTTONUP:
+			case SDL_JOYBUTTONUP:			
+				if (event.jbutton.which == 0)
+					select = player0;
+				else
+					select = player1;
 				//Button up
 				if (event.jbutton.state == SDL_RELEASED) {
 					if (event.jbutton.button == 1){
@@ -125,7 +128,6 @@ void Events::resolveSel() {
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
 			case SDL_JOYAXISMOTION:
-				cout << "Axis event retrieved" << endl;
 				//Horizontal movement
 				if (event.jaxis.axis == 0) {
 					//Right

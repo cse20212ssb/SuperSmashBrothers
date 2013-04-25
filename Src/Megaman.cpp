@@ -54,7 +54,6 @@ void Megaman::onCollision(Entity *B) {
 
 void Megaman::specialAtk() {
 	int vel = faceDir * 10;
-	cout << vel << endl;
 
 	Projectile *pj;
 	//Create a new projectile and add it to list

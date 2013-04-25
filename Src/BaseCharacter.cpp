@@ -78,7 +78,6 @@ void BaseCharacter::jump() {
 }
 
 void BaseCharacter::removeProj(int index) {
-	cout << "Deleted" << endl;
 	projectileList.erase(projectileList.begin()+index);
 }
 
