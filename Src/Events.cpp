@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Events.h"
 #include <iostream>
 
@@ -57,10 +57,10 @@ int Events::resolve() {
 				//Horizontal movement
 				if (event.jaxis.axis == 0) {
 					//Right
-					if (event.jaxis.value > 0)
+					if (event.jaxis.value > -257)
 						select->setMoveDir(1);
 					//Left
-					else if (event.jaxis.value < 0)
+					else if (event.jaxis.value < -257)
 						select->setMoveDir(-1);
 					//Centered
 					else 
@@ -69,12 +69,12 @@ int Events::resolve() {
 				//Vertical Movement
 				else if (event.jaxis.axis == 1) {
 					//Up
-					if (event.jaxis.value < 0) {
+					if (event.jaxis.value < -257) {
 						if (select->jumpable()) 
 							select->jump();
 					}
 					//Down
-					else if (event.jaxis.value > 0)
+					else if (event.jaxis.value > -257)
 						select->fastFall();
 					//Centered
 					else {}
@@ -131,19 +131,19 @@ void Events::resolveSel() {
 				//Horizontal movement
 				if (event.jaxis.axis == 0) {
 					//Right
-					if (event.jaxis.value > 0) 
+					if (event.jaxis.value > -257) 
 						charSel->toRight();
 					//Left
-					else if (event.jaxis.value < 0)
+					else if (event.jaxis.value < -257)
 						charSel->toLeft();
 				}
 				//Vertical Movement
 				else if (event.jaxis.axis == 1) {
 					//Up
-					if (event.jaxis.value < 0) 
+					if (event.jaxis.value < -257) 
 						charSel->toUp();
 					//Down
-					else if (event.jaxis.value > 0)
+					else if (event.jaxis.value > -257)
 						charSel->toDown();
 				}
 			break;

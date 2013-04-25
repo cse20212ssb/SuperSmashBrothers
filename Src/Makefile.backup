@@ -9,11 +9,11 @@ TIME = TimeControl
 
 all:	main
 
-script:
-	./toLinux.sh
 
 main:	$(OBJ)
+	./toLinux.sh
 	g++ $(SDL) $(OBJ) -o main
+
 
 main.o:	main.cpp
 	g++ main.cpp -c
