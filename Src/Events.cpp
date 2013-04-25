@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Events.h"
 #include <iostream>
 
@@ -6,14 +6,13 @@ using namespace std;
 
 Events::Events() {
 	SDL_JoystickEventState(SDL_ENABLE);
-	btnA = 0;
-	btnB = 0;
 }
 
-//Adds characters to the Event object
-void Events::add(BaseCharacter *obj0, BaseCharacter *obj1) {
+//Load objects to the Event
+void Events::add(BaseCharacter *obj0, BaseCharacter *obj1, CharSelect *obj2) {
 	player0 = obj0;
 	player1 = obj1;
+	charSel = obj2;
 }
 
 //Pushes collision event to queue
@@ -48,108 +47,68 @@ int Events::resolve() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 		BaseCharacter *select;
-
 		switch (event.type) {
+			if (event.jaxis.which == 0)
+				select = player0;
+			else
+				select = player1;
 			//Joystick axis motion
 			case SDL_JOYAXISMOTION:
-				if (event.jaxis.which == 0)
-					select = player0;
-					//cout << "First player Selected" << endl;
-				else
-					select = player1;
-					//cout << "Second player Selected" << endl;
-
 				//Horizontal movement
 				if (event.jaxis.axis == 0) {
 					//Right
-					if (event.jaxis.value > 0) {
+					cout << event.jaxis.value << endl;
+					if (event.jaxis.value > -257)
 						select->setMoveDir(1);
-						//cout << "Moving right" << endl;
-					}
 					//Left
-					else if (event.jaxis.value < 0) {
+					else if (event.jaxis.value < -257)
 						select->setMoveDir(-1);
-						//cout << "Moving left" << endl;
-					}
 					//Centered
-					else {
+					else 
 						select->setMoveDir(0);
-						//cout << "Movement Reset" << endl;
-					}
 				}
 				//Vertical Movement
 				else if (event.jaxis.axis == 1) {
 					//Up
-					if (event.jaxis.value < 0) {
-						if (select->jumpable()) {
+					if (event.jaxis.value < -257) {
+						if (select->jumpable()) 
 							select->jump();
-							select->setCanJump(0);
-							//cout << "Jumping" << endl;
-						}
 					}
 					//Down
-					else if (event.jaxis.value > 0) {
+					else if (event.jaxis.value > -257)
 						select->fastFall();
-						//cout << "Rapid fall" << endl;
-					}
 					//Centered
-					else {
-						select->setCanJump(1);
-						//cout << "CENTERED";
-					}
+					else {}
 				}
 			break;
 			
 			case SDL_JOYBUTTONDOWN:
 			case SDL_JOYBUTTONUP:
-				if (event.button.which == 0)
-					select = player0;
-				else
-					select = player1;
 				//Button up
 				if (event.jbutton.state == SDL_RELEASED) {
 					if (event.jbutton.button == 1){
 						//select->releaseAtk();
-						btnA = 0;
-						//cout << "BUTTON A RELEASED" << endl;
 					}
 					if (event.jbutton.button == 2){
 						select->releaseSpecialAtk();
-						btnB = 0;
-						//cout << "Button B RELEASED" << endl;
 					}
 				}
-				//Button down
-				if (event.jbutton.state == SDL_PRESSED) {
-					if (event.jbutton.button == 1 && btnB == 0){
+				else if (event.jbutton.state == SDL_PRESSED) {
+					if (event.jbutton.button == 1){
 						//select->Atk();
-						btnA = 1;
-						//cout << "BUTTON A PRESSED" << endl;
 					}
-					else if (event.jbutton.button == 2 && btnA == 0){
+					else if (event.jbutton.button == 2){
 						select->specialAtk();
-						btnB = 1;
-						//cout << "BUTTON B RELEASED" << endl;
 					}
-
-
 					else if (event.jbutton.button == 8) {}
 					else if (event.jbutton.button == 9) {}
-					else {} 
-				}
-				else {
-					if (event.jbutton.button == 1) {} 
-					else if (event.jbutton.button == 2) {} 
-					else if (event.jbutton.button == 8) {} 
-					else if (event.jbutton.button == 9) {} 
-					else {}
-				}			
+				}		
 			break;
-			
+
 			case SDL_QUIT:
 				return 0;
 			break;
-			
+		
 			//Collision events
 			case SDL_USEREVENT:
 				//Typecast *void to *Entity
@@ -161,3 +120,40 @@ int Events::resolve() {
 	return 1;
 }
 
+void Events::resolveSel() {
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+			case SDL_JOYAXISMOTION:
+				cout << "Axis event retrieved" << endl;
+				//Horizontal movement
+				if (event.jaxis.axis == 0) {
+					//Right
+					if (event.jaxis.value > -257) 
+						charSel->toRight();
+					//Left
+					else if (event.jaxis.value < -257)
+						charSel->toLeft();
+				}
+				//Vertical Movement
+				else if (event.jaxis.axis == 1) {
+					//Up
+					if (event.jaxis.value < -257) 
+						charSel->toUp();
+					//Down
+					else if (event.jaxis.value > -257)
+						charSel->toDown();
+				}
+			break;
+			
+			//Start button
+			case SDL_JOYBUTTONDOWN:
+			case SDL_JOYBUTTONUP:
+				if (event.jbutton.state == SDL_PRESSED) {
+					if (event.jbutton.button == 9)
+						charSel->select();
+				}		
+			break;
+		}
+	}
+}

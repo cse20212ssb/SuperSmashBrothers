@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "SSB.h"
 #include <iostream>
 
@@ -6,6 +6,7 @@ using namespace std;
 
 void SSB::execute() {
 	if (init()) {
+		select();
 		//Main game loop
 		int running = 1;
 		while (running) {
@@ -18,6 +19,26 @@ void SSB::execute() {
 	else cout << "SSB init failed" << endl;
 
 	SDL_Quit();
+}
+
+void SSB::select() {
+	if (js_0) {
+		while (sel->isDone() < 0) {
+			queue.resolveSel();
+			sel->draw();
+		}
+
+		//Case statement with isDone to load character
+	}
+
+	if (js_1) {
+		while (sel->isDone() < 0) {
+			queue.resolveSel();
+			sel->draw();
+		}
+
+		//Case statement with isDone to load character
+	}
 }
 
 int SSB::init() {
@@ -59,9 +80,11 @@ int SSB::init() {
 	
 	player0 = new Megaman(330, 50);
 	player1 = new Megaman(430, 50);
-	//Adds players to the events class
-	
-	queue.add(player0, player1);
+
+	sel = new CharSelect(screen);
+
+	//Loads players and CharSelect to the events class
+	queue.add(player0, player1, sel);
 	
 	//Holds all entities created
 	entityList.push_back(player0);

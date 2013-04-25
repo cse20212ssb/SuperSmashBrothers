@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Projectile.h"
 #include <iostream>
 
@@ -29,7 +29,7 @@ void Projectile::drawTo(SDL_Surface *surf) {
 }
 
 void Projectile::onCollision(Entity *obj){
-	if (!obj->getID() == 3 || !type == 1) isGone = 1;
+	isGone = 1;
 }
 
 void Projectile::move() {

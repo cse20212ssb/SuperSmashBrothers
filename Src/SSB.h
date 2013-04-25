@@ -1,9 +1,9 @@
 #ifndef SSB_H
 #define SSB_H
 
-//#include "stdafx.h"
-//#include "SDL.h"
-#include <SDL/SDL.h>
+#include "stdafx.h"
+#include "SDL.h"
+//#include <SDL/SDL.h>
 #include <iostream>
 #include <vector>
 
@@ -12,6 +12,7 @@
 #include "Platform.h"
 #include "Megaman.h"
 #include "BaseCharacter.h"
+#include "CharSelect.h"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ class SSB {
 	
 	private:
 		int init();
+		void select();
 		int events();
 		void loop();
 		void render();
@@ -33,6 +35,8 @@ class SSB {
 
 		SDL_Surface *screen, *map;
 		SDL_Joystick *js_0, *js_1;
+
+		CharSelect *sel;
 	
 		Events queue;
 };		

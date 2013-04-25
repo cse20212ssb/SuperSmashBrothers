@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Megaman.h"
 #include <iostream>
 
@@ -24,12 +24,12 @@ void Megaman::onCollision(Entity *B) {
 				else
 					velY = 0;
 				jumpCount = 0;
-				canJump = 1;
 				posY = B->getTop() - height;
 				//No longer fastfalling
 				isFastFall = 0;
 			}
 			else {
+				//Special Down projectiles created
 				velY = 0;
 				posY = B->getTop() - height;
 				Projectile *pj0 = new Projectile(posX + width + 5, posY + 25, 6, 12, 3, 2);
