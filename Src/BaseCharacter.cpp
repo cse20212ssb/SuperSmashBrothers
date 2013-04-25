@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "BaseCharacter.h"
 #include <iostream>
 
@@ -63,7 +63,7 @@ void BaseCharacter::fastFall() {
 
 //If you can jump
 int BaseCharacter::jumpable() {
-	if (jumpCount >= 2)
+	if (jumpCount >= 2 || isSpecDown)
 		return 0;
 	return 1;
 }

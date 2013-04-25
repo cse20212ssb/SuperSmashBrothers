@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "SSB.h"
 #include <iostream>
 
@@ -103,7 +103,7 @@ int SSB::events() {
 }
 
 //Update everything
-void SSB::loop() {
+void SSB::loop() {	
 	//Variables for projectile collision
 	vector<Entity*> ptr0 = player0->getProjectileList();
 	vector<Entity*> ptr1 = player1->getProjectileList();
