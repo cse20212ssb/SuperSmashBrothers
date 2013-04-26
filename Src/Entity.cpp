@@ -47,3 +47,7 @@ void Entity::setMoveDir(int dir) {
 		faceDir = dir;
 	moveDir = dir;
 }
+
+void Entity::updateFaceDir(int dir){
+	faceDir = dir;
+}

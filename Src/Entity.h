@@ -32,6 +32,9 @@ class Entity {
 		int getLeft() {return left;}
 		int getRight() {return right;}
 
+		void leftRecoil(){posX -= 10;}
+		void rightRecoil(){posX += 10;}
+
 		void addVelX(double inc) {velX += inc;}
 		void addVelY(double inc) {velY += inc;}
 		double getVelX() {return velX;}
@@ -41,10 +44,21 @@ class Entity {
 		int getMoveDir() {return moveDir;}
 		int getIsGone(){return isGone;}
 
+		int getMeleeGone(){return meleeGone;}
+		void setMeleeGone(int input){meleeGone = input;}
+		void updateFaceDir(int);
+		void setIsRecoil(int input){isRecoil = input;}
+		int getIsRecoil(){return isRecoil;}
+
+		void setPosX(int new_x) {posX = new_x;}
+		void setPosY(int new_y) {posY = new_y;}
+
+
 	protected:
 		SDL_Surface *sprite;
 
 		double posX, posY;
+
 		int height, width;
 
 		int top, bot, left, right;
@@ -60,6 +74,10 @@ class Entity {
 		//Keeps track of the animation
 		int aniCounter;
 		int isGone;
+
+		int meleeGone;
+		int isRecoil;
+
 };
 
 #endif

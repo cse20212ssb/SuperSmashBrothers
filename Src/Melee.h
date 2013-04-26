@@ -1,5 +1,5 @@
-#ifndef PROJECTILE_H
-#define PROJECTILE_H
+#ifndef MELEE_H
+#define MELEE_H
 
 #include "stdafx.h"
 #include "SDL.h"
@@ -8,19 +8,18 @@
 
 using namespace std;
 
-class Projectile : public Entity{
+class Melee : public Entity{
 	public:
-		Projectile() {}
-		Projectile(int, int, int, int, int, int);
+		Melee();
+		Melee(int, int, int, int, int, int);
 
 		virtual void onCollision(Entity *);
-		virtual int getID() {return 4;}
-		virtual void move();
-		
+		virtual int getID() {return 5;}
 		virtual void drawTo(SDL_Surface *);
+
 	private:
 		int type;
-
+		
 };
 
 #endif

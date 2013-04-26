@@ -47,7 +47,6 @@ int SSB::init() {
 		return 0;
 	}
 
-
 	screen = SDL_SetVideoMode(800, 400, 32, SDL_HWSURFACE);
 	map = SDL_LoadBMP("Images/Maps/basic.bmp");
 
@@ -103,10 +102,12 @@ int SSB::events() {
 }
 
 //Update everything
-void SSB::loop() {	
+void SSB::loop() {
 	//Variables for projectile collision
 	vector<Entity*> ptr0 = player0->getProjectileList();
 	vector<Entity*> ptr1 = player1->getProjectileList();
+	vector<Entity*> mPtr0 = player0->getMeleeList();
+	vector<Entity*> mPtr1 = player1->getMeleeList();
 
 	player0->move(); //Also moves projectiles belonging to player0
 	player1->move(); 
@@ -120,19 +121,27 @@ void SSB::loop() {
 		}
 
 		//Player 1 Projectiles
-		if (entityList[i] != player0) {
-			for (int j = 0; j < ptr0.size(); j++) {
-				if (ptr0[j]->collides(entityList[i]))
-					queue.addCollision(entityList[i], ptr0[j]);
-			}
+		for (int j = 0; j < ptr0.size(); j++) {
+			if (ptr0[j]->collides(entityList[i]) && entityList[i] != player0)
+				queue.addCollision(entityList[i], ptr0[j]);
 		}
 
 		//Player 2 Projectiles
-		if (entityList[i] != player1) {
-			for (int j = 0; j < ptr1.size(); j++) {
-				if (ptr1[j]->collides(entityList[i]))
-					queue.addCollision(entityList[i], ptr1[j]);
-			}
+		for (int j = 0; j < ptr1.size(); j++) {
+			if (ptr1[j]->collides(entityList[i]) && entityList[i] != player1)
+				queue.addCollision(entityList[i], ptr1[j]);
+		}
+
+		//Player 1 Melee
+		for (int j = 0; j < mPtr0.size(); j++) {
+			if (mPtr0[j]->collides(entityList[i]) && entityList[i] != player0)
+				queue.addCollision(entityList[i], mPtr0[j]);
+		}
+
+		//Player 2 Melee
+		for (int j = 0; j < mPtr1.size(); j++) {
+			if (mPtr1[j]->collides(entityList[i]) && entityList[i] != player1)
+				queue.addCollision(entityList[i], mPtr1[j]);
 		}
 	}
 }

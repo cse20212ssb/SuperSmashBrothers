@@ -26,3 +26,4 @@ void Platform::drawTo(SDL_Surface *surf) {
 
 	SDL_BlitSurface(getSprite(), &src, surf, &dst);
 }
+

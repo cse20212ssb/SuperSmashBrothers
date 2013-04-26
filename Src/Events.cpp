@@ -90,28 +90,36 @@ int Events::resolve() {
 				//Button up
 				if (event.jbutton.state == SDL_RELEASED) {
 					if (event.jbutton.button == 1){
-						//select->releaseAtk();
+						select->releaseAtk();
+						//cout << "BUTTON A RELEASED" << endl;
 					}
 					if (event.jbutton.button == 2){
 						select->releaseSpecialAtk();
+						//cout << "Button B RELEASED" << endl;
 					}
 				}
-				else if (event.jbutton.state == SDL_PRESSED) {
+				//Button down
+				if (event.jbutton.state == SDL_PRESSED) {
 					if (event.jbutton.button == 1){
-						//select->Atk();
+						select->Atk();
+						//cout << "BUTTON A PRESSED" << endl;
 					}
 					else if (event.jbutton.button == 2){
 						select->specialAtk();
+						//cout << "BUTTON B RELEASED" << endl;
 					}
+
+
 					else if (event.jbutton.button == 8) {}
 					else if (event.jbutton.button == 9) {}
-				}		
+					else {} 
+				}			
 			break;
-
+			
 			case SDL_QUIT:
 				return 0;
 			break;
-		
+
 			//Collision events
 			case SDL_USEREVENT:
 				//Typecast *void to *Entity

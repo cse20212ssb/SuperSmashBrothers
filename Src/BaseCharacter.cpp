@@ -11,6 +11,7 @@ BaseCharacter::BaseCharacter(int x, int y, int h, int w) : Entity(x, y, h, w){
 	maxVelY = 9;
 	jumpCount = 0;
 	isSpecial = 0;
+	isAtk = 0;
 }
 
 //Movement in both x and y directions
@@ -21,6 +22,36 @@ void BaseCharacter::move() {
 		projectileList[i]->updateBorders();
 		if (projectileList[i]->getRight() > 800 || projectileList[i]->getLeft() < 0 || projectileList[i]->getIsGone())
 			removeProj(i);
+	}
+
+	//Loop through all melee of player 1
+	for(int i = 0; i < meleeList.size(); i++){
+		//Move the sword along with Megaman, updating the direction
+		meleeList[i] -> updateFaceDir(faceDir);
+		if(faceDir == 1){
+			if(jumpCount > 0 || velY > 3){
+				meleeList[i] -> setPosX(posX + width - 3);
+				meleeList[i] -> setPosY(posY+4);
+			}
+			else{
+				meleeList[i] -> setPosX(posX + width);
+				meleeList[i] -> setPosY(posY+11);
+			}
+		}
+		else{
+			if(jumpCount > 0 || velY > 3){
+				meleeList[i] -> setPosX(posX - width + 3);
+				meleeList[i] -> setPosY(posY+4);
+			}
+			else{
+				meleeList[i] -> setPosX(posX-width);
+				meleeList[i] -> setPosY(posY+11);
+			}
+		}
+		
+		meleeList[i]->updateBorders();
+		if (meleeList[i]->getMeleeGone())
+			removeMelee(i);
 	}
 
 	if (moveDir != 0) {
@@ -57,8 +88,7 @@ void BaseCharacter::move() {
 void BaseCharacter::fastFall() {
 	if (jumpCount > 0)
 		velY += 5;
-	isFastFall = 1;
-	//Crouch
+	isFastFall = 1;	
 }
 
 //If you can jump
@@ -69,16 +99,20 @@ int BaseCharacter::jumpable() {
 }
 void BaseCharacter::jump() {
 	//First jump
-	if (jumpCount == 0)
+	if (jumpCount == 0 && !isAtk)
 		velY = -2*maxVelY/3;
 	//Second jump
-	if (jumpCount == 1)
+	if (jumpCount == 1 && !isAtk)
 		velY = -3*maxVelY/4;
 	jumpCount++;
 }
 
 void BaseCharacter::removeProj(int index) {
 	projectileList.erase(projectileList.begin()+index);
+}
+
+void BaseCharacter::removeMelee(int index) {
+	meleeList.erase(meleeList.begin()+index);
 }
 
 void BaseCharacter::offScreen(){

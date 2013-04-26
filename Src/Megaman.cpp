@@ -39,7 +39,6 @@ void Megaman::onCollision(Entity *B) {
 				isSpecDown = 0;
 				isFastFall = 0;
 			}
-				
 		}
 	}
 	
@@ -73,6 +72,26 @@ void Megaman::releaseSpecialAtk() {
 	isSpecial = 0;
 }
 
+void Megaman::Atk(){
+	Melee *sword;
+	//Create a new sword and add it to list
+	if(faceDir == 1){
+		sword = new Melee(posX + width, posY+11, 30, 48, 0, faceDir);
+	}
+	else{
+		sword = new Melee(posX, posY+11, 30, 48, 0, faceDir);
+	}
+
+	meleeList.push_back(sword);
+	isAtk = 1;
+}
+
+void Megaman::releaseAtk(){
+	isAtk = 0;
+	meleeList[0] -> setMeleeGone(1);
+	//cout << "getMeleeGone = " << getMeleeGone() << endl;
+}
+
 //Draws onto specified surface
 void Megaman::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
@@ -98,7 +117,7 @@ void Megaman::drawTo(SDL_Surface *surf) {
 	}
 	else {
 		//If standing and special attacking
-		if (isSpecial){
+		if (isSpecial || isAtk){
 			src.x = width * 9;
 		}
 		else{
@@ -124,5 +143,11 @@ void Megaman::drawTo(SDL_Surface *surf) {
 		projectileList[i] -> drawTo(surf);
 	}
 	
+
+	//Loop through melee and provide display
+	for(int i = 0; i < meleeList.size(); i++){
+		meleeList[i] -> drawTo(surf);
+	}
+
 	SDL_BlitSurface(getSprite(), &src, surf, &dst);
 }

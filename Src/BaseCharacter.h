@@ -32,13 +32,18 @@ class BaseCharacter : public Entity{
 		virtual void specialAtk() {}
 		virtual void releaseSpecialAtk() {}
 		vector<Entity*> getProjectileList() {return projectileList;}
+		vector<Entity*> getMeleeList() {return meleeList;}
+
 		void removeProj(int);
+		void removeMelee(int);
 		void offScreen();
+		virtual void recoil(){};
 
 	protected:
 		//Keeps track of jumps (max of two)
 		int jumpCount;
 		vector<Entity*> projectileList;
+		vector<Entity*> meleeList;
 		int isJump;
 		int isFastFall;
 		int isAtk;

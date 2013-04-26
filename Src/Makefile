@@ -1,6 +1,6 @@
 SDL=`sdl-config --libs`
 
-OBJ=main.o SSB.o Events.o BaseCharacter.o Megaman.o Entity.o Platform.o Projectile.o CharSelect.o
+OBJ=main.o SSB.o Events.o BaseCharacter.o Megaman.o Entity.o Platform.o Projectile.o CharSelect.o Melee.o
 
 all:	main
 
@@ -12,6 +12,7 @@ script:
 
 %.o:	%.cpp
 	g++ $(SDL) -c $<
+
 
 clean:
 	rm -f *.o *~ main

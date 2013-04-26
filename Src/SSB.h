@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "Events.h"
-#include "TimeControl.h"
 #include "Entity.h"
 #include "Platform.h"
 #include "Megaman.h"
@@ -25,6 +24,7 @@ class SSB {
 	private:
 		int init();
 		void select();
+
 		int events();
 		void loop();
 		void render();
