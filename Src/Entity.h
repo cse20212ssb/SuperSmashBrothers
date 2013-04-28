@@ -5,9 +5,9 @@ Base class for all objects with movement and/or borders
 #ifndef ENTITY_H
 #define ENTITY_H
 
-//#include "stdafx.h"
-//#include "SDL.h"
-#include <SDL/SDL.h>
+#include "stdafx.h"
+#include "SDL.h"
+//#include <SDL/SDL.h>
 
 using namespace std;
 
@@ -52,7 +52,8 @@ class Entity {
 
 		void setPosX(int new_x) {posX = new_x;}
 		void setPosY(int new_y) {posY = new_y;}
-
+		int getMeleeCounter(){return meleeCounter;}
+		void setMeleeCounter(int input){meleeCounter = input;}
 
 	protected:
 		SDL_Surface *sprite;
@@ -74,9 +75,9 @@ class Entity {
 		//Keeps track of the animation
 		int aniCounter;
 		int isGone;
-
 		int meleeGone;
 		int isRecoil;
+		int meleeCounter;
 
 };
 

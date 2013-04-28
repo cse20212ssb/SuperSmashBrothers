@@ -1,6 +1,7 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Melee.h"
 #include "Entity.h"
+#include "BaseCharacter.h"
 #include <iostream>
 
 using namespace std;
@@ -11,16 +12,17 @@ Melee::Melee(int x,int y, int h, int w, int t_type, int dir) : Entity (x, y, h, 
 	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Sword.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 	meleeGone = 0;
+	meleeCounter = 0;
 }
 
 void Melee::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
-	src.x = 0;
 	if(faceDir == 1)
-		src.y = 0;
+		src.x = 0;
 	else
-		src.y = height/2;
-	
+		src.x = width;
+
+	src.y = 0;
 	src.h = height/2;
 	src.w = width;
 
@@ -30,6 +32,7 @@ void Melee::drawTo(SDL_Surface *surf) {
 	dst.h = 0;
 	dst.w = 0;
 
+	meleeCounter++;
 	SDL_BlitSurface(getSprite(), &src, surf, &dst);
 }
 

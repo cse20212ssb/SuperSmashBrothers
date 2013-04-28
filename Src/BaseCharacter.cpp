@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "BaseCharacter.h"
 #include <iostream>
 
@@ -50,7 +50,7 @@ void BaseCharacter::move() {
 		}
 		
 		meleeList[i]->updateBorders();
-		if (meleeList[i]->getMeleeGone())
+		if (meleeList[i]->getMeleeGone() || meleeList[i]->getMeleeCounter() == 150)
 			removeMelee(i);
 	}
 

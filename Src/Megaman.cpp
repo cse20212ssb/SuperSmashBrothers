@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Megaman.h"
 #include <iostream>
 
@@ -76,10 +76,10 @@ void Megaman::Atk(){
 	Melee *sword;
 	//Create a new sword and add it to list
 	if(faceDir == 1){
-		sword = new Melee(posX + width, posY+11, 30, 48, 0, faceDir);
+		sword = new Melee(posX + width, posY+11, 50, 30, 0, faceDir);
 	}
 	else{
-		sword = new Melee(posX, posY+11, 30, 48, 0, faceDir);
+		sword = new Melee(posX, posY+11, 50, 30, 0, faceDir);
 	}
 
 	meleeList.push_back(sword);
@@ -88,7 +88,8 @@ void Megaman::Atk(){
 
 void Megaman::releaseAtk(){
 	isAtk = 0;
-	meleeList[0] -> setMeleeGone(1);
+	for(int i = 0; i < meleeList.size(); i++)
+		meleeList[i] -> setMeleeGone(1);
 	//cout << "getMeleeGone = " << getMeleeGone() << endl;
 }
 
@@ -100,7 +101,7 @@ void Megaman::drawTo(SDL_Surface *surf) {
 	if (jumpCount > 0 || velY > 3) {
 		src.x = 4 * width;
 		//If jumping and special attacking
-		if (isSpecial) src.x += width * 13;
+		if (isAtk || isSpecial) src.x += width * 13;
 	}
 	//if on ground
 	else if (moveDir != 0) {

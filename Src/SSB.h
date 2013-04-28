@@ -1,9 +1,9 @@
 #ifndef SSB_H
 #define SSB_H
 
-//#include "stdafx.h"
-//#include "SDL.h"
-#include <SDL/SDL.h>
+#include "stdafx.h"
+#include "SDL.h"
+//////#include <SDL/SDL.h>
 #include <iostream>
 #include <vector>
 
