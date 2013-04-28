@@ -5,9 +5,9 @@ Base class for all objects with movement and/or borders
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "stdafx.h"
-#include "SDL.h"
-//#include <SDL/SDL.h>
+//#include "stdafx.h"
+//#include "SDL.h"
+#include <SDL/SDL.h>
 
 using namespace std;
 
@@ -26,14 +26,14 @@ class Entity {
 		SDL_Surface *getSprite();
 
 		void updateBorders();
+
+		int getPosX() {return posX;}
+		int getPosY() {return posY;}
 		
 		int getTop() {return top;}
 		int getBot() {return bot;}
 		int getLeft() {return left;}
 		int getRight() {return right;}
-
-		void leftRecoil(){posX -= 10;}
-		void rightRecoil(){posX += 10;}
 
 		void addVelX(double inc) {velX += inc;}
 		void addVelY(double inc) {velY += inc;}
@@ -42,18 +42,14 @@ class Entity {
 
 		void setMoveDir(int dir);
 		int getMoveDir() {return moveDir;}
+		int setIsGone(int t) {isGone = t;}
 		int getIsGone(){return isGone;}
 
-		int getMeleeGone(){return meleeGone;}
-		void setMeleeGone(int input){meleeGone = input;}
 		void updateFaceDir(int);
-		void setIsRecoil(int input){isRecoil = input;}
-		int getIsRecoil(){return isRecoil;}
 
 		void setPosX(int new_x) {posX = new_x;}
 		void setPosY(int new_y) {posY = new_y;}
-		int getMeleeCounter(){return meleeCounter;}
-		void setMeleeCounter(int input){meleeCounter = input;}
+
 
 	protected:
 		SDL_Surface *sprite;
@@ -75,9 +71,7 @@ class Entity {
 		//Keeps track of the animation
 		int aniCounter;
 		int isGone;
-		int meleeGone;
 		int isRecoil;
-		int meleeCounter;
 
 };
 

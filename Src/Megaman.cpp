@@ -1,9 +1,8 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Megaman.h"
 #include <iostream>
 
 using namespace std;
-
 
 //height and width are constant to Megaman
 Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 33, 31){
@@ -27,6 +26,8 @@ void Megaman::onCollision(Entity *B) {
 				posY = B->getTop() - height;
 				//No longer fastfalling
 				isFastFall = 0;
+				//No longer ghost
+				isGhost = 0;
 			}
 			else {
 				//Special Down projectiles created
@@ -41,6 +42,15 @@ void Megaman::onCollision(Entity *B) {
 			}
 		}
 	}
+	//Melee
+	else if (B->getID() == 5 && !isGhost) {
+		if (B->getLeft() > getLeft())
+			velX -= 1.5;
+		else if (B->getRight() < getRight())
+			velX += 1.5;
+		velY -= 5;
+		isGhost = 1;
+	}		
 	
 	/*
 	//Other Character
@@ -76,10 +86,10 @@ void Megaman::Atk(){
 	Melee *sword;
 	//Create a new sword and add it to list
 	if(faceDir == 1){
-		sword = new Melee(posX + width, posY+11, 50, 30, 0, faceDir);
+		sword = new Melee(posX + width, posY + 45, 13, 28, 0, faceDir);
 	}
 	else{
-		sword = new Melee(posX, posY+11, 50, 30, 0, faceDir);
+		sword = new Melee(posX, posY + 25, 13, 28, 0, faceDir);
 	}
 
 	meleeList.push_back(sword);
@@ -89,66 +99,6 @@ void Megaman::Atk(){
 void Megaman::releaseAtk(){
 	isAtk = 0;
 	for(int i = 0; i < meleeList.size(); i++)
-		meleeList[i] -> setMeleeGone(1);
+		meleeList[i] -> setIsGone(1);
 	//cout << "getMeleeGone = " << getMeleeGone() << endl;
-}
-
-//Draws onto specified surface
-void Megaman::drawTo(SDL_Surface *surf) {
-	SDL_Rect src;
-	
-	//if in air
-	if (jumpCount > 0 || velY > 3) {
-		src.x = 4 * width;
-		//If jumping and special attacking
-		if (isAtk || isSpecial) src.x += width * 13;
-	}
-	//if on ground
-	else if (moveDir != 0) {
-		if (aniCounter > 40)
-			aniCounter = 0;
-		int frame = aniCounter / 10;
-		
-		if (frame == 1) src.x = width * 2;
-		else if (frame == 2) src.x = width * 3;
-		else if (frame == 3) src.x = width * 2;
-		else src.x = width;
-		//If running and special attacking
-		if (isSpecial) src.x += width * 13;
-	}
-	else {
-		//If standing and special attacking
-		if (isSpecial || isAtk){
-			src.x = width * 9;
-		}
-		else{
-			src.x = 0;
-		}
-	}
-
-	//If left or right
-	if (faceDir == 1) src.y = 33;
-	else src.y = 0;
-
-	src.w = width;
-	src.h = height;
-	
-	SDL_Rect dst;
-	dst.x = posX;
-	dst.y = posY;
-	dst.h = 0;
-	dst.w = 0;
-
-	//Loop through all projectiles and provide movement
-	for(int i = 0; i < projectileList.size(); i++){
-		projectileList[i] -> drawTo(surf);
-	}
-	
-
-	//Loop through melee and provide display
-	for(int i = 0; i < meleeList.size(); i++){
-		meleeList[i] -> drawTo(surf);
-	}
-
-	SDL_BlitSurface(getSprite(), &src, surf, &dst);
 }

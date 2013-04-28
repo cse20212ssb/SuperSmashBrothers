@@ -1,8 +1,8 @@
 #ifndef TIME_CONTROL_H
 #define TIME_CONTROL_H
-#include "SDL.h"
-#include "stdafx.h"
-////#include <SDL/SDL.h>
+//#include "SDL.h"
+//#include "stdafx.h"
+#include <SDL/SDL.h>
 
 class TimeControl {
 	public:

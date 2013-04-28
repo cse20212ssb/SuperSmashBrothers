@@ -8,7 +8,6 @@ main:	script $(OBJ)
 	g++ $(SDL) $(OBJ) -o main
 
 script:
-	./toLinux.sh
 
 %.o:	%.cpp
 	g++ $(SDL) -c $<
