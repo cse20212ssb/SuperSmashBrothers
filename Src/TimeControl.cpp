@@ -1,3 +1,5 @@
+#include "SDL.h"
+#include "stdafx.h"
 #include "TimeControl.h"
 #include <iostream>
 

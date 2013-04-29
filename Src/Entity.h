@@ -5,9 +5,9 @@ Base class for all objects with movement and/or borders
 #ifndef ENTITY_H
 #define ENTITY_H
 
-//#include "stdafx.h"
-//#include "SDL.h"
-#include <SDL/SDL.h>
+#include "stdafx.h"
+#include "SDL.h"
+//#include <SDL/SDL.h>
 
 using namespace std;
 
@@ -42,7 +42,7 @@ class Entity {
 
 		void setMoveDir(int dir);
 		int getMoveDir() {return moveDir;}
-		int setIsGone(int t) {isGone = t;}
+		void setIsGone(int t) {isGone = t;}
 		int getIsGone(){return isGone;}
 
 		void updateFaceDir(int);
