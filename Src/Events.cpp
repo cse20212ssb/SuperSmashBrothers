@@ -102,7 +102,6 @@ int Events::resolve() {
 				if (event.jbutton.state == SDL_PRESSED) {
 					if (event.jbutton.button == 1){
 						select->Atk();
-						//cout << "BUTTON A PRESSED" << endl;
 					}
 					else if (event.jbutton.button == 2){
 						select->specialAtk();
@@ -131,28 +130,30 @@ int Events::resolve() {
 	return 1;
 }
 
-void Events::resolveSel() {
+void Events::resolveCharSelect() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
 			case SDL_JOYAXISMOTION:
-				//Horizontal movement
-				if (event.jaxis.axis == 0) {
-					//Right
-					if (event.jaxis.value > 0) 
-						charSel->toRight();
-					//Left
-					else if (event.jaxis.value < 0)
-						charSel->toLeft();
-				}
-				//Vertical Movement
-				else if (event.jaxis.axis == 1) {
-					//Up
-					if (event.jaxis.value < 0) 
-						charSel->toUp();
-					//Down
-					else if (event.jaxis.value > 0)
-						charSel->toDown();
+				if (!charSel->isConfirm(event.jaxis.which)) {
+					//Horizontal movement
+					if (event.jaxis.axis == 0) {
+						//Right
+						if (event.jaxis.value > 0) 
+							charSel->toRight(event.jaxis.which);
+						//Left
+						else if (event.jaxis.value < 0)
+							charSel->toLeft(event.jaxis.which);
+					}
+					//Vertical Movement
+					else if (event.jaxis.axis == 1) {
+						//Up
+						if (event.jaxis.value < 0) 
+							charSel->toUp(event.jaxis.which);
+						//Down
+						else if (event.jaxis.value > 0)
+							charSel->toDown(event.jaxis.which);
+					}
 				}
 			break;
 			
@@ -160,8 +161,8 @@ void Events::resolveSel() {
 			case SDL_JOYBUTTONDOWN:
 			case SDL_JOYBUTTONUP:
 				if (event.jbutton.state == SDL_PRESSED) {
-					if (event.jbutton.button == 9)
-						charSel->select();
+					if (event.jbutton.button == 1)
+						charSel->toggle(event.jbutton.which);
 				}		
 			break;
 		}

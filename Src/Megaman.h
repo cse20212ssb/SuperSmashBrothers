@@ -16,14 +16,16 @@ class Megaman : public BaseCharacter{
 		//Behavior on collision
 		virtual void onCollision(Entity *);
 		virtual int getID() {return 2;}
+		virtual void drawTo (SDL_Surface *);
 		
 		virtual void Atk();
 		virtual void releaseAtk();
-		virtual void upAtk() {}
-		virtual void downAtk() {}
+
+		virtual void aerialAtk();
 
 		virtual void specialAtk();
 		virtual void releaseSpecialAtk();
+
 
 	
 };

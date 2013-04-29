@@ -19,7 +19,8 @@ Entity::Entity(int x, int y, int h, int w) {
 	accelX = 0;
 	accelY = 0;
 
-	aniCounter = 0;
+	for (int i = 0; i < 3; i++)
+		aniCounter[i] = 0;
 }
 
 void Entity::updateBorders() {

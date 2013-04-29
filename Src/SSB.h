@@ -29,6 +29,10 @@ class SSB {
 		void loop();
 		void render();
 		void cleanUp();
+		void fps_control();
+	
+		//Variables for fps_control
+		int FPS, nextTick;
 
 		BaseCharacter *player0, *player1;
 		

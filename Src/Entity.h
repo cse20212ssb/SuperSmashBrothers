@@ -46,6 +46,7 @@ class Entity {
 		int getIsGone(){return isGone;}
 
 		void updateFaceDir(int);
+		int getFaceDir() {return faceDir;}
 
 		void setPosX(int new_x) {posX = new_x;}
 		void setPosY(int new_y) {posY = new_y;}
@@ -69,7 +70,7 @@ class Entity {
 		//Direction object is facing
 		int faceDir;
 		//Keeps track of the animation
-		int aniCounter;
+		int aniCounter[3];
 		int isGone;
 		int isRecoil;
 

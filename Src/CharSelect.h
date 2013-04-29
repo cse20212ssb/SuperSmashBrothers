@@ -17,22 +17,26 @@ class CharSelect {
 	public:
 		CharSelect();
 		CharSelect(SDL_Surface *);
-		void toRight() {head = head->right;}
-		void toLeft(){head = head->left;}
-		void toUp() {head = head->up;}
-		void toDown() {head = head->down;}
-		void select() {sel = head->index;}
-		int isDone() {return sel;}
+		void toRight(int which) {if (which == 1) head_1 = head_1->right; else head_0 = head_0->right;}
+		void toLeft(int which){if (which == 1) head_1 = head_1->left; else head_0 = head_0->left;}
+		void toUp(int which) {if (which == 1) head_1 = head_1->up; else head_0 = head_0->up;}
+		void toDown(int which) {if (which == 1) head_1 = head_1->down; else head_0 = head_0->down;}
+
 		void draw();
+
+		void toggle(int);
+		int isConfirm(int);
 		
 	private:
-		int sel;
-		SDL_Surface *sprite;
+		SDL_Surface *sel_sprite;
 		SDL_Surface *screen;
-		SDL_Surface *map;
-		node *collection[12];
+		SDL_Surface *boxes_sprite;
+		node *collection[4];
 		node *root;
-		node *head;
+		node *head_0;
+		node *head_1;
+		int isConfirm_0;
+		int isConfirm_1;
 };	
 
 #endif

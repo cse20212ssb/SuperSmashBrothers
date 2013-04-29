@@ -14,7 +14,7 @@ class Events {
 	public:
 		Events();
 		int resolve();
-		void resolveSel();
+		void resolveCharSelect();
 		void addCollision(Entity *, Entity *);
 		void add(BaseCharacter *, BaseCharacter *, CharSelect *);
 

@@ -7,6 +7,12 @@ using namespace std;
 Projectile::Projectile(int x,int y, int h, int w, int t_vel, int t_type) : Entity (x, y, h, w) {
 	velX = t_vel;
 	type = t_type;
+	if (type == 0)
+		ID = 5;
+	else if (type == 1 || type == 2)
+		ID = 6;
+	else if (type == 3 || type == 4)
+		ID = 7;
 	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Projectiles.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 	isGone = 0;
@@ -14,8 +20,14 @@ Projectile::Projectile(int x,int y, int h, int w, int t_vel, int t_type) : Entit
 
 void Projectile::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
-	src.x = 12 * type;
-	src.y = 0;
+	if (type == 3 || type == 4) {
+		src.x = 12 * (type - 3);
+		src.y = 7;
+	}
+	else {
+		src.x = 12 * type;
+		src.y = 0;
+	}
 	src.h = height;
 	src.w = width;
 
@@ -38,6 +50,12 @@ void Projectile::move() {
 	else if (type == 1 || type == 2) {
 		posX += velX;
 		velX *= .9;
+		if (velX < .3 && velX > 0) isGone = 1;
+		if (velX > -.3 && velX < 0) isGone = 1;
+	}
+	else if (type == 3 || type == 4) {
+		posX += velX;
+		velX *= .7;
 		if (velX < .3 && velX > 0) isGone = 1;
 		if (velX > -.3 && velX < 0) isGone = 1;
 	}

@@ -14,11 +14,12 @@ class Projectile : public Entity{
 		Projectile(int, int, int, int, int, int);
 
 		virtual void onCollision(Entity *);
-		virtual int getID() {return 4;}
+		virtual int getID() {return ID;}
 		virtual void move();
 		
 		virtual void drawTo(SDL_Surface *);
 	private:
+		int ID;
 		int type;
 
 };

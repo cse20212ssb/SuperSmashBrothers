@@ -10,6 +10,7 @@ void SSB::execute() {
 		//Main game loop
 		int running = 1;
 		while (running) {
+			fps_control();
 			running = events();
 			loop();
 			render();
@@ -21,23 +22,17 @@ void SSB::execute() {
 	SDL_Quit();
 }
 
+void SSB::fps_control() {
+	if (nextTick > SDL_GetTicks()) 
+		SDL_Delay(nextTick - SDL_GetTicks());
+	nextTick = SDL_GetTicks() + 1000 / FPS;
+}
+	
+
 void SSB::select() {
-	if (js_0) {
-		while (sel->isDone() < 0) {
-			queue.resolveSel();
-			sel->draw();
-		}
-
-		//Case statement with isDone to load character
-	}
-
-	if (js_1) {
-		while (sel->isDone() < 0) {
-			queue.resolveSel();
-			sel->draw();
-		}
-
-		//Case statement with isDone to load character
+	while (!sel->isConfirm(0) && !sel->isConfirm(1)) {
+		queue.resolveCharSelect();
+		sel->draw();
 	}
 }
 
@@ -54,6 +49,9 @@ int SSB::init() {
 		cout << "Screen init failed" << endl;
 		return 0;
 	}
+
+	FPS = 60;
+	nextTick = 0;
 
 	js_0 = SDL_JoystickOpen(0);
 	js_1 = SDL_JoystickOpen(1);

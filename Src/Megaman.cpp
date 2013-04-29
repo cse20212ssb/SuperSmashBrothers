@@ -2,6 +2,9 @@
 #include "Megaman.h"
 #include <iostream>
 
+#define WALKING 0
+#define AERIAL 1
+
 using namespace std;
 
 //height and width are constant to Megaman
@@ -24,10 +27,10 @@ void Megaman::onCollision(Entity *B) {
 					velY = 0;
 				jumpCount = 0;
 				posY = B->getTop() - height;
-				//No longer fastfalling
+				//No longer fastfalling or ghost or aerial
 				isFastFall = 0;
-				//No longer ghost
 				isGhost = 0;
+				isAerial = 0;
 			}
 			else {
 				//Special Down projectiles created
@@ -43,14 +46,22 @@ void Megaman::onCollision(Entity *B) {
 		}
 	}
 	//Melee
-	else if (B->getID() == 5 && !isGhost) {
-		if (B->getLeft() > getLeft())
-			velX -= 1.5;
-		else if (B->getRight() < getRight())
-			velX += 1.5;
-		velY -= 5;
+	else if (B->getID() == 4 && !isGhost) {
+		velX = B->getFaceDir() * 1.5;
+		velY = -3;
 		isGhost = 1;
-	}		
+	}
+	//Projectile
+	else if (B->getID() == 5) {
+		velX += B->getVelX() * .1;
+	}	
+	//SpecDown Proj
+	else if (B->getID() == 6) {
+		velX = 7 * B->getVelX() * .5;
+		velY = -7 * B->getVelX() * .2;
+		isGhost = 1;
+	}
+			
 	
 	/*
 	//Other Character
@@ -82,23 +93,113 @@ void Megaman::releaseSpecialAtk() {
 	isSpecial = 0;
 }
 
-void Megaman::Atk(){
-	Melee *sword;
-	//Create a new sword and add it to list
-	if(faceDir == 1){
-		sword = new Melee(posX + width, posY + 45, 13, 28, 0, faceDir);
-	}
-	else{
-		sword = new Melee(posX, posY + 25, 13, 28, 0, faceDir);
-	}
+void Megaman::aerialAtk() {
+	isAerial = 1;
+}
 
-	meleeList.push_back(sword);
-	isAtk = 1;
+void Megaman::Atk(){
+	if (jumpCount > 1)
+		aerialAtk();
+	else {
+		Melee *sword;
+		//Create a new sword and add it to list
+		if(faceDir == 1)
+			//Ignore position here, actually set in move function
+			sword = new Melee(posX + width, posY + 15, 13, 28, 0, faceDir);
+		else
+			sword = new Melee(posX, posY + 15, 13, 28, 0, faceDir);
+
+		meleeList.push_back(sword);
+		isAtk = 1;
+	}
 }
 
 void Megaman::releaseAtk(){
 	isAtk = 0;
+	isAerial = 0;
 	for(int i = 0; i < meleeList.size(); i++)
 		meleeList[i] -> setIsGone(1);
-	//cout << "getMeleeGone = " << getMeleeGone() << endl;
+	aniCounter[AERIAL] = 0;
+}
+
+//Draws onto specified surface
+void Megaman::drawTo(SDL_Surface *surf) {
+	SDL_Rect src;
+	
+	if (isGhost && jumpCount == 0)
+		src.x = 5 * width;
+	//if in air
+	else if (jumpCount > 0 || velY > 3 || velY < -3) {
+		if (isAerial) {
+			int numOfSprites = 4;
+			int timePerSprite = 5;
+			if (aniCounter[AERIAL] > numOfSprites * timePerSprite) 
+				aniCounter[AERIAL] = 0;
+			int frame = aniCounter[AERIAL] / timePerSprite;
+
+			if (frame == 0) src.x = 10 * width;
+			else if (frame == 1) src.x = 11 * width;
+			else if (frame == 2) src.x = 12 * width;
+			else src.x = 4 * width;
+		
+			aniCounter[AERIAL]++;
+		}
+		//If jumping and special attacking
+		else if (isAtk || isSpecial) src.x = width * 17;
+		else src.x = 4 * width;
+		
+	}
+	//if on ground
+	else if (moveDir != 0) {
+		int numOfSprites = 4;
+		int timePerSprite = 10;
+		if (aniCounter[WALKING] > numOfSprites * timePerSprite)
+			aniCounter[WALKING] = 0;
+		int frame = aniCounter[WALKING] / timePerSprite;
+		
+		if (frame == 1) src.x = width * 2;
+		else if (frame == 2) src.x = width * 3;
+		else if (frame == 3) src.x = width * 2;
+		else src.x = width;
+		//If running and special attacking
+		if (isSpecial || isAtk) src.x += width * 13;
+
+		aniCounter[WALKING]++;
+	}
+	else {
+		aniCounter[WALKING] = 0;
+		//If standing and special attacking
+		if (isSpecial || isAtk){
+			src.x = width * 9;
+		}
+		else{
+			src.x = 0;
+		}
+	}
+
+	//If left or right
+	if (faceDir == 1 && !isAerial) src.y = 33;
+	else src.y = 0;
+
+	src.w = width;
+	src.h = height;
+	
+	SDL_Rect dst;
+	dst.x = posX;
+	dst.y = posY;
+	dst.h = 0;
+	dst.w = 0;
+
+	//Loop through all projectiles and provide movement
+	for(int i = 0; i < projectileList.size(); i++){
+		projectileList[i] -> drawTo(surf);
+	}
+	
+
+	//Loop through melee and provide display
+	for(int i = 0; i < meleeList.size(); i++){
+		meleeList[i] -> drawTo(surf);
+	}
+
+	SDL_BlitSurface(getSprite(), &src, surf, &dst);
 }

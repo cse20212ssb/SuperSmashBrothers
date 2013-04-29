@@ -16,8 +16,8 @@ class BaseCharacter : public Entity{
 
 		//Behavior on collision
 		virtual void onCollision(Entity *) {}
-		virtual int getID() {return 2;}
-		void drawTo(SDL_Surface *);
+		virtual int getID() {return 1;}
+		void drawTo(SDL_Surface *) {}
 
 		virtual void move();
 		void jump();
@@ -27,17 +27,18 @@ class BaseCharacter : public Entity{
 		
 		virtual void Atk() {}
 		virtual void releaseAtk() {}
-		virtual void upAtk(){}
-		virtual void downAtk() {}
+		
+		virtual void aerialAtk() {}
+
 		virtual void specialAtk() {}
 		virtual void releaseSpecialAtk() {}
+
 		vector<Entity*> getProjectileList() {return projectileList;}
 		vector<Entity*> getMeleeList() {return meleeList;}
 
 		void removeProj(int);
 		void removeMelee(int);
 		void offScreen();
-		virtual void recoil(){};
 
 	protected:
 		//Keeps track of jumps (max of two)
@@ -50,6 +51,7 @@ class BaseCharacter : public Entity{
 		int isSpecial;
 		int isSpecDown;
 		int isGhost;
+		int isAerial;
 };
 
 #endif

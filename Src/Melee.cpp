@@ -11,7 +11,7 @@ Melee::Melee(int x,int y, int h, int w, int t_type, int dir) : Entity (x, y, h, 
 	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Sword.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 	isGone = 0;
-	aniCounter = 0;
+	counter = 0;
 
 }
 
@@ -21,9 +21,8 @@ void Melee::drawTo(SDL_Surface *surf) {
 		src.x = 0;
 	else
 		src.x = width;
-
 	src.y = 0;
-	src.h = height/2;
+	src.h = height;
 	src.w = width;
 
 	SDL_Rect dst;
@@ -31,9 +30,9 @@ void Melee::drawTo(SDL_Surface *surf) {
 	dst.y = posY;
 	dst.h = 0;
 	dst.w = 0;
-	if (aniCounter >= 20)
+	if (counter >= 20)
 		isGone = 1;
-	aniCounter++;
+	counter++;
 	SDL_BlitSurface(getSprite(), &src, surf, &dst);
 }
 
