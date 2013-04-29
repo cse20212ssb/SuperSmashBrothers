@@ -1,9 +1,9 @@
 #ifndef SSB_H
 #define SSB_H
 
-//#include "stdafx.h"
-//#include "SDL.h"
-#include <SDL/SDL.h>
+#include "stdafx.h"
+#include "SDL.h"
+//#include <SDL/SDL.h>
 #include <iostream>
 #include <vector>
 
@@ -20,6 +20,7 @@ class SSB {
 	public:
 		SSB() {}
 		void execute();
+		void drawMap();
 	
 	private:
 		int init();
@@ -38,8 +39,11 @@ class SSB {
 		SDL_Joystick *js_0, *js_1;
 
 		CharSelect *sel;
+		MapSelect *mapSel;
 	
 		Events queue;
+
+		Platform *pf0, *pf1, *pf2, *pf3, *pf4, *pf5;
 };		
 	
 
