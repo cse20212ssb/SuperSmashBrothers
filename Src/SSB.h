@@ -42,8 +42,6 @@ class SSB {
 		MapSelect *mapSel;
 	
 		Events queue;
-
-		Platform *pf0, *pf1, *pf2, *pf3, *pf4, *pf5;
 };		
 	
 

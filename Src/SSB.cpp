@@ -52,30 +52,16 @@ void SSB::select() {
 		else
 		map = SDL_LoadBMP("Images/Maps/Battlefield.bmp");
 
-		if(mapSel->isDone() == 0)
-			//Large base platform
-			pf0 = new Platform(50, 400 , 20, 700, 1);
-		else{
-			//Large base platform
-			pf0 = new Platform(150, 400 , 20, 400, 1);
-			//Floating Platforms
-			pf1 = new Platform(160, 310, 28, 154, 0);
-			pf2 = new Platform(480, 310, 28, 154, 0);
-			pf3 = new Platform(325, 235, 28, 154, 0);
-			pf4 = new Platform(150, 150, 28, 154, 0);
-			pf5 = new Platform(550, 150, 28, 154, 0);
-		}
-
 	//Establish the platforms depending on map selected
 	if(mapSel->isDone() == 0)
-		entityList.push_back(pf0);
+		entityList.push_back(new Platform(50, 400 , 20, 700, 1));
 	else{
-		entityList.push_back(pf0);
-		entityList.push_back(pf1);
-		entityList.push_back(pf2);
-		entityList.push_back(pf3);
-		entityList.push_back(pf4);
-		entityList.push_back(pf5);
+		entityList.push_back(new Platform(150, 400 , 20, 400, 1));
+		entityList.push_back(new Platform(160, 310, 28, 154, 0));
+		entityList.push_back(new Platform(480, 310, 28, 154, 0));
+		entityList.push_back(new Platform(325, 235, 28, 154, 0));
+		entityList.push_back(new Platform(150, 150, 28, 154, 0));
+		entityList.push_back(new Platform(550, 150, 28, 154, 0));
 	}
 }
 
