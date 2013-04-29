@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "SSB.h"
 #include <iostream>
 
@@ -22,6 +22,12 @@ void SSB::execute() {
 }
 
 void SSB::select() {
+
+	while(mapSel->isDone() < 0){
+		queue.resolveMapSel();
+		mapSel->draw();
+	}
+
 	if (js_0) {
 		while (sel->isDone() < 0) {
 			queue.resolveSel();
@@ -37,7 +43,39 @@ void SSB::select() {
 			sel->draw();
 		}
 
-		//Case statement with isDone to load character
+		//Case statement with charSelect's isDone to load character
+	}
+
+	//If statement with mapSelect's isDone to load map
+		if(mapSel->isDone() == 0)
+		map = SDL_LoadBMP("Images/Maps/FinalDest.bmp");
+		else
+		map = SDL_LoadBMP("Images/Maps/Battlefield.bmp");
+
+		if(mapSel->isDone() == 0)
+			//Large base platform
+			pf0 = new Platform(50, 400 , 20, 700, 1);
+		else{
+			//Large base platform
+			pf0 = new Platform(150, 400 , 20, 400, 1);
+			//Floating Platforms
+			pf1 = new Platform(160, 310, 28, 154, 0);
+			pf2 = new Platform(480, 310, 28, 154, 0);
+			pf3 = new Platform(325, 235, 28, 154, 0);
+			pf4 = new Platform(150, 150, 28, 154, 0);
+			pf5 = new Platform(550, 150, 28, 154, 0);
+		}
+
+	//Establish the platforms depending on map selected
+	if(mapSel->isDone() == 0)
+		entityList.push_back(pf0);
+	else{
+		entityList.push_back(pf0);
+		entityList.push_back(pf1);
+		entityList.push_back(pf2);
+		entityList.push_back(pf3);
+		entityList.push_back(pf4);
+		entityList.push_back(pf5);
 	}
 }
 
@@ -47,9 +85,8 @@ int SSB::init() {
 		return 0;
 	}
 
-	screen = SDL_SetVideoMode(800, 400, 32, SDL_HWSURFACE);
-	map = SDL_LoadBMP("Images/Maps/basic.bmp");
-
+	screen = SDL_SetVideoMode(800, 550, 32, SDL_HWSURFACE);
+	
 	if (screen == NULL) {
 		cout << "Screen init failed" << endl;
 		return 0;
@@ -68,32 +105,20 @@ int SSB::init() {
 		return 0;
 	}
 
-	//Large base platform
-	Platform *pf0 = new Platform(200, 300, 20, 400, 1);
-	//Floating Platforms
-	//Platform *pf1 = new Platform(150, 300, 200, 20, 0);
-	//Platform *pf2 = new Platform(250, 300, 200, 20, 0);
-	//Platform *pf3 = new Platform(175, 250, 200, 20, 0);
-	//Platform *pf4 = new Platform(50, 150, 200, 20, 0);
-	//Platform *pf5 = new Platform(300, 150, 200, 20, 0);
-	
 	player0 = new Megaman(330, 50);
 	player1 = new Megaman(430, 50);
 
 	sel = new CharSelect(screen);
+	mapSel = new MapSelect(screen);
 
 	//Loads players and CharSelect to the events class
-	queue.add(player0, player1, sel);
+	queue.add(player0, player1, sel,mapSel);
 	
 	//Holds all entities created
 	entityList.push_back(player0);
 	entityList.push_back(player1);
-	entityList.push_back(pf0);
-	//entityList.push_back(pf1);
-	//entityList.push_back(pf2);
-	//entityList.push_back(pf3);
-	//entityList.push_back(pf4);
-	//entityList.push_back(pf5);
+
+	
 	return 1;
 }
 

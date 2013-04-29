@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Events.h"
 #include <iostream>
 
@@ -9,10 +9,11 @@ Events::Events() {
 }
 
 //Load objects to the Event
-void Events::add(BaseCharacter *obj0, BaseCharacter *obj1, CharSelect *obj2) {
+void Events::add(BaseCharacter *obj0, BaseCharacter *obj1, CharSelect *obj2, MapSelect *obj3) {
 	player0 = obj0;
 	player1 = obj1;
 	charSel = obj2;
+	mapSel = obj3;
 }
 
 //Pushes collision event to queue
@@ -57,10 +58,10 @@ int Events::resolve() {
 				//Horizontal movement
 				if (event.jaxis.axis == 0) {
 					//Right
-					if (event.jaxis.value > 0)
+					if (event.jaxis.value > -257)
 						select->setMoveDir(1);
 					//Left
-					else if (event.jaxis.value < 0)
+					else if (event.jaxis.value < -257)
 						select->setMoveDir(-1);
 					//Centered
 					else 
@@ -69,12 +70,12 @@ int Events::resolve() {
 				//Vertical Movement
 				else if (event.jaxis.axis == 1) {
 					//Up
-					if (event.jaxis.value < 0) {
+					if (event.jaxis.value < -257) {
 						if (select->jumpable()) 
 							select->jump();
 					}
 					//Down
-					else if (event.jaxis.value > 0)
+					else if (event.jaxis.value > -257)
 						select->fastFall();
 					//Centered
 					else {}
@@ -139,10 +140,10 @@ void Events::resolveSel() {
 				//Horizontal movement
 				if (event.jaxis.axis == 0) {
 					//Right
-					if (event.jaxis.value > 0) 
+					if (event.jaxis.value > -257) 
 						charSel->toRight();
 					//Left
-					else if (event.jaxis.value < 0)
+					else if (event.jaxis.value < -257)
 						charSel->toLeft();
 				}
 				//Vertical Movement
@@ -162,6 +163,44 @@ void Events::resolveSel() {
 				if (event.jbutton.state == SDL_PRESSED) {
 					if (event.jbutton.button == 9)
 						charSel->select();
+				}		
+			break;
+		}
+	}
+}
+
+void Events::resolveMapSel() {
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+			case SDL_JOYAXISMOTION:
+				//Horizontal movement
+				if (event.jaxis.axis == 0) {
+					//Right
+					if (event.jaxis.value > -257) 
+						mapSel->toRight();
+					//Left
+					else if (event.jaxis.value < -257)
+						mapSel->toLeft();
+				}
+				/*
+				//Vertical Movement
+				else if (event.jaxis.axis == 1) {
+					//Up
+					if (event.jaxis.value < 0) 
+						mapSel->toUp();
+					//Down
+					else if (event.jaxis.value > 0)
+						mapSel->toDown();
+				}*/
+			break;
+			
+			//Start button
+			case SDL_JOYBUTTONDOWN:
+			case SDL_JOYBUTTONUP:
+				if (event.jbutton.state == SDL_PRESSED) {
+					if (event.jbutton.button == 9)
+						mapSel->select();
 				}		
 			break;
 		}
