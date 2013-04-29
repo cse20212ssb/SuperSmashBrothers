@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Melee.h"
 #include "Entity.h"
 #include "BaseCharacter.h"
@@ -31,7 +31,7 @@ void Melee::drawTo(SDL_Surface *surf) {
 	dst.y = posY;
 	dst.h = 0;
 	dst.w = 0;
-	if (aniCounter >= 200)
+	if (aniCounter >= 20)
 		isGone = 1;
 	aniCounter++;
 	SDL_BlitSurface(getSprite(), &src, surf, &dst);
