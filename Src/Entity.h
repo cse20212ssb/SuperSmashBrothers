@@ -5,9 +5,9 @@ Base class for all objects with movement and/or borders
 #ifndef ENTITY_H
 #define ENTITY_H
 
-//#include "stdafx.h"
-//#include "SDL.h"
-#include <SDL/SDL.h>
+#include "stdafx.h"
+#include "SDL.h"
+//#include <SDL/SDL.h>
 
 using namespace std;
 

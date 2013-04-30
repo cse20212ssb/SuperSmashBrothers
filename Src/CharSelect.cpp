@@ -40,7 +40,7 @@ void CharSelect::draw() {
 	
 	SDL_Rect selDst_1;
 	selDst_1.x = (head_1->index % 2) * 200 + 400;
-	selDst_1.y = (head_1->index / 2) * 200 + 400;
+	selDst_1.y = (head_1->index / 2) * 200;
 	selDst_1.w = 0;
 	selDst_1.h = 0;
 	SDL_Rect selSrc_1;

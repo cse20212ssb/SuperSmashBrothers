@@ -1,9 +1,9 @@
 #ifndef SSB_H
 #define SSB_H
 
-//#include "stdafx.h"
-//#include "SDL.h"
-#include <SDL/SDL.h>
+#include "stdafx.h"
+#include "SDL.h"
+//#include <SDL/SDL.h>
 #include <iostream>
 #include <vector>
 
@@ -13,6 +13,7 @@
 #include "Megaman.h"
 #include "BaseCharacter.h"
 #include "CharSelect.h"
+#include "MapSelect.h"
 
 using namespace std;
 
@@ -42,6 +43,7 @@ class SSB {
 		SDL_Joystick *js_0, *js_1;
 
 		CharSelect *sel;
+		MapSelect *mapSel;
 	
 		Events queue;
 };		
