@@ -13,6 +13,8 @@
 #include "Megaman.h"
 #include "BaseCharacter.h"
 #include "CharSelect.h"
+#include "MapSelect.h"
+#include "startScreen.h"
 
 using namespace std;
 
@@ -20,7 +22,6 @@ class SSB {
 	public:
 		SSB() {}
 		void execute();
-		void drawMap();
 	
 	private:
 		int init();
@@ -30,6 +31,10 @@ class SSB {
 		void loop();
 		void render();
 		void cleanUp();
+		void fps_control();
+	
+		//Variables for fps_control
+		int FPS, nextTick;
 
 		BaseCharacter *player0, *player1;
 		
@@ -40,7 +45,8 @@ class SSB {
 
 		CharSelect *sel;
 		MapSelect *mapSel;
-	
+		startScreen *startSel;
+
 		Events queue;
 };		
 	

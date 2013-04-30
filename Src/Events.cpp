@@ -9,11 +9,12 @@ Events::Events() {
 }
 
 //Load objects to the Event
-void Events::add(BaseCharacter *obj0, BaseCharacter *obj1, CharSelect *obj2, MapSelect *obj3) {
+void Events::add(BaseCharacter *obj0, BaseCharacter *obj1, startScreen *obj2, CharSelect *obj3, MapSelect *obj4) {
 	player0 = obj0;
 	player1 = obj1;
-	charSel = obj2;
-	mapSel = obj3;
+	startSel = obj2;
+	charSel = obj3;
+	mapSel = obj4;
 }
 
 //Pushes collision event to queue
@@ -103,7 +104,6 @@ int Events::resolve() {
 				if (event.jbutton.state == SDL_PRESSED) {
 					if (event.jbutton.button == 1){
 						select->Atk();
-						//cout << "BUTTON A PRESSED" << endl;
 					}
 					else if (event.jbutton.button == 2){
 						select->specialAtk();
@@ -132,28 +132,30 @@ int Events::resolve() {
 	return 1;
 }
 
-void Events::resolveSel() {
+void Events::resolveCharSelect() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
 			case SDL_JOYAXISMOTION:
-				//Horizontal movement
-				if (event.jaxis.axis == 0) {
-					//Right
-					if (event.jaxis.value > -257) 
-						charSel->toRight();
-					//Left
-					else if (event.jaxis.value < -257)
-						charSel->toLeft();
-				}
-				//Vertical Movement
-				else if (event.jaxis.axis == 1) {
-					//Up
-					if (event.jaxis.value < 0) 
-						charSel->toUp();
-					//Down
-					else if (event.jaxis.value > 0)
-						charSel->toDown();
+				if (!charSel->isConfirm(event.jaxis.which)) {
+					//Horizontal movement
+					if (event.jaxis.axis == 0) {
+						//Right
+						if (event.jaxis.value > -257) 
+							charSel->toRight(event.jaxis.which);
+						//Left
+						else if (event.jaxis.value < -257)
+							charSel->toLeft(event.jaxis.which);
+					}
+					//Vertical Movement
+					else if (event.jaxis.axis == 1) {
+						//Up
+						if (event.jaxis.value < -257) 
+							charSel->toUp(event.jaxis.which);
+						//Down
+						else if (event.jaxis.value > -257)
+							charSel->toDown(event.jaxis.which);
+					}
 				}
 			break;
 			
@@ -161,8 +163,8 @@ void Events::resolveSel() {
 			case SDL_JOYBUTTONDOWN:
 			case SDL_JOYBUTTONUP:
 				if (event.jbutton.state == SDL_PRESSED) {
-					if (event.jbutton.button == 9)
-						charSel->select();
+					if (event.jbutton.button == 1)
+						charSel->toggle(event.jbutton.which);
 				}		
 			break;
 		}
@@ -183,16 +185,6 @@ void Events::resolveMapSel() {
 					else if (event.jaxis.value < -257)
 						mapSel->toLeft();
 				}
-				/*
-				//Vertical Movement
-				else if (event.jaxis.axis == 1) {
-					//Up
-					if (event.jaxis.value < 0) 
-						mapSel->toUp();
-					//Down
-					else if (event.jaxis.value > 0)
-						mapSel->toDown();
-				}*/
 			break;
 			
 			//Start button
@@ -206,3 +198,26 @@ void Events::resolveMapSel() {
 		}
 	}
 }
+
+void Events::resolveStartSel() {
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+			case SDL_JOYAXISMOTION:
+				//Horizontal movement
+				if (event.jaxis.axis == 0) {
+				}
+			break;
+			
+			//Start button
+			case SDL_JOYBUTTONDOWN:
+			case SDL_JOYBUTTONUP:
+				if (event.jbutton.state == SDL_PRESSED) {
+					if (event.jbutton.button == 9)
+						startSel->select();
+				}		
+			break;
+		}
+	}
+}
+

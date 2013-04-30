@@ -5,9 +5,9 @@ using namespace std;
 
 Platform::Platform(int x,int y, int h, int w, int size) : Entity (x, y, h, w) {
 	if (size == 0)
-		sprite = SDL_LoadBMP("Images/platform_small.bmp");
+		sprite = SDL_LoadBMP("Images/maps/platform_small.bmp");
 	else if (size == 1)
-		sprite = SDL_LoadBMP("Images/platform_big.bmp");
+		sprite = SDL_LoadBMP("Images/maps/platform_big.bmp");
 	SDL_SetColorKey(getSprite(),SDL_SRCCOLORKEY,SDL_MapRGB(getSprite()->format, 255, 0, 0));
 }
 

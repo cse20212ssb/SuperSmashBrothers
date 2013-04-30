@@ -6,10 +6,12 @@ using namespace std;
 
 void SSB::execute() {
 	if (init()) {
+		cout << "Init clear" << endl;
 		select();
 		//Main game loop
 		int running = 1;
 		while (running) {
+			fps_control();
 			running = events();
 			loop();
 			render();
@@ -21,47 +23,46 @@ void SSB::execute() {
 	SDL_Quit();
 }
 
+void SSB::fps_control() {
+	if (nextTick > SDL_GetTicks()) 
+		SDL_Delay(nextTick - SDL_GetTicks());
+	nextTick = SDL_GetTicks() + 1000 / FPS;
+}
+	
+
 void SSB::select() {
+	while(startSel->isDone() < 0){
+		queue.resolveStartSel();
+		startSel->draw();
+	}
+
+
+	while (!sel->isConfirm(0) && !sel->isConfirm(1)) {
+		queue.resolveCharSelect();
+		sel->draw();
+	}
 
 	while(mapSel->isDone() < 0){
 		queue.resolveMapSel();
 		mapSel->draw();
 	}
 
-	if (js_0) {
-		while (sel->isDone() < 0) {
-			queue.resolveSel();
-			sel->draw();
-		}
-
-		//Case statement with isDone to load character
-	}
-
-	if (js_1) {
-		while (sel->isDone() < 0) {
-			queue.resolveSel();
-			sel->draw();
-		}
-
-		//Case statement with charSelect's isDone to load character
-	}
-
 	//If statement with mapSelect's isDone to load map
-		if(mapSel->isDone() == 0)
+	if(mapSel->isDone() == 0)
 		map = SDL_LoadBMP("Images/Maps/FinalDest.bmp");
-		else
+	else
 		map = SDL_LoadBMP("Images/Maps/Battlefield.bmp");
-
+	
 	//Establish the platforms depending on map selected
 	if(mapSel->isDone() == 0)
 		entityList.push_back(new Platform(50, 400 , 20, 700, 1));
 	else{
-		entityList.push_back(new Platform(150, 400 , 20, 400, 1));
+		entityList.push_back(new Platform(145, 400 ,20, 400, 1));
 		entityList.push_back(new Platform(160, 310, 28, 154, 0));
 		entityList.push_back(new Platform(480, 310, 28, 154, 0));
 		entityList.push_back(new Platform(325, 235, 28, 154, 0));
-		entityList.push_back(new Platform(150, 150, 28, 154, 0));
-		entityList.push_back(new Platform(550, 150, 28, 154, 0));
+		entityList.push_back(new Platform(155, 125, 28, 154, 0));
+		entityList.push_back(new Platform(555, 125, 28, 154, 0));
 	}
 }
 
@@ -72,11 +73,14 @@ int SSB::init() {
 	}
 
 	screen = SDL_SetVideoMode(800, 550, 32, SDL_HWSURFACE);
-	
+
 	if (screen == NULL) {
 		cout << "Screen init failed" << endl;
 		return 0;
 	}
+
+	FPS = 60;
+	nextTick = 0;
 
 	js_0 = SDL_JoystickOpen(0);
 	js_1 = SDL_JoystickOpen(1);
@@ -94,17 +98,18 @@ int SSB::init() {
 	player0 = new Megaman(330, 50);
 	player1 = new Megaman(430, 50);
 
+	startSel = new startScreen(screen);
+	cout << "Start screen cleared" << endl;
 	sel = new CharSelect(screen);
+	cout << "CharSel clear" << endl;
 	mapSel = new MapSelect(screen);
+	cout << "Selection objects cleared" << endl;
 
 	//Loads players and CharSelect to the events class
-	queue.add(player0, player1, sel,mapSel);
+	queue.add(player0, player1, startSel, sel, mapSel);
 	
-	//Holds all entities created
 	entityList.push_back(player0);
 	entityList.push_back(player1);
-
-	
 	return 1;
 }
 
