@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Megaman.h"
 #include <iostream>
 
@@ -12,6 +12,89 @@ Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 33, 31){
 	//Load sprite sheet
 	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Megaman.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
+
+	sfx.load("Sounds/Megaman_Melee.wav", "Sounds/Megaman_Shot.wav", "Sounds/Megaman_SpecDown.wav", "Sounds/Megaman_Aerial.wav");
+}
+
+//Movement in both x and y directions
+void Megaman::move() {	
+	maxVelX = 3;
+	if (isAerial) {
+		accelX = 1.2;
+		maxVelX = 7;
+		velY -= .2;
+	}	
+	if (moveDir != 0 && !isGhost) {
+		accelX = .33 * moveDir;
+	}
+	else {
+		double accelResist = .25;
+		if (isGhost) accelResist = 0;
+		if (velX > 0) accelX = -accelResist;
+		if (velX < 0) accelX = accelResist;
+		if (velX < 1 && velX > -1) {
+			velX = 0;
+			accelX = 0;
+		}
+	}
+
+	accelY = 0.3;
+
+	velX += accelX;
+	velY += accelY;
+
+	if (velX > maxVelX) velX = maxVelX;
+	if (velX < -maxVelX) velX = -maxVelX;
+	if (velY > maxVelY) velY = maxVelY;
+	if (velY < -maxVelY) velY = -maxVelY;
+
+	posX += velX;
+	posY += velY;
+
+	updateBorders();
+	offScreen();
+
+	//Loop through all projectiles and provide movement
+	for(int i = 0; i < projectileList.size(); i++){
+		projectileList[i]->move();
+		projectileList[i]->updateBorders();
+		if (projectileList[i]->getRight() > 800 || projectileList[i]->getLeft() < 0 || projectileList[i]->getIsGone())
+			removeProj(i);
+	}
+
+	//Loop through all melee of player 1
+	for(int i = 0; i < meleeList.size(); i++){
+		//Move the sword along with Megaman, updating the direction
+		meleeList[i] -> updateFaceDir(faceDir);
+		//Right
+		if (faceDir == 1)
+			if(jumpCount > 0 || velY > 3){
+				meleeList[i] -> setPosX(posX + width * faceDir - 3);
+				meleeList[i] -> setPosY(posY+10);
+			}
+			else{
+				meleeList[i] -> setPosX(posX + width * faceDir - 3);
+				meleeList[i] -> setPosY(posY+18);
+			}
+		//Left
+		else {
+			if(jumpCount > 0 || velY > 3){
+				meleeList[i] -> setPosX(posX + width * faceDir + 3);
+				meleeList[i] -> setPosY(posY+10);
+			}
+			else{
+				meleeList[i] -> setPosX(posX + width * faceDir + 5);
+				meleeList[i] -> setPosY(posY+18);
+			}
+		}
+
+		
+		meleeList[i]->updateBorders();
+		if (meleeList[i]->getIsGone()) {
+			isAtk = 0;
+			removeMelee(i);
+		}
+	}
 }
 
 void Megaman::onCollision(Entity *B) {
@@ -33,6 +116,8 @@ void Megaman::onCollision(Entity *B) {
 				isAerial = 0;
 			}
 			else {
+				//Special down sound
+				sfx.play(2);
 				//Special Down projectiles created
 				velY = 0;
 				posY = B->getTop() - height;
@@ -73,6 +158,8 @@ void Megaman::onCollision(Entity *B) {
 }
 
 void Megaman::specialAtk() {
+	sfx.play(1);
+	//Velocity of projectiles
 	int vel = faceDir * 10;
 
 	Projectile *pj;
@@ -98,9 +185,12 @@ void Megaman::aerialAtk() {
 }
 
 void Megaman::Atk(){
-	if (jumpCount > 1)
+	if (jumpCount > 1) {
+		sfx.play(3);
 		aerialAtk();
+	}
 	else {
+		sfx.play(0);
 		Melee *sword;
 		//Create a new sword and add it to list
 		if(faceDir == 1)

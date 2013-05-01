@@ -1,14 +1,15 @@
 #ifndef MAPSELECT_H
 #define MAPSELECT_H
 
-//#include <SDL/SDL.h>
-#include "SDL.h"
-#include "stdafx.h"
+#include <SDL/SDL.h>
+//#include "SDL.h"
+//#include "stdafx.h"
 
 class MapSelect {
 	public:
 		MapSelect();
 		MapSelect(SDL_Surface *);
+		~MapSelect();
 		void draw();
 		void toRight() {index = 1;}
 		void toLeft(){index = 0;}

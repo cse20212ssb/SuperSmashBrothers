@@ -1,9 +1,9 @@
 #ifndef CHARSELECT_H
 #define CHARSELECT_H
 
-//#include <SDL/SDL.h>
-#include "SDL.h"
-#include "stdafx.h"
+#include <SDL/SDL.h>
+//#include "SDL.h"
+//#include "stdafx.h"
 
 struct node {
 	int index;
@@ -17,6 +17,7 @@ class CharSelect {
 	public:
 		CharSelect();
 		CharSelect(SDL_Surface *);
+		~CharSelect();
 		void toRight(int which) {if (which == 1) head_1 = head_1->right; else head_0 = head_0->right;}
 		void toLeft(int which){if (which == 1) head_1 = head_1->left; else head_0 = head_0->left;}
 		void toUp(int which) {if (which == 1) head_1 = head_1->up; else head_0 = head_0->up;}

@@ -1,5 +1,6 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Entity.h"
+#include <iostream>
 
 using namespace std;
 
@@ -21,6 +22,11 @@ Entity::Entity(int x, int y, int h, int w) {
 
 	for (int i = 0; i < 3; i++)
 		aniCounter[i] = 0;
+}
+
+Entity::~Entity() {
+	SDL_FreeSurface(sprite);
+	cout << "Entity Deconstructed" << endl;
 }
 
 void Entity::updateBorders() {

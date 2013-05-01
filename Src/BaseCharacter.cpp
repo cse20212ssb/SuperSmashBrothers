@@ -1,10 +1,11 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "BaseCharacter.h"
 #include <iostream>
 
 using namespace std;
 
 BaseCharacter::BaseCharacter(int x, int y, int h, int w) : Entity(x, y, h, w){
+	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
 	setMoveDir(0);
 	isGhost = 0;
 	faceDir = 1;
@@ -16,79 +17,18 @@ BaseCharacter::BaseCharacter(int x, int y, int h, int w) : Entity(x, y, h, w){
 	isAerial = 0;
 }
 
-//Movement in both x and y directions
-void BaseCharacter::move() {		
-	if (moveDir != 0 && !isGhost) {
-		accelX = .33 * moveDir;
+BaseCharacter::~BaseCharacter() {
+	for (int i = 0; i < projectileList.size(); i++) {
+		projectileList.erase(projectileList.begin() + i);
 	}
-	else {
-		double accelResist = .25;
-		if (isGhost) accelResist = 0;
-		if (velX > 0) accelX = -accelResist;
-		if (velX < 0) accelX = accelResist;
-		if (velX < 1 && velX > -1) {
-			velX = 0;
-			accelX = 0;
-		}
+	
+	for (int i = 0; i < meleeList.size(); i++) {
+		meleeList.erase(meleeList.begin() + i);
 	}
 
-	accelY = 0.3;
+	Mix_CloseAudio();
 
-	velX += accelX;
-	velY += accelY;
-
-	if (velX > maxVelX) velX = maxVelX;
-	if (velX < -maxVelX) velX = -maxVelX;
-	if (velY > maxVelY) velY = maxVelY;
-	if (velY < -maxVelY) velY = -maxVelY;
-
-	posX += velX;
-	posY += velY;
-
-	updateBorders();
-	offScreen();
-
-	//Loop through all projectiles and provide movement
-	for(int i = 0; i < projectileList.size(); i++){
-		projectileList[i]->move();
-		projectileList[i]->updateBorders();
-		if (projectileList[i]->getRight() > 800 || projectileList[i]->getLeft() < 0 || projectileList[i]->getIsGone())
-			removeProj(i);
-	}
-
-	//Loop through all melee of player 1
-	for(int i = 0; i < meleeList.size(); i++){
-		//Move the sword along with Megaman, updating the direction
-		meleeList[i] -> updateFaceDir(faceDir);
-		//Right
-		if (faceDir == 1)
-			if(jumpCount > 0 || velY > 3){
-				meleeList[i] -> setPosX(posX + width * faceDir - 3);
-				meleeList[i] -> setPosY(posY+10);
-			}
-			else{
-				meleeList[i] -> setPosX(posX + width * faceDir - 3);
-				meleeList[i] -> setPosY(posY+18);
-			}
-		//Left
-		else {
-			if(jumpCount > 0 || velY > 3){
-				meleeList[i] -> setPosX(posX + width * faceDir + 3);
-				meleeList[i] -> setPosY(posY+10);
-			}
-			else{
-				meleeList[i] -> setPosX(posX + width * faceDir + 5);
-				meleeList[i] -> setPosY(posY+18);
-			}
-		}
-
-		
-		meleeList[i]->updateBorders();
-		if (meleeList[i]->getIsGone()) {
-			isAtk = 0;
-			removeMelee(i);
-		}
-	}
+	cout << "BaseCharacter deconstructed" << endl;
 }
 
 void BaseCharacter::fastFall() {

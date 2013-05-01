@@ -102,3 +102,9 @@ CharSelect::CharSelect(SDL_Surface *surf) {
 	head_1 = collection[0];
 	root = collection[0];
 }
+
+CharSelect::~CharSelect() {
+	SDL_FreeSurface(boxes_sprite);
+	SDL_FreeSurface(sel_sprite);
+	delete [] collection;
+}

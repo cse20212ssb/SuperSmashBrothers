@@ -1,11 +1,11 @@
-SDL=`sdl-config --libs`
+SDL= `sdl-config --libs` -lSDL -lSDL_mixer 
 
-OBJ=main.o SSB.o Events.o BaseCharacter.o Megaman.o Entity.o Platform.o Projectile.o CharSelect.o Melee.o MapSelect.o
+OBJ=main.o SSB.o Events.o BaseCharacter.o Megaman.o Entity.o Platform.o Projectile.o CharSelect.o Melee.o MapSelect.o Jukebox.o
 
 all:	main
 
 main:	script $(OBJ)
-	g++ $(SDL) $(OBJ) -o main
+	g++ -o main $(OBJ) $(SDL)
 
 script:
 

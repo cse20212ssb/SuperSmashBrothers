@@ -1,9 +1,10 @@
 #ifndef SSB_H
 #define SSB_H
 
-#include "stdafx.h"
-#include "SDL.h"
-//#include <SDL/SDL.h>
+//#include "stdafx.h"
+//#include "SDL.h"
+#include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
 #include <iostream>
 #include <vector>
 
@@ -14,12 +15,15 @@
 #include "BaseCharacter.h"
 #include "CharSelect.h"
 #include "MapSelect.h"
+#include "Jukebox.h"
 
 using namespace std;
 
 class SSB {
 	public:
+		//Constructor and deconstructor in init() and cleanUp()
 		SSB() {}
+		~SSB() {}
 		void execute();
 	
 	private:
@@ -46,6 +50,8 @@ class SSB {
 		MapSelect *mapSel;
 	
 		Events queue;
+
+		Jukebox bgMusic;
 };		
 	
 

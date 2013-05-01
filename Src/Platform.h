@@ -1,9 +1,9 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
 
-#include "stdafx.h"
-#include "SDL.h"
-//#include <SDL/SDL.h>
+//#include "stdafx.h"
+//#include "SDL.h"
+#include <SDL/SDL.h>
 #include "Entity.h"
 
 using namespace std;
@@ -11,6 +11,7 @@ using namespace std;
 class Platform : public Entity {
 	public:
 		Platform() {}
+		virtual ~Platform() {}
 		Platform(int, int, int, int, int);
 	
 		//No behavior on collision

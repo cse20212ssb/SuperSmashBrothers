@@ -1,12 +1,11 @@
 #ifndef MEGAMAN_H
 #define MEGAMAN_H
 
-#include "SDL.h"
-#include "stdafx.h"
+//#include "SDL.h"
+//#include "stdafx.h"
 #include "BaseCharacter.h"
 #include "Entity.h"
-#include "Projectile.h"
-#include "Melee.h"
+
 
 class Megaman : public BaseCharacter{
 	public:
@@ -17,6 +16,7 @@ class Megaman : public BaseCharacter{
 		virtual void onCollision(Entity *);
 		virtual int getID() {return 2;}
 		virtual void drawTo (SDL_Surface *);
+		virtual void move();
 		
 		virtual void Atk();
 		virtual void releaseAtk();

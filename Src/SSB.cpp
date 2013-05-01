@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "SSB.h"
 #include <iostream>
 
@@ -86,7 +86,6 @@ int SSB::init() {
 
 	if (!js_0 && !js_1) {
 		cout << "No controller was found" << endl;
-		return 0;
 	}
 
 	player0 = new Megaman(330, 50);
@@ -102,6 +101,14 @@ int SSB::init() {
 	
 	entityList.push_back(player0);
 	entityList.push_back(player1);
+
+	map = SDL_LoadBMP("Images/Maps/FinalDest.bmp");
+	entityList.push_back(new Platform(50, 400 , 20, 700, 1));
+
+	//Sound stuff	
+	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+	bgMusic.load("./Sounds/backgroundMusic.wav");
+	bgMusic.play(-1);
 	return 1;
 }
 
@@ -165,8 +172,12 @@ void SSB::render() {
 }
 
 void SSB::cleanUp() {
-	delete screen, map, js_0, js_1;
+	Mix_CloseAudio();
+	//Screen deleted in SDL_Quit
+	delete map, js_0, js_1, sel, mapSel;
+	cout << "Non-Entity objects deleted" << endl;
 	for (int i = 0; i < entityList.size(); i++) {
+		cout << "Object of type " << entityList[i]->getID() << " begin deletion" << endl;
 		delete entityList[i];
 	}
 }
