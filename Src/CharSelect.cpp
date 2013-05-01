@@ -1,7 +1,10 @@
+#include "stdafx.h"
 #include "CharSelect.h"
 
 using namespace std;
 
+/*
+>>>>>>> BigSmoke
 int CharSelect::isConfirm(int t) {
 	if (t == 0) 
 		return isConfirm_0;
@@ -14,7 +17,7 @@ void CharSelect::toggle(int t) {
 	else
 		isConfirm_1 = !isConfirm_1;
 }
-
+*/
 void CharSelect::draw() {
 	SDL_Rect boxes_0;
 	boxes_0.x = 0;
@@ -63,8 +66,8 @@ void CharSelect::draw() {
 CharSelect::CharSelect(SDL_Surface *surf) {
 	isConfirm_0 = 0;
 	isConfirm_1 = 0;
-	boxes_sprite = SDL_LoadBMP("Images/CharSelect.bmp");
-	sel_sprite = SDL_LoadBMP("Images/Selection.bmp");
+	boxes_sprite = SDL_LoadBMP("Images/Misc/CharSelect.bmp");
+	sel_sprite = SDL_LoadBMP("Images/Misc/Selection.bmp");
 	SDL_SetColorKey(sel_sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sel_sprite->format, 255, 0, 0) );
 
 	screen = surf;

@@ -1,9 +1,9 @@
 #ifndef MAPSELECT_H
 #define MAPSELECT_H
 
-#include <SDL/SDL.h>
-//#include "SDL.h"
-//#include "stdafx.h"
+//#include <SDL/SDL.h>
+#include "SDL.h"
+#include "stdafx.h"
 
 class MapSelect {
 	public:
@@ -26,3 +26,4 @@ class MapSelect {
 };	
 
 #endif
+

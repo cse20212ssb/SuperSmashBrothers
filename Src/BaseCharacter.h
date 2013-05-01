@@ -1,9 +1,9 @@
 #ifndef BASECHARACTER_H
 #define BASECHARACTER_H
 
-//#include "SDL.h"
-//#include "stdafx.h"
-#include <SDL/SDL.h>
+#include "SDL.h"
+#include "stdafx.h"
+//#include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 #include "Entity.h"
 #include "Projectile.h"
@@ -21,8 +21,8 @@ class BaseCharacter : public Entity{
 
 		//Behavior on collision
 		virtual void onCollision(Entity *) {}
-		virtual int getID() {return 1;}
-		void drawTo(SDL_Surface *) {}
+		virtual int getID() {return 2;}
+		virtual void drawTo(SDL_Surface *){}
 
 		virtual void move() {}
 		void jump();

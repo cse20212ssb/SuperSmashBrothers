@@ -1,9 +1,12 @@
 #ifndef CHARSELECT_H
 #define CHARSELECT_H
 
-#include <SDL/SDL.h>
-//#include "SDL.h"
-//#include "stdafx.h"
+//#include <SDL/SDL.h>
+#include "SDL.h"
+#include "stdafx.h"
+#include <iostream>
+
+using namespace std;
 
 struct node {
 	int index;
@@ -24,10 +27,26 @@ class CharSelect {
 		void toDown(int which) {if (which == 1) head_1 = head_1->down; else head_0 = head_0->down;}
 
 		void draw();
+		void toggle(int t) {
+			if (t == 0)
+				isConfirm_0 = !isConfirm_0;
+			else
+				isConfirm_1 = !isConfirm_1;
+			cout << "sel 0: " << returnIndex(0) << endl;
+			cout << "sel 1: " << returnIndex(1) << endl;
+		};
 
-		void toggle(int);
-		int isConfirm(int);
-		
+		int isConfirm(int t) {
+			if (t == 0) 
+				return isConfirm_0;
+			return isConfirm_1;
+		}
+		int returnIndex(int index) {
+			if (index == 0)
+					return head_0->index;
+			return head_1->index;
+		}
+
 	private:
 		SDL_Surface *sel_sprite;
 		SDL_Surface *screen;
@@ -38,6 +57,7 @@ class CharSelect {
 		node *head_1;
 		int isConfirm_0;
 		int isConfirm_1;
+		int selection;
 };	
 
 #endif

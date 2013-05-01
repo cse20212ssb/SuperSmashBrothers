@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Megaman.h"
 #include <iostream>
 
@@ -121,8 +121,8 @@ void Megaman::onCollision(Entity *B) {
 				//Special Down projectiles created
 				velY = 0;
 				posY = B->getTop() - height;
-				Projectile *pj0 = new Projectile(posX + width/2, posY + 25, 6, 12, 3, 2);
-				Projectile *pj1 = new Projectile(posX + width/2 - 10, posY + 25, 6, 12, -3, 1);
+				Projectile *pj0 = new Projectile(posX + width/2, posY + 25, 6, 12, 3, 2, 0);
+				Projectile *pj1 = new Projectile(posX + width/2 - 10, posY + 25, 6, 12, -3, 1, 0);
 				projectileList.push_back(pj0);
 				projectileList.push_back(pj1);
 				isSpecDown = 0;
@@ -166,9 +166,9 @@ void Megaman::specialAtk() {
 	//Create a new projectile and add it to list
 	if (!isFastFall) {
 		if(faceDir == 1)
-			pj = new Projectile(posX + width, posY + 15, 6, 12, vel, 0);
+			pj = new Projectile(posX + width, posY + 15, 6, 12, vel, 0, 0);
 		else
-			pj = new Projectile(posX, posY + 15, 6, 12, vel, 0);
+			pj = new Projectile(posX, posY + 15, 6, 12, vel, 0, 0);
 		projectileList.push_back(pj);
 		isSpecial = 1;
 	}

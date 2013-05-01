@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "SSB.h"
 #include <iostream>
 
@@ -28,9 +28,23 @@ void SSB::fps_control() {
 		SDL_Delay(nextTick - SDL_GetTicks());
 	nextTick = SDL_GetTicks() + 1000 / FPS;
 }
-	
 
 void SSB::select() {
+	startSel = new startScreen(screen);
+	cout << "Start screen cleared" << endl;
+	sel = new CharSelect(screen);
+	cout << "CharSel clear" << endl;
+	mapSel = new MapSelect(screen);
+	cout << "Selection objects cleared" << endl;
+
+	queue.addSel(startSel, sel, mapSel);
+	while(startSel->isDone() < 0){
+		queue.resolveStartSel();
+		startSel->draw();
+	}
+
+
+	//Change to or later
 	while (!sel->isConfirm(0) && !sel->isConfirm(1)) {
 		queue.resolveCharSelect();
 		sel->draw();
@@ -51,13 +65,38 @@ void SSB::select() {
 	if(mapSel->isDone() == 0)
 		entityList.push_back(new Platform(50, 400 , 20, 700, 1));
 	else{
-		entityList.push_back(new Platform(150, 400 , 20, 400, 1));
+		entityList.push_back(new Platform(145, 400 ,20, 400, 1));
 		entityList.push_back(new Platform(160, 310, 28, 154, 0));
 		entityList.push_back(new Platform(480, 310, 28, 154, 0));
 		entityList.push_back(new Platform(325, 235, 28, 154, 0));
-		entityList.push_back(new Platform(150, 150, 28, 154, 0));
-		entityList.push_back(new Platform(550, 150, 28, 154, 0));
+		entityList.push_back(new Platform(155, 125, 28, 154, 0));
+		entityList.push_back(new Platform(555, 125, 28, 154, 0));
 	}
+	cout << "Platform clear" << endl;
+
+	if(sel->returnIndex(0) == 0)
+		player0 = new Megaman(330, 50);
+	else if(sel->returnIndex(0) == 1)
+		player0 = new BigSmoke(330, 50);
+	else if(sel->returnIndex(0) == 2)
+		player0 = new Megaman(330, 50);
+	else
+		player0 = new Megaman(330, 50);
+
+	if(sel->returnIndex(1) == 0)
+		player1 = new Megaman(430, 50);
+	else if(sel->returnIndex(1) == 1)
+		player1 = new BigSmoke(430, 50);
+	else if(sel->returnIndex(1) == 2)
+		player1 = new Megaman(430, 50);
+	else
+		player1 = new Megaman(430, 50);
+
+	//Loads players and CharSelect to the events class
+	queue.add(player0, player1);
+	
+	entityList.push_back(player0);
+	entityList.push_back(player1);
 }
 
 int SSB::init() {
@@ -87,28 +126,6 @@ int SSB::init() {
 	if (!js_0 && !js_1) {
 		cout << "No controller was found" << endl;
 	}
-
-	player0 = new Megaman(330, 50);
-	player1 = new Megaman(430, 50);
-
-	sel = new CharSelect(screen);
-	cout << "CharSel clear" << endl;
-	mapSel = new MapSelect(screen);
-	cout << "Selection objects cleared" << endl;
-
-	//Loads players and CharSelect to the events class
-	queue.add(player0, player1, sel, mapSel);
-	
-	entityList.push_back(player0);
-	entityList.push_back(player1);
-
-	map = SDL_LoadBMP("Images/Maps/FinalDest.bmp");
-	entityList.push_back(new Platform(50, 400 , 20, 700, 1));
-
-	//Sound stuff	
-	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
-	bgMusic.load("./Sounds/backgroundMusic.wav");
-	bgMusic.play(-1);
 	return 1;
 }
 

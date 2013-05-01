@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "BaseCharacter.h"
 #include <iostream>
 
@@ -71,5 +71,3 @@ void BaseCharacter::offScreen(){
 	if(posY < 0) posY = 400;
 	else if(posY > 400) posY = 0;
 }
-
-

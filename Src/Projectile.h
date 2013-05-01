@@ -1,9 +1,9 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
-//#include "stdafx.h"
-//#include "SDL.h"
-#include <SDL/SDL.h>
+#include "stdafx.h"
+#include "SDL.h"
+//#include <SDL/SDL.h>
 #include "Entity.h"
 
 using namespace std;
@@ -11,7 +11,7 @@ using namespace std;
 class Projectile : public Entity{
 	public:
 		Projectile() {}
-		Projectile(int, int, int, int, int, int);
+		Projectile(int, int, int, int, int, int, int);
 
 		virtual void onCollision(Entity *);
 		virtual int getID() {return ID;}

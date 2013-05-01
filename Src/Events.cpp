@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Events.h"
 #include <iostream>
 
@@ -9,12 +9,18 @@ Events::Events() {
 }
 
 //Load objects to the Event
-void Events::add(BaseCharacter *obj0, BaseCharacter *obj1, CharSelect *obj2, MapSelect *obj3) {
+void Events::add(BaseCharacter *obj0, BaseCharacter *obj1) {
 	player0 = obj0;
 	player1 = obj1;
-	charSel = obj2;
-	mapSel = obj3;
+	
 }
+
+void Events::addSel(startScreen *obj2, CharSelect *obj3, MapSelect *obj4) {
+	startSel = obj2;
+	charSel = obj3;
+	mapSel = obj4;
+}
+ 
 
 //Pushes collision event to queue
 void Events::addCollision(Entity *obj0, Entity *obj1) {
@@ -58,10 +64,10 @@ int Events::resolve() {
 				//Horizontal movement
 				if (event.jaxis.axis == 0) {
 					//Right
-					if (event.jaxis.value > 0)
+					if (event.jaxis.value > -257)
 						select->setMoveDir(1);
 					//Left
-					else if (event.jaxis.value < 0)
+					else if (event.jaxis.value < -257)
 						select->setMoveDir(-1);
 					//Centered
 					else 
@@ -70,12 +76,12 @@ int Events::resolve() {
 				//Vertical Movement
 				else if (event.jaxis.axis == 1) {
 					//Up
-					if (event.jaxis.value < 0) {
+					if (event.jaxis.value < -257) {
 						if (select->jumpable()) 
 							select->jump();
 					}
 					//Down
-					else if (event.jaxis.value > 0)
+					else if (event.jaxis.value > -257)
 						select->fastFall();
 					//Centered
 					else {}
@@ -140,19 +146,19 @@ void Events::resolveCharSelect() {
 					//Horizontal movement
 					if (event.jaxis.axis == 0) {
 						//Right
-						if (event.jaxis.value > 0) 
+						if (event.jaxis.value > -257) 
 							charSel->toRight(event.jaxis.which);
 						//Left
-						else if (event.jaxis.value < 0)
+						else if (event.jaxis.value < -257)
 							charSel->toLeft(event.jaxis.which);
 					}
 					//Vertical Movement
 					else if (event.jaxis.axis == 1) {
 						//Up
-						if (event.jaxis.value < 0) 
+						if (event.jaxis.value < -257) 
 							charSel->toUp(event.jaxis.which);
 						//Down
-						else if (event.jaxis.value > 0)
+						else if (event.jaxis.value > -257)
 							charSel->toDown(event.jaxis.which);
 					}
 				}
@@ -178,11 +184,12 @@ void Events::resolveMapSel() {
 				//Horizontal movement
 				if (event.jaxis.axis == 0) {
 					//Right
-					if (event.jaxis.value > 0) 
+					if (event.jaxis.value > -257) 
 						mapSel->toRight();
 					//Left
-					else if (event.jaxis.value < 0)
+					else if (event.jaxis.value < -257)
 						mapSel->toLeft();
+
 				}
 			break;
 			
@@ -197,3 +204,26 @@ void Events::resolveMapSel() {
 		}
 	}
 }
+
+void Events::resolveStartSel() {
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+			case SDL_JOYAXISMOTION:
+				//Horizontal movement
+				if (event.jaxis.axis == 0) {
+				}
+			break;
+			
+			//Start button
+			case SDL_JOYBUTTONDOWN:
+			case SDL_JOYBUTTONUP:
+				if (event.jbutton.state == SDL_PRESSED) {
+					if (event.jbutton.button == 9)
+						startSel->select();
+				}		
+			break;
+		}
+	}
+}
+
