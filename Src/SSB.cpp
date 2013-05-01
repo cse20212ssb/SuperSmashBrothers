@@ -31,12 +31,21 @@ void SSB::fps_control() {
 	
 
 void SSB::select() {
+	startSel = new startScreen(screen);
+	cout << "Start screen cleared" << endl;
+	sel = new CharSelect(screen);
+	cout << "CharSel clear" << endl;
+	mapSel = new MapSelect(screen);
+	cout << "Selection objects cleared" << endl;
+
+	queue.addSel(startSel, sel, mapSel);
 	while(startSel->isDone() < 0){
 		queue.resolveStartSel();
 		startSel->draw();
 	}
 
 
+	//Change to or later
 	while (!sel->isConfirm(0) && !sel->isConfirm(1)) {
 		queue.resolveCharSelect();
 		sel->draw();
@@ -64,6 +73,30 @@ void SSB::select() {
 		entityList.push_back(new Platform(155, 125, 28, 154, 0));
 		entityList.push_back(new Platform(555, 125, 28, 154, 0));
 	}
+
+	if(sel->returnIndex(0) == 0)
+		player0 = new Megaman(330, 50);
+	else if(sel->returnIndex(0) == 1)
+		player0 = new BigSmoke(330, 50);
+	else if(sel->returnIndex(0) == 2)
+		player0 = new Megaman(330, 50);
+	else
+		player0 = new Megaman(330, 50);
+
+	if(sel->returnIndex(1) == 0)
+		player1 = new Megaman(430, 50);
+	else if(sel->returnIndex(1) == 1)
+		player1 = new BigSmoke(430, 50);
+	else if(sel->returnIndex(1) == 2)
+		player1 = new Megaman(430, 50);
+	else
+		player1 = new Megaman(430, 50);
+
+	//Loads players and CharSelect to the events class
+	queue.add(player0, player1);
+	
+	entityList.push_back(player0);
+	entityList.push_back(player1);
 }
 
 int SSB::init() {
@@ -95,21 +128,7 @@ int SSB::init() {
 		return 0;
 	}
 
-	player0 = new Megaman(330, 50);
-	player1 = new Megaman(430, 50);
-
-	startSel = new startScreen(screen);
-	cout << "Start screen cleared" << endl;
-	sel = new CharSelect(screen);
-	cout << "CharSel clear" << endl;
-	mapSel = new MapSelect(screen);
-	cout << "Selection objects cleared" << endl;
-
-	//Loads players and CharSelect to the events class
-	queue.add(player0, player1, startSel, sel, mapSel);
 	
-	entityList.push_back(player0);
-	entityList.push_back(player1);
 	return 1;
 }
 

@@ -20,7 +20,8 @@ class Events {
 		void resolveCharSelect();
 		void resolveMapSel();
 		void addCollision(Entity *, Entity *);
-		void add(BaseCharacter *, BaseCharacter *, startScreen *, CharSelect *, MapSelect *);
+		void add(BaseCharacter *, BaseCharacter *);
+		void addSel(startScreen *, CharSelect *, MapSelect *);
 
 	private:
 		BaseCharacter *player0, *player1;

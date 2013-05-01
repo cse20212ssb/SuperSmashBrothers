@@ -1,17 +1,17 @@
 #include "stdafx.h"
-#include "Megaman.h"
+#include "BigSmoke.h"
 #include <iostream>
 
 using namespace std;
 
-//height and width are constant to Megaman
-Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 33, 31){
+//height and width are constant to BigSmoke
+BigSmoke::BigSmoke(int x, int y) : BaseCharacter(x, y, 30, 33){
 	//Load sprite sheet
-	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Megaman.bmp");
+	sprite = SDL_LoadBMP("Images/Sprites/BigSmoke/BigSmoke.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 }
 
-void Megaman::onCollision(Entity *B) {
+void BigSmoke::onCollision(Entity *B) {
 	//Platform
 	if (B->getID() == 3) {
 		//If bottom border is in a certain range of the platform
@@ -33,8 +33,8 @@ void Megaman::onCollision(Entity *B) {
 				//Special Down projectiles created
 				velY = 0;
 				posY = B->getTop() - height;
-				Projectile *pj0 = new Projectile(posX + width/2, posY + 25, 6, 12, 3, 2, 0);
-				Projectile *pj1 = new Projectile(posX + width/2 - 10, posY + 25, 6, 12, -3, 1,0);
+				Projectile *pj0 = new Projectile(posX + width/2, posY + 25, 6, 12, 3, 2,1);
+				Projectile *pj1 = new Projectile(posX + width/2 - 10, posY + 25, 6, 12, -3, 1,1);
 				projectileList.push_back(pj0);
 				projectileList.push_back(pj1);
 				isSpecDown = 0;
@@ -61,16 +61,16 @@ void Megaman::onCollision(Entity *B) {
 	*/
 }
 
-void Megaman::specialAtk() {
+void BigSmoke::specialAtk() {
 	int vel = faceDir * 10;
 
 	Projectile *pj;
 	//Create a new projectile and add it to list
 	if (!isFastFall) {
 		if(faceDir == 1)
-			pj = new Projectile(posX + width, posY + 15, 6, 12, vel, 0, 0);
+			pj = new Projectile(posX + width, posY + 15, 6, 12, vel, 0, 1);
 		else
-			pj = new Projectile(posX, posY + 15, 6, 12, vel, 0, 0);
+			pj = new Projectile(posX, posY + 15, 6, 12, vel, 0, 1);
 		projectileList.push_back(pj);
 		isSpecial = 1;
 	}
@@ -78,25 +78,25 @@ void Megaman::specialAtk() {
 		isSpecDown = 1;
 }
 
-void Megaman::releaseSpecialAtk() {
+void BigSmoke::releaseSpecialAtk() {
 	isSpecial = 0;
 }
 
-void Megaman::Atk(){
+void BigSmoke::Atk(){
 	Melee *sword;
 	//Create a new sword and add it to list
 	if(faceDir == 1){
-		sword = new Melee(posX + width, posY + 50, 18, 28, 0, faceDir);
+		sword = new Melee(posX + width, posY + 40, 18, 28, 1, faceDir);
 	}
 	else{
-		sword = new Melee(posX, posY + 25, 18, 28, 0, faceDir);
+		sword = new Melee(posX, posY + 25, 18, 28, 1, faceDir);
 	}
 
 	meleeList.push_back(sword);
 	isAtk = 1;
 }
 
-void Megaman::releaseAtk(){
+void BigSmoke::releaseAtk(){
 	isAtk = 0;
 	for(int i = 0; i < meleeList.size(); i++)
 		meleeList[i] -> setIsGone(1);
@@ -104,7 +104,7 @@ void Megaman::releaseAtk(){
 }
 
 //Draws onto specified surface
-void Megaman::drawTo(SDL_Surface *surf) {
+void BigSmoke::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
 	
 	if (isGhost && jumpCount == 0)
@@ -113,7 +113,7 @@ void Megaman::drawTo(SDL_Surface *surf) {
 	else if (jumpCount > 0 || velY > 3) {
 		src.x = 4 * width;
 		//If jumping and special attacking
-		if (isAtk || isSpecial) src.x += width * 13;
+		if (isAtk || isSpecial) src.x += width * 8;
 	}
 	//if on ground
 	else if (moveDir != 0) {
@@ -126,12 +126,12 @@ void Megaman::drawTo(SDL_Surface *surf) {
 		else if (frame == 3) src.x = width * 2;
 		else src.x = width;
 		//If running and special attacking
-		if (isSpecial || isAtk) src.x += width * 13;
+		if (isSpecial || isAtk) src.x += width * 8;
 	}
 	else {
 		//If standing and special attacking
 		if (isSpecial || isAtk){
-			src.x = width * 9;
+			src.x = width * 7;
 		}
 		else{
 			src.x = 0;

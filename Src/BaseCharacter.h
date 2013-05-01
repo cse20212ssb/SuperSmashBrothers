@@ -17,7 +17,7 @@ class BaseCharacter : public Entity{
 		//Behavior on collision
 		virtual void onCollision(Entity *) {}
 		virtual int getID() {return 2;}
-		void drawTo(SDL_Surface *);
+		virtual void drawTo(SDL_Surface *){}
 
 		virtual void move();
 		void jump();

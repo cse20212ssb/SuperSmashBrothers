@@ -11,6 +11,7 @@
 #include "Entity.h"
 #include "Platform.h"
 #include "Megaman.h"
+#include "BigSmoke.h"
 #include "BaseCharacter.h"
 #include "CharSelect.h"
 #include "MapSelect.h"

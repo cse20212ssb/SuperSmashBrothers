@@ -1,5 +1,5 @@
-#ifndef MEGAMAN_H
-#define MEGAMAN_H
+#ifndef BIGSMOKE_H
+#define BIGSMOKE_H
 
 #include "SDL.h"
 #include "stdafx.h"
@@ -8,10 +8,10 @@
 #include "Projectile.h"
 #include "Melee.h"
 
-class Megaman : public BaseCharacter{
+class BigSmoke : public BaseCharacter{
 	public:
-		Megaman() {}
-		Megaman(int x, int y);
+		BigSmoke() {}
+		BigSmoke(int x, int y);
 
 		//Behavior on collision
 		virtual void onCollision(Entity *);
@@ -25,6 +25,7 @@ class Megaman : public BaseCharacter{
 		virtual void specialAtk();
 		virtual void releaseSpecialAtk();
 		virtual void drawTo(SDL_Surface *);
+
 	
 };
 

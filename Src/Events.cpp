@@ -9,13 +9,18 @@ Events::Events() {
 }
 
 //Load objects to the Event
-void Events::add(BaseCharacter *obj0, BaseCharacter *obj1, startScreen *obj2, CharSelect *obj3, MapSelect *obj4) {
+void Events::add(BaseCharacter *obj0, BaseCharacter *obj1) {
 	player0 = obj0;
 	player1 = obj1;
+	
+}
+
+void Events::addSel(startScreen *obj2, CharSelect *obj3, MapSelect *obj4) {
 	startSel = obj2;
 	charSel = obj3;
 	mapSel = obj4;
 }
+ 
 
 //Pushes collision event to queue
 void Events::addCollision(Entity *obj0, Entity *obj1) {

@@ -60,6 +60,12 @@
     <ClInclude Include="MapSelect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="startScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BigSmoke.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -99,6 +105,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MapSelect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="startScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BigSmoke.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
