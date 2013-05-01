@@ -65,7 +65,7 @@ void BigSmoke::move() {
 		if (faceDir == 1)
 			if(jumpCount > 0 || velY > 3){
 				meleeList[i] -> setPosX(posX + width * faceDir - 11);
-				meleeList[i] -> setPosY(posY+1);
+				meleeList[i] -> setPosY(posY+3);
 			}
 			else{
 				meleeList[i] -> setPosX(posX + width * faceDir - 11);
@@ -160,7 +160,6 @@ void BigSmoke::releaseSpecialAtk() {
 }
 
 void BigSmoke::Atk(){
-	sfx.play(0);
 	Melee *sword;
 	//Create a new sword and add it to list
 	if(faceDir == 1)
@@ -213,9 +212,10 @@ void BigSmoke::drawTo(SDL_Surface *surf) {
 	else {
 		aniCounter[WALKING] = 0;
 		//If standing and special attacking
-		if (isSpecial || isAtk){
+		if (isSpecial)
 			src.x = width * 7;
-		}
+		else if (isAtk) 
+			src.x = width * 8;
 		else{
 			src.x = 0;
 		}

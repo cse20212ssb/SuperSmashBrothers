@@ -168,7 +168,7 @@ void Events::resolveCharSelect() {
 			case SDL_JOYBUTTONDOWN:
 			case SDL_JOYBUTTONUP:
 				if (event.jbutton.state == SDL_PRESSED) {
-					if (event.jbutton.button == 1)
+					if (event.jbutton.button == 9)
 						charSel->toggle(event.jbutton.which);
 				}		
 			break;
