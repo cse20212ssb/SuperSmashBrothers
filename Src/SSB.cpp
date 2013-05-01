@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "SSB.h"
 #include <iostream>
 
@@ -73,6 +73,7 @@ void SSB::select() {
 		entityList.push_back(new Platform(155, 125, 28, 154, 0));
 		entityList.push_back(new Platform(555, 125, 28, 154, 0));
 	}
+	cout << "Platform clear" << endl;
 
 	if(sel->returnIndex(0) == 0)
 		player0 = new Megaman(330, 50);

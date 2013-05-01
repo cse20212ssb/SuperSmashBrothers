@@ -1,6 +1,6 @@
 SDL=`sdl-config --libs`
 
-OBJ=main.o SSB.o Events.o BaseCharacter.o Megaman.o Entity.o Platform.o Projectile.o CharSelect.o Melee.o
+OBJ=main.o SSB.o Events.o BaseCharacter.o Megaman.o Entity.o Platform.o Projectile.o CharSelect.o Melee.o MapSelect.o BigSmoke.o startScreen.o
 
 all:	main
 
@@ -8,7 +8,6 @@ main:	script $(OBJ)
 	g++ $(SDL) $(OBJ) -o main
 
 script:
-	./toLinux.sh
 
 %.o:	%.cpp
 	g++ $(SDL) -c $<

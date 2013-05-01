@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "CharSelect.h"
 
 using namespace std;
@@ -66,8 +66,8 @@ void CharSelect::draw() {
 CharSelect::CharSelect(SDL_Surface *surf) {
 	isConfirm_0 = 0;
 	isConfirm_1 = 0;
-	boxes_sprite = SDL_LoadBMP("Images/misc/CharSelect.bmp");
-	sel_sprite = SDL_LoadBMP("Images/misc/Selection.bmp");
+	boxes_sprite = SDL_LoadBMP("Images/Misc/CharSelect.bmp");
+	sel_sprite = SDL_LoadBMP("Images/Misc/Selection.bmp");
 	SDL_SetColorKey(sel_sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sel_sprite->format, 255, 0, 0) );
 
 	screen = surf;

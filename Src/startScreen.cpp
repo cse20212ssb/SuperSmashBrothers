@@ -1,5 +1,5 @@
-#include "SDL.h"
-#include "stdafx.h"
+//#include "SDL.h"
+//#include "stdafx.h"
 #include "startScreen.h"
 
 using namespace std;
@@ -23,7 +23,7 @@ void startScreen::draw() {
 }
 
 startScreen::startScreen(SDL_Surface *surf) {
-	map = SDL_LoadBMP("Images/misc/mainscreen2.bmp");
+	map = SDL_LoadBMP("Images/Misc/mainscreen2.bmp");
 
 	screen = surf;
 
