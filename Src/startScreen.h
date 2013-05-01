@@ -1,9 +1,9 @@
 #ifndef STARTSCREEN_H
 #define STARTSCREEN_H
 
-#include <SDL/SDL.h>
-//#include "SDL.h"
-//#include "stdafx.h"
+//#include <SDL/SDL.h>
+#include "SDL.h"
+#include "stdafx.h"
 
 class startScreen {
 	public:

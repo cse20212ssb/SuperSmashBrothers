@@ -1,9 +1,9 @@
 #ifndef CHARSELECT_H
 #define CHARSELECT_H
 
-#include <SDL/SDL.h>
-//#include "SDL.h"
-//#include "stdafx.h"
+//#include <SDL/SDL.h>
+#include "SDL.h"
+#include "stdafx.h"
 #include <iostream>
 
 using namespace std;

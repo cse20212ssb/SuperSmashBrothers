@@ -1,9 +1,9 @@
 #ifndef BASECHARACTER_H
 #define BASECHARACTER_H
 
-//#include "SDL.h"
-//#include "stdafx.h"
-#include <SDL/SDL.h>
+#include "SDL.h"
+#include "stdafx.h"
+//#include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 #include "Entity.h"
 #include "Projectile.h"

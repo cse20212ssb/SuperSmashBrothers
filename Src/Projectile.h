@@ -1,9 +1,9 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
-//#include "stdafx.h"
-//#include "SDL.h"
-#include <SDL/SDL.h>
+#include "stdafx.h"
+#include "SDL.h"
+//#include <SDL/SDL.h>
 #include "Entity.h"
 
 using namespace std;
