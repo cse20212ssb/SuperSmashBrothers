@@ -10,12 +10,16 @@ void SSB::execute() {
 		select();
 		//Main game loop
 		int running = 1;
+		Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+		bgMusic.load("Sounds/backgroundMusic.wav");
+		bgMusic.play(-1);
 		while (running) {
 			fps_control();
 			running = events();
 			loop();
 			render();
 		}
+		Mix_CloseAudio();
 		cleanUp();
 	}
 	else cout << "SSB init failed" << endl;
@@ -189,11 +193,11 @@ void SSB::render() {
 }
 
 void SSB::cleanUp() {
-	Mix_CloseAudio();
 	//Screen deleted in SDL_Quit
 	delete map, js_0, js_1, sel, mapSel;
 	cout << "Non-Entity objects deleted" << endl;
 	for (int i = 0; i < entityList.size(); i++) {
+		cout << i << endl;
 		cout << "Object of type " << entityList[i]->getID() << " begin deletion" << endl;
 		delete entityList[i];
 	}

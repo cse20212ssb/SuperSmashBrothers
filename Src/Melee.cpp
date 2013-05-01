@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "Melee.h"
-#include "Entity.h"
-#include "BaseCharacter.h"
 #include <iostream>
 
 using namespace std;

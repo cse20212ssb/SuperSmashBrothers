@@ -14,10 +14,86 @@ BigSmoke::BigSmoke(int x, int y) : BaseCharacter(x, y, 30, 33){
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 }
 
+//Movement in both x and y directions
+void BigSmoke::move() {	
+	maxVelX = 3;
+	if (moveDir != 0 && !isGhost) {
+		accelX = .33 * moveDir;
+	}
+	else {
+		double accelResist = .25;
+		if (isGhost) accelResist = 0;
+		if (velX > 0) accelX = -accelResist;
+		if (velX < 0) accelX = accelResist;
+		if (velX < 1 && velX > -1) {
+			velX = 0;
+			accelX = 0;
+		}
+	}
+
+	accelY = 0.3;
+
+	velX += accelX;
+	velY += accelY;
+
+	if (velX > maxVelX) velX = maxVelX;
+	if (velX < -maxVelX) velX = -maxVelX;
+	if (velY > maxVelY) velY = maxVelY;
+	if (velY < -maxVelY) velY = -maxVelY;
+
+	posX += velX;
+	posY += velY;
+
+	updateBorders();
+	offScreen();
+
+	//Loop through all projectiles and provide movement
+	for(int i = 0; i < projectileList.size(); i++){
+		projectileList[i]->move();
+		projectileList[i]->updateBorders();
+		if (projectileList[i]->getRight() > 800 || projectileList[i]->getLeft() < 0 || projectileList[i]->getIsGone())
+			removeProj(i);
+	}
+
+	//Loop through all melee of player 1
+	for(int i = 0; i < meleeList.size(); i++){
+		//Move the sword along with Megaman, updating the direction
+		meleeList[i] -> updateFaceDir(faceDir);
+		//Right
+		if (faceDir == 1)
+			if(jumpCount > 0 || velY > 3){
+				meleeList[i] -> setPosX(posX + width * faceDir - 11);
+				meleeList[i] -> setPosY(posY+1);
+			}
+			else{
+				meleeList[i] -> setPosX(posX + width * faceDir - 11);
+				meleeList[i] -> setPosY(posY+9);
+			}
+		//Left
+		else {
+			if(jumpCount > 0 || velY > 3){
+				meleeList[i] -> setPosX(posX + width * faceDir + 14);
+				meleeList[i] -> setPosY(posY+3);
+			}
+			else{
+				meleeList[i] -> setPosX(posX + width * faceDir + 10);
+				meleeList[i] -> setPosY(posY+11);
+			}
+		}
+
+		
+		meleeList[i]->updateBorders();
+		if (meleeList[i]->getIsGone()) {
+			isAtk = 0;
+			removeMelee(i);
+		}
+	}
+}
+
 void BigSmoke::onCollision(Entity *B) {
 	//Platform
 	if (B->getID() == 3) {
-		//If bottmakeom border is in a certain range of the platform
+		//If bottom border is in a certain range of the platform
 		if (velY > 0 && getBot() > B->getTop() - 5 && getBot() < (B->getBot() + B->getTop()) / 2) {
 			if (!isSpecDown) {
 				//Gives the character a "bounce"
@@ -33,13 +109,8 @@ void BigSmoke::onCollision(Entity *B) {
 				isGhost = 0;
 			}
 			else {
-				//Special Down projectiles created
 				velY = 0;
 				posY = B->getTop() - height;
-				Projectile *pj0 = new Projectile(posX + width/2, posY + 25, 6, 12, 3, 2,1);
-				Projectile *pj1 = new Projectile(posX + width/2 - 10, posY + 25, 6, 12, -3, 1,1);
-				projectileList.push_back(pj0);
-				projectileList.push_back(pj1);
 				isSpecDown = 0;
 				isFastFall = 0;
 			}
@@ -71,9 +142,9 @@ void BigSmoke::specialAtk() {
 	//Create a new projectile and add it to list
 	if (!isFastFall) {
 		if(faceDir == 1)
-			pj = new Projectile(posX + width, posY + 15, 6, 12, vel, 0, 1);
+			pj = new Projectile(posX + width - 8, posY + 11, 6, 12, vel, 0, 1);
 		else
-			pj = new Projectile(posX, posY + 15, 6, 12, vel, 0, 1);
+			pj = new Projectile(posX - 1, posY + 11, 6, 12, vel, 0, 1);
 		projectileList.push_back(pj);
 		isSpecial = 1;
 	}
@@ -86,52 +157,38 @@ void BigSmoke::releaseSpecialAtk() {
 }
 
 void BigSmoke::Atk(){
+	sfx.play(0);
 	Melee *sword;
 	//Create a new sword and add it to list
-	if(faceDir == 1){
-		sword = new Melee(posX + width, posY + 40, 18, 28, 1, faceDir);
-	}
-	else{
-		sword = new Melee(posX, posY + 25, 18, 28, 1, faceDir);
-	}
-
+	if(faceDir == 1)
+		//Ignore position here, actually set in move function
+		sword = new Melee(posX + width, posY + 15, 13, 28, 1, faceDir);
+	else
+		sword = new Melee(posX, posY + 15, 13, 28, 1, faceDir);
+	
 	meleeList.push_back(sword);
 	isAtk = 1;
 }
-
 void BigSmoke::releaseAtk(){
 	isAtk = 0;
 	for(int i = 0; i < meleeList.size(); i++)
 		meleeList[i] -> setIsGone(1);
-	//cout << "getMeleeGone = " << getMeleeGone() << endl;
+	aniCounter[WALKING] = 0;
 }
-
 //Draws onto specified surface
 void BigSmoke::drawTo(SDL_Surface *surf) {
-		SDL_Rect src;
+	SDL_Rect src;
 	
 	if (isGhost && jumpCount == 0)
 		src.x = 5 * width;
 	//if in air
 	else if (jumpCount > 0 || velY > 3 || velY < -3) {
-		if (isAerial) {
-			int numOfSprites = 4;
-			int timePerSprite = 5;
-			if (aniCounter[AERIAL] > numOfSprites * timePerSprite) 
-				aniCounter[AERIAL] = 0;
-			int frame = aniCounter[AERIAL] / timePerSprite;
-
-			if (frame == 0) src.x = 10 * width;
-			else if (frame == 1) src.x = 11 * width;
-			else if (frame == 2) src.x = 12 * width;
-			else src.x = 4 * width;
-		
-			aniCounter[AERIAL]++;
-		}
+		src.x = 4 * width;
 		//If jumping and special attacking
-		else if (isAtk || isSpecial) src.x = width * 17;
+		if (isSpecial) src.x += width * 8;
+		//If jumping and attacking
+		else if (isAtk) src.x += width * 9;
 		else src.x = 4 * width;
-		
 	}
 	//if on ground
 	else if (moveDir != 0) {
@@ -145,8 +202,9 @@ void BigSmoke::drawTo(SDL_Surface *surf) {
 		else if (frame == 2) src.x = width * 3;
 		else if (frame == 3) src.x = width * 2;
 		else src.x = width;
+
 		//If running and special attacking
-		if (isSpecial || isAtk) src.x += width * 13;
+		if (isSpecial || isAtk) src.x += width * 8;
 
 		aniCounter[WALKING]++;
 	}
@@ -154,7 +212,7 @@ void BigSmoke::drawTo(SDL_Surface *surf) {
 		aniCounter[WALKING] = 0;
 		//If standing and special attacking
 		if (isSpecial || isAtk){
-			src.x = width * 9;
+			src.x = width * 7;
 		}
 		else{
 			src.x = 0;
@@ -162,7 +220,7 @@ void BigSmoke::drawTo(SDL_Surface *surf) {
 	}
 
 	//If left or right
-	if (faceDir == 1 && !isAerial) src.y = 33;
+	if (faceDir == 1) src.y = 33;
 	else src.y = 0;
 
 	src.w = width;
@@ -179,7 +237,6 @@ void BigSmoke::drawTo(SDL_Surface *surf) {
 		projectileList[i] -> drawTo(surf);
 	}
 	
-
 	//Loop through melee and provide display
 	for(int i = 0; i < meleeList.size(); i++){
 		meleeList[i] -> drawTo(surf);
