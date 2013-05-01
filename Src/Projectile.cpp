@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Projectile.h"
 #include <iostream>
 
@@ -18,6 +18,8 @@ Projectile::Projectile(int x,int y, int h, int w, int t_vel, int t_type, int pro
 		sprite = SDL_LoadBMP("Images/Sprites/Megaman/Projectiles.bmp");
 	else if(projID == 1)
 		sprite = SDL_LoadBMP("Images/Sprites/BigSmoke/bullet.bmp");
+	else if(projID == 2)
+		sprite = SDL_LoadBMP("Images/Sprites/Megaman/Projectiles.bmp");
 	else
 		sprite = SDL_LoadBMP("Images/Sprites/Megaman/Projectiles.bmp");
 

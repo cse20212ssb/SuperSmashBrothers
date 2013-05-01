@@ -1,9 +1,9 @@
 #ifndef SSB_H
 #define SSB_H
 
-//#include "stdafx.h"
-//#include "SDL.h"
-#include <SDL/SDL.h>
+#include "stdafx.h"
+#include "SDL.h"
+//#include <SDL/SDL.h>
 #include <iostream>
 #include <vector>
 
@@ -12,6 +12,7 @@
 #include "Platform.h"
 #include "Megaman.h"
 #include "BigSmoke.h"
+#include "Firebat.h"
 #include "BaseCharacter.h"
 #include "CharSelect.h"
 #include "MapSelect.h"

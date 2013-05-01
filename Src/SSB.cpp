@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "SSB.h"
 #include <iostream>
 
@@ -73,14 +73,13 @@ void SSB::select() {
 		entityList.push_back(new Platform(155, 125, 28, 154, 0));
 		entityList.push_back(new Platform(555, 125, 28, 154, 0));
 	}
-	cout << "Platform clear" << endl;
 
 	if(sel->returnIndex(0) == 0)
 		player0 = new Megaman(330, 50);
 	else if(sel->returnIndex(0) == 1)
 		player0 = new BigSmoke(330, 50);
-	else if(sel->returnIndex(0) == 2)
-		player0 = new Megaman(330, 50);
+	else if(sel->returnIndex(0) == 3)
+		player0 = new Firebat(330, 50);
 	else
 		player0 = new Megaman(330, 50);
 
@@ -88,8 +87,8 @@ void SSB::select() {
 		player1 = new Megaman(430, 50);
 	else if(sel->returnIndex(1) == 1)
 		player1 = new BigSmoke(430, 50);
-	else if(sel->returnIndex(1) == 2)
-		player1 = new Megaman(430, 50);
+	else if(sel->returnIndex(1) == 3)
+		player1 = new Firebat(430, 50);
 	else
 		player1 = new Megaman(430, 50);
 

@@ -1,4 +1,4 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "Melee.h"
 #include "Entity.h"
 #include "BaseCharacter.h"
@@ -10,13 +10,21 @@ Melee::Melee(int x,int y, int h, int w, int t_type, int dir) : Entity (x, y, h, 
 	faceDir = dir;
 	if(t_type == 0){
 		sprite = SDL_LoadBMP("Images/Sprites/Megaman/Sword.bmp");
+		SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 	}
 	else if(t_type == 1){
 		sprite = SDL_LoadBMP("Images/Sprites/BigSmoke/Bat.bmp");
+		SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 	}
-	else
+	else if(t_type == 3){
+		sprite = SDL_LoadBMP("Images/Sprites/Firebat/fire.bmp");
+		SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 0, 255, 0) );
+	}
+	else{
 		sprite = SDL_LoadBMP("Images/Sprites/Megaman/Sword.bmp");
-	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
+		SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
+	}
+	
 	isGone = 0;
 	aniCounter = 0;
 
