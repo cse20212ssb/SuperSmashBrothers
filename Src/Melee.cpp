@@ -1,19 +1,13 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Melee.h"
 #include <iostream>
 
 using namespace std;
 
-Melee::Melee(int x,int y, int h, int w, int t_type, int dir) : Entity (x, y, h, w) {
+Melee::Melee(int x,int y, int h, int w, int dir, SDL_Surface *t_sprite) : Entity (x, y, h, w) {
 	faceDir = dir;
-	if(t_type == 0){
-		sprite = SDL_LoadBMP("Images/Sprites/Megaman/Sword.bmp");
-	}
-	else if(t_type == 1){
-		sprite = SDL_LoadBMP("Images/Sprites/BigSmoke/Bat.bmp");
-	}
-	else
-		sprite = SDL_LoadBMP("Images/Sprites/Megaman/Sword.bmp");
+	sprite = t_sprite;
+
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 	isGone = 0;
 	counter = 0;

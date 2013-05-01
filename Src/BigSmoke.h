@@ -1,8 +1,8 @@
 #ifndef BIGSMOKE_H
 #define BIGSMOKE_H
 
-#include "SDL.h"
-#include "stdafx.h"
+//#include "SDL.h"
+//#include "stdafx.h"
 #include "BaseCharacter.h"
 #include "Entity.h"
 #include "Projectile.h"

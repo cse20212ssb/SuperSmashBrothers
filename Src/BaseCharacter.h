@@ -1,9 +1,9 @@
 #ifndef BASECHARACTER_H
 #define BASECHARACTER_H
 
-#include "SDL.h"
-#include "stdafx.h"
-//#include <SDL/SDL.h>
+//#include "SDL.h"
+//#include "stdafx.h"
+#include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 #include "Entity.h"
 #include "Projectile.h"
@@ -46,6 +46,8 @@ class BaseCharacter : public Entity{
 		void offScreen();
 
 	protected:
+		SDL_Surface *meleeSprite;
+		SDL_Surface *projSprite;
 		//Audio for class
 		Jukebox sfx;
 		//Keeps track of jumps (max of two)

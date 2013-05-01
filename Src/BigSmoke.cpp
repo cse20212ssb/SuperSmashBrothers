@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "BigSmoke.h"
 #include <iostream>
 
@@ -11,6 +11,8 @@ using namespace std;
 BigSmoke::BigSmoke(int x, int y) : BaseCharacter(x, y, 30, 33){
 	//Load sprite sheet
 	sprite = SDL_LoadBMP("Images/Sprites/BigSmoke/BigSmoke.bmp");
+	projSprite = SDL_LoadBMP("Images/Sprites/BigSmoke/bullet.bmp");
+	meleeSprite = SDL_LoadBMP("Images/Sprites/BigSmoke/Bat.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 }
 
@@ -109,6 +111,7 @@ void BigSmoke::onCollision(Entity *B) {
 				isGhost = 0;
 			}
 			else {
+				//Special down here
 				velY = 0;
 				posY = B->getTop() - height;
 				isSpecDown = 0;
@@ -142,9 +145,9 @@ void BigSmoke::specialAtk() {
 	//Create a new projectile and add it to list
 	if (!isFastFall) {
 		if(faceDir == 1)
-			pj = new Projectile(posX + width - 8, posY + 11, 6, 12, vel, 0, 1);
+			pj = new Projectile(posX + width - 8, posY + 11, 6, 12, vel, faceDir, 0, projSprite);
 		else
-			pj = new Projectile(posX - 1, posY + 11, 6, 12, vel, 0, 1);
+			pj = new Projectile(posX - 1, posY + 11, 6, 12, vel, faceDir, 0, projSprite);
 		projectileList.push_back(pj);
 		isSpecial = 1;
 	}
@@ -162,9 +165,9 @@ void BigSmoke::Atk(){
 	//Create a new sword and add it to list
 	if(faceDir == 1)
 		//Ignore position here, actually set in move function
-		sword = new Melee(posX + width, posY + 15, 13, 28, 1, faceDir);
+		sword = new Melee(posX + width, posY + 15, 13, 28, faceDir, meleeSprite);
 	else
-		sword = new Melee(posX, posY + 15, 13, 28, 1, faceDir);
+		sword = new Melee(posX, posY + 15, 13, 28, faceDir, meleeSprite);
 	
 	meleeList.push_back(sword);
 	isAtk = 1;
@@ -183,11 +186,10 @@ void BigSmoke::drawTo(SDL_Surface *surf) {
 		src.x = 5 * width;
 	//if in air
 	else if (jumpCount > 0 || velY > 3 || velY < -3) {
-		src.x = 4 * width;
 		//If jumping and special attacking
-		if (isSpecial) src.x += width * 8;
+		if (isSpecial) src.x = width * 12;
 		//If jumping and attacking
-		else if (isAtk) src.x += width * 9;
+		else if (isAtk) src.x = width * 13;
 		else src.x = 4 * width;
 	}
 	//if on ground
@@ -220,7 +222,7 @@ void BigSmoke::drawTo(SDL_Surface *surf) {
 	}
 
 	//If left or right
-	if (faceDir == 1) src.y = 33;
+	if (faceDir == 1) src.y = height;
 	else src.y = 0;
 
 	src.w = width;
