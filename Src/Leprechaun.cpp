@@ -1,3 +1,6 @@
+/* Leprechaun class
+Taken from our beloved Notre Dame. The Leprechaun throws footballs of mass destruction that cause massive knockback. Because he's a real man, he don't need no melee weapon and punches people. In addition to that, he does not flinch, meaning he is impervious to knockbacks. This class, just as all the other character classes, derives from the BaseCharacter classes.
+*/
 #include "stdafx.h"
 #include "Leprechaun.h"
 #include <iostream>
@@ -7,15 +10,16 @@
 
 using namespace std;
 
-//height and width are constant to Leprechaun
+//Constructor
 Leprechaun::Leprechaun(int x, int y) : BaseCharacter(x, y, 28, 34){
-	//Load sprite sheet
+	//Load sprite sheets
 	sprite = SDL_LoadBMP("Images/Sprites/Leprechaun/Leprechaun.bmp");
 	projSprite = SDL_LoadBMP("Images/Sprites/Leprechaun/Football.bmp");
 	meleeSprite = SDL_LoadBMP("Images/Sprites/Leprechaun/Pawnch.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 	SDL_SetColorKey(projSprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
+	//Load sounds
 	sfx.load("Sounds/Leprechaun/melee.wav", "Sounds/Leprechaun/proj.wav", NULL, NULL);
 	aniCounter[SPECIAL] = 0;
 }
@@ -23,10 +27,12 @@ Leprechaun::Leprechaun(int x, int y) : BaseCharacter(x, y, 28, 34){
 //Movement in both x and y directions
 void Leprechaun::move() {	
 	maxVelX = 4.5;
+	//If moving
 	if (moveDir != 0 && !isGhost) {
 		accelX = .33 * moveDir;
 	}
 	else {
+		//Not moving, friction
 		double accelResist = .25;
 		if (isGhost) accelResist = 0;
 		if (velX > 0) accelX = -accelResist;
@@ -39,6 +45,7 @@ void Leprechaun::move() {
 
 	accelY = 0.3;
 
+	//Apply velocities and accelerations
 	velX += accelX;
 	velY += accelY;
 
@@ -47,10 +54,8 @@ void Leprechaun::move() {
 	if (velY > maxVelY) velY = maxVelY;
 	if (velY < -maxVelY) velY = -maxVelY;
 
-	if (!isAtk) {
-		posX += velX;
-		posY += velY;
-	}
+	posX += velX;
+	posY += velY;
 		
 	if (!isSpecial)
 		isThrow = 0;
@@ -101,35 +106,28 @@ void Leprechaun::move() {
 	}
 }
 
+//Collision detection for platform only
 void Leprechaun::onCollision(Entity *B) {
 	//Platform
 	if (B->getID() == 1) {
 		//If bottom border is in a certain range of the platform
 		if (velY > 0 && getBot() > B->getTop() - 10 && getBot() < (B->getBot() + B->getTop()) / 2 + 5) {
-			if (!isSpecDown) {
-				//Gives the character a "bounce"
-				if (velY > 3)
-					velY = -velY / 5;
-				else
-					velY = 0;
-				jumpCount = 0;
-				posY = B->getTop() - height;
-				//No longer fastfalling
-				isFastFall = 0;
-				//No longer ghost
-				isGhost = 0;
-			}
-			else {
-				//Special down here
+			//Gives the character a "bounce"
+			if (velY > 3)
+				velY = -velY / 5;
+			else
 				velY = 0;
-				posY = B->getTop() - height;
-				isSpecDown = 0;
-				isFastFall = 0;
-			}
+			jumpCount = 0;
+			posY = B->getTop() - height;
+			//No longer fastfalling
+			isFastFall = 0;
+			//No longer ghost
+			isGhost = 0;
 		}
 	}	
 }
 
+//Special attack (hold down bit)
 void Leprechaun::specialAtk() {
 	if (!isSpecial) {
 		isSpecial = 1;
@@ -137,7 +135,9 @@ void Leprechaun::specialAtk() {
 	}
 }
 
+//Special attack (creation bit)
 void Leprechaun::createSpecialAtk() {
+	//Increases range based on how long it is held
 	double factor = (SDL_GetTicks() - aniCounter[SPECIAL]) / 1000.0;
 	sfx.play(1);
 	int vel = faceDir * 15 * factor;
@@ -153,26 +153,27 @@ void Leprechaun::createSpecialAtk() {
 	aniCounter[SPECIAL] = 0;
 }
 
+//Special attack (release bit)
 void Leprechaun::releaseSpecialAtk() {
 	if (isSpecial)
 		createSpecialAtk();
 }
 
+//Normal attack
 void Leprechaun::Atk(){
-	if (jumpCount == 0 && velY == 0) {
-		sfx.play(0);
-		Melee *pawnch;
-		//Create a new bat and add it to list
-		if(faceDir == 1)
-			//Ignore position here, actually set in move function
-			pawnch = new Melee(posX + width, posY + 10, 10, 10, faceDir, meleeSprite);
-		else
-			pawnch = new Melee(posX + 10, posY + 10, 10, 10, faceDir, meleeSprite);
-	
-		meleeList.push_back(pawnch);
-		isAtk = 1;
-	}
+	sfx.play(0);
+	Melee *pawnch;
+	//Create a new bat and add it to list
+	if(faceDir == 1)
+		//Ignore position here, actually set in move function
+		pawnch = new Melee(posX + width, posY + 10, 10, 10, faceDir, meleeSprite);
+	else
+		pawnch = new Melee(posX + 10, posY + 10, 10, 10, faceDir, meleeSprite);
+	meleeList.push_back(pawnch);
+	isAtk = 1;
 }
+
+//Release of "A"
 void Leprechaun::releaseAtk(){
 	isAtk = 0;
 	for(int i = 0; i < meleeList.size(); i++)
@@ -192,7 +193,7 @@ void Leprechaun::drawTo(SDL_Surface *surf) {
 			else if (isThrow)
 				src.x = width * 8;
 		//If jumping and attacking
-		else if (isAtk) src.x = width * 5;
+		else if (isAtk) src.x = width * 4;
 		else src.x = 3 * width;
 	}
 	//if on ground
@@ -209,6 +210,8 @@ void Leprechaun::drawTo(SDL_Surface *surf) {
 			src.x = width * 6; //Expand
 		else if (isThrow)
 			src.x = width * 7;
+		else if (isAtk) 
+			src.x = width * 4;
 		
 		aniCounter[WALKING]++;
 	}
@@ -226,6 +229,8 @@ void Leprechaun::drawTo(SDL_Surface *surf) {
 			src.x = 0;
 		}
 	}
+	if (isAtk) 
+		src.x = width * 4;
 
 	//If left or right
 	if (faceDir == 1) src.y = height + 6;

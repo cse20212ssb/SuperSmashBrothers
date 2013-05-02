@@ -1,36 +1,46 @@
+/* Megaman class
+
+Takes inspiration from the classic NES game "Megaman". Has fast movement and a cool aerial movement buff activated by hold "A" during your second jump. Attacks however are fairly weak and shooting has a time constraint. It also has a special down attack which is activated by fastfalling and pressing "B". This class, just as all the other character classes, derives from the BaseCharacter classes.
+*/
+
 #include "stdafx.h"
 #include "Megaman.h"
 #include <iostream>
 
 #define WALKING 0
 #define AERIAL 1
+#define PROJ 2
 
 using namespace std;
 
 //height and width are constant to Megaman
 Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 33, 31){
-	//Load sprite sheet
+	//Load sprite sheets
 	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Megaman.bmp");
 	projSprite = SDL_LoadBMP("Images/Sprites/Megaman/Projectiles.bmp");
 	meleeSprite = SDL_LoadBMP("Images/Sprites/Megaman/Sword.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
-
+	SDL_SetColorKey(projSprite, SDL_SRCCOLORKEY, SDL_MapRGB(projSprite->format, 255, 0, 0) );
+	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 255, 0, 0) );
+	//Loads sounds
 	sfx.load("Sounds/Megaman/melee.wav", "Sounds/Megaman/proj.wav", "Sounds/Megaman/specDown.wav", "Sounds/Megaman/aerial.wav");
-	projTimer = 5;
 }
 
 //Movement in both x and y directions
 void Megaman::move() {	
 	maxVelX = 5;
+	//Aerial state
 	if (isAerial) {
 		accelX = 2.4;
 		maxVelX = 10;
 		velY -= .2;
 	}	
+	//If moving in a direction
 	if (moveDir != 0 && !isGhost) {
 		accelX = .33 * moveDir;
 	}
 	else {
+		//Friection
 		double accelResist = .25;
 		if (isGhost) accelResist = 0;
 		if (velX > 0) accelX = -accelResist;
@@ -57,8 +67,8 @@ void Megaman::move() {
 	updateBorders();
 	offScreen();
 	
-	if (isSpecial == 0) {
-		projTimer--;
+	if (aniCounter[PROJ] - SDL_GetTicks() > 250) {
+		isSpecial = 0;
 	}
 
 	//Loop through all projectiles and provide movement
@@ -104,6 +114,7 @@ void Megaman::move() {
 	}
 }
 
+//Behavior on collision
 void Megaman::onCollision(Entity *B) {
 	//Platform
 	if (B->getID() == 1) {
@@ -123,6 +134,7 @@ void Megaman::onCollision(Entity *B) {
 				isAerial = 0;
 			}
 			else {
+				//Special down
 				velY = 0;
 				posY = B->getTop() - height;
 				specialDown();
@@ -153,16 +165,9 @@ void Megaman::onCollision(Entity *B) {
 		velY = -B->getVelY();
 		isGhost = 1;
 	}			
-	
-	/*
-	//Other Character
-	if (B->getID() == 2) {
-		addVelX(-B->getVelX() / 10);
-		addVelY(-B->getVelY() / 10);
-	}
-	*/
 }
 
+//Special down attack
 void Megaman::specialDown() {
 	//Special down sound
 	sfx.play(2);
@@ -173,9 +178,9 @@ void Megaman::specialDown() {
 	projectileList.push_back(pj1);
 }
 
+//Projectiles created
 void Megaman::specialAtk() {
-	if (projTimer < 0) {
-		projTimer = 5;
+	if (SDL_GetTicks() - aniCounter[PROJ] > 500) {
 		sfx.play(1);
 		//Velocity of projectiles
 		int vel = faceDir * 10;
@@ -189,21 +194,26 @@ void Megaman::specialAtk() {
 				pj = new Projectile(posX, posY + 15, 6, 12, vel, faceDir, 0, projSprite);
 			projectileList.push_back(pj);
 			isSpecial = 1;
+			aniCounter[PROJ] = SDL_GetTicks();
 		}
 		else
 			isSpecDown = 1;
 	}
 }
 
+//When "B" is released
 void Megaman::releaseSpecialAtk() {
 	isSpecial = 0;
 }
 
+//Aerial attack, movement buff
 void Megaman::aerialAtk() {
 	isAerial = 1;
 }
 
+//Normal attack, swrod
 void Megaman::Atk(){
+	//If megaman is in second jump, aerial instead of attack
 	if (jumpCount > 1) {
 		sfx.play(3);
 		aerialAtk();
@@ -223,6 +233,7 @@ void Megaman::Atk(){
 	}
 }
 
+//When "A" is released
 void Megaman::releaseAtk(){
 	isAtk = 0;
 	isAerial = 0;
@@ -240,6 +251,7 @@ void Megaman::drawTo(SDL_Surface *surf) {
 	//if in air
 	else if (jumpCount > 0 || velY > 3 || velY < -3) {
 		if (isAerial) {
+			//Aerial animation
 			int numOfSprites = 4;
 			int timePerSprite = 5;
 			if (aniCounter[AERIAL] > numOfSprites * timePerSprite) 
@@ -260,6 +272,7 @@ void Megaman::drawTo(SDL_Surface *surf) {
 	}
 	//if on ground
 	else if (moveDir != 0) {
+		//Walking animation
 		int numOfSprites = 4;
 		int timePerSprite = 10;
 		if (aniCounter[WALKING] > numOfSprites * timePerSprite)

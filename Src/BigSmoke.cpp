@@ -1,3 +1,7 @@
+/* Big Smoke class
+Inspriation for this class was taken from Grand Theft Auto: San Andreas. While he has a lower move speed and small jump, he enjoys the use of his Tec9, which allows him to shoot projectiles without constraint. This class, just as all the other character classes, derives from the BaseCharacter classes.
+*/
+
 #include "stdafx.h"
 #include "BigSmoke.h"
 #include <iostream>
@@ -9,17 +13,22 @@ using namespace std;
 
 //height and width are constant to BigSmoke
 BigSmoke::BigSmoke(int x, int y) : BaseCharacter(x, y, 30, 33){
-	//Load sprite sheet
+	//Load sprite sheets
 	sprite = SDL_LoadBMP("Images/Sprites/BigSmoke/BigSmoke.bmp");
 	projSprite = SDL_LoadBMP("Images/Sprites/BigSmoke/bullet.bmp");
 	meleeSprite = SDL_LoadBMP("Images/Sprites/BigSmoke/Bat.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
+	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 255, 0, 0) );
+	SDL_SetColorKey(projSprite, SDL_SRCCOLORKEY, SDL_MapRGB(projSprite->format, 255, 0, 0) );
+	//Loads sounds
 	sfx.load("Sounds/BigSmoke/melee.wav", "Sounds/BigSmoke/proj.wav", NULL, NULL);
+	//Overwrites the original maxVels
+	maxVelX = 2.5;
+	maxVelY = 7;
 }
 
 //Movement in both x and y directions
 void BigSmoke::move() {	
-	maxVelX = 3;
 	if (moveDir != 0 && !isGhost) {
 		accelX = .33 * moveDir;
 	}
@@ -34,6 +43,7 @@ void BigSmoke::move() {
 		}
 	}
 
+	//Apply velocities
 	accelY = 0.3;
 
 	velX += accelX;
@@ -93,27 +103,26 @@ void BigSmoke::move() {
 	}
 }
 
+//Special attack, create projectile without time restraints
 void BigSmoke::specialAtk() {
 	int vel = faceDir * 10;
 	sfx.play(1);
 	Projectile *pj;
 	//Create a new projectile and add it to list
-	if (!isFastFall) {
-		if(faceDir == 1)
-			pj = new Projectile(posX + width - 8, posY + 11, 6, 12, vel, faceDir, 0, projSprite);
-		else
-			pj = new Projectile(posX - 1, posY + 11, 6, 12, vel, faceDir, 0, projSprite);
-		projectileList.push_back(pj);
-		isSpecial = 1;
-	}
+	if(faceDir == 1)
+		pj = new Projectile(posX + width - 8, posY + 11, 6, 12, vel, faceDir, 0, projSprite);
 	else
-		isSpecDown = 1;
+		pj = new Projectile(posX - 1, posY + 11, 6, 12, vel, faceDir, 0, projSprite);
+	projectileList.push_back(pj);
+	isSpecial = 1;
 }
 
+//When "B" is released
 void BigSmoke::releaseSpecialAtk() {
 	isSpecial = 0;
 }
 
+//Normal attack, bat
 void BigSmoke::Atk(){
 	Melee *bat;
 	sfx.play(0);
@@ -137,6 +146,7 @@ void BigSmoke::releaseAtk(){
 void BigSmoke::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
 	
+	//If hit with melee
 	if (isGhost && jumpCount == 0)
 		src.x = 5 * width;
 	//if in air

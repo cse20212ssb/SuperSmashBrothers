@@ -1,16 +1,22 @@
+/* Firebat class
+
+This class takes inspiration from the game StarCraft (the original). His only attack is through the use of his flamethrower. The special is the iconic stimpack, which boosts both the attack speed and the movement speed of the character.  The stimpack lasts a few seconds and when it runs out, the character is stunned. Stimpack is indicated by the yellow icon and the stun is indicated by the red icon. This class, just as all the other character classes, derives from the BaseCharacter classes.
+*/ 
+
 #include "stdafx.h"
 #include "Firebat.h"
 #include <iostream>
 
+//Constants to be used with AniCounter
 #define WALKING 0
 #define STIMPACK 1
 #define ATK 2
 
 using namespace std;
 
-//height and width are constant to Firebat
+//Constructor
 Firebat::Firebat(int x, int y) : BaseCharacter(x, y, 30, 31){
-	//Load sprite sheet
+	//Load sprite sheets
 	sprite = SDL_LoadBMP("Images/Sprites/Firebat/Firebat.bmp");
 	projSprite = NULL;
 	meleeSprite = SDL_LoadBMP("Images/Sprites/Firebat/fire.bmp");
@@ -18,6 +24,7 @@ Firebat::Firebat(int x, int y) : BaseCharacter(x, y, 30, 31){
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 0, 255, 0) );
 	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 255,0,0) );
 	SDL_SetColorKey(stimSprite, SDL_SRCCOLORKEY, SDL_MapRGB(stimSprite->format, 0, 255, 0) );
+	//Loads sounds
 	sfx.load("Sounds/Firebat/attack.wav", "Sounds/Firebat/stim1.wav", "Sounds/Firebat/stim2.wav", NULL);
 }
 
@@ -48,8 +55,9 @@ void Firebat::move() {
 	if (velY > maxVelY) velY = maxVelY;
 	if (velY < -maxVelY) velY = -maxVelY;
 
+	//Checks for stimmed or rest
 	if (isSpecial) {
-		if ((SDL_GetTicks() - aniCounter[STIMPACK]) / 1000 > 6) {
+		if ((SDL_GetTicks() - aniCounter[STIMPACK]) / 1000 > 4) {
 			isSpecial = 0;
 			isRest = 1;
 			aniCounter[STIMPACK] = SDL_GetTicks();
@@ -111,6 +119,7 @@ void Firebat::move() {
 	}
 }
 
+//Special attack
 void Firebat::specialAtk() {
 	if (isSpecial == 0 && !isRest) {
 		sfx.play(1);
@@ -119,10 +128,7 @@ void Firebat::specialAtk() {
 	}
 }
 
-void Firebat::releaseSpecialAtk() {
-	//isSpecial = 0;
-}
-
+//Flame thrower, usable with certain parameters such as time
 void Firebat::Atk(){
 	if ((((aniCounter[ATK] - SDL_GetTicks()) / 1000 > 3 && !isSpecial) || ((aniCounter[ATK] - SDL_GetTicks()) / 1000 > 1 && isSpecial)) && !isRest) {
 		sfx.play(0);
@@ -141,18 +147,19 @@ void Firebat::Atk(){
 	}
 }
 
+//When "A" is released
 void Firebat::releaseAtk(){
 	isAtk = 0;
 	for(int i = 0; i < meleeList.size(); i++)
 		meleeList[i] -> setIsGone(1);
 	aniCounter[WALKING] = 0;
-	//cout << "getMeleeGone = " << getMeleeGone() << endl;
 }
 
 //Draws onto specified surface
 void Firebat::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
 	
+	//If stunned
 	if (isRest) 
 		src.x = 0;
 	else if (isGhost && jumpCount == 0)
@@ -216,6 +223,7 @@ void Firebat::drawTo(SDL_Surface *surf) {
 		meleeList[i] -> drawTo(surf);
 	}
 
+	//Stimpack drawing
 	if (isSpecial || isRest) {
 		if (faceDir == 1)
 			dst.x = posX + width / 2 - 10;

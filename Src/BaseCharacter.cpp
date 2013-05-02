@@ -1,11 +1,19 @@
+/* BaseCharacter class
+
+Is the base for all character classes. This class contains the basic information of a class, such as  whether or not it's attacking or which direction it's facing, as well as some basic functions, such as jump(). Some of these classes are updated further in its derived classes, if the vision of the new class requires us to do so. The BaseCharacter class derives from the Entity class, which hold information such as position and hitboxes. 
+*/
+
 #include "stdafx.h"
 #include "BaseCharacter.h"
 #include <iostream>
 
 using namespace std;
 
+//Constructor
 BaseCharacter::BaseCharacter(int x, int y, int h, int w) : Entity(x, y, h, w){
+	//Opens audio channels for Mix_Chunks
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+	//Initialization of all the nonsense
 	setMoveDir(0);
 	isGhost = 0;
 	faceDir = 1;
@@ -18,6 +26,7 @@ BaseCharacter::BaseCharacter(int x, int y, int h, int w) : Entity(x, y, h, w){
 	isAerial = 0;
 }
 
+//Deconstructor, is virtual 
 BaseCharacter::~BaseCharacter() {
 	for (int i = 0; i < projectileList.size(); i++) {
 		projectileList.erase(projectileList.begin() + i);
@@ -28,10 +37,9 @@ BaseCharacter::~BaseCharacter() {
 	}
 
 	Mix_CloseAudio();
-
-	cout << "BaseCharacter deconstructed" << endl;
 }
 
+//"Fast fall"
 void BaseCharacter::fastFall() {
 	if (jumpCount > 0 || velY != 0) {
 		velY = maxVelY;
@@ -39,13 +47,14 @@ void BaseCharacter::fastFall() {
 	}
 }
 
-//If you can jump
+//Test whether you can jump or not
 int BaseCharacter::jumpable() {
 	if (jumpCount >= 2 || isSpecDown || isRest)
 		return 0;
 	return 1;
 }
 
+//Jump functions
 void BaseCharacter::jump() {
 	//First jump
 	if (jumpCount == 0)
@@ -57,14 +66,18 @@ void BaseCharacter::jump() {
 	isGhost = 0;
 }
 
+//Removes a certain projectile object
 void BaseCharacter::removeProj(int index) {
 	projectileList.erase(projectileList.begin()+index);
 }
 
+
+//Removes a certain melee object
 void BaseCharacter::removeMelee(int index) {
 	meleeList.erase(meleeList.begin()+index);
 }
 
+//Makes the screen wrapped
 void BaseCharacter::offScreen(){
 	if(posX > 800) posX = 0;
 	else if(posX < 0) posX = 800;
@@ -73,31 +86,23 @@ void BaseCharacter::offScreen(){
 	else if(posY > 628) posY = 0;
 }
 
+//Standard onCollision behavior, unless otherwise defined.
 void BaseCharacter::onCollision(Entity *B) {
 	//Platform
 	if (B->getID() == 1) {
 		//If bottom border is in a certain range of the platform
 		if (velY > 0 && getBot() > B->getTop()-10 && getBot() < (B->getBot() + B->getTop()) / 2 + 5) {
-			if (!isSpecDown) {
-				//Gives the character a "bounce"
-				if (velY > 3)
-					velY = -velY / 5;
-				else
-					velY = 0;
-				jumpCount = 0;
-				posY = B->getTop() - height;
-				//No longer fastfalling
-				isFastFall = 0;
-				//No longer ghost
-				isGhost = 0;
-			}
-			else {
-				//Special down here
+			//Gives the character a "bounce"
+			if (velY > 3)
+				velY = -velY / 5;
+			else
 				velY = 0;
-				posY = B->getTop() - height;
-				isSpecDown = 0;
-				isFastFall = 0;
-			}
+			jumpCount = 0;
+			posY = B->getTop() - height;
+			//No longer fastfalling
+			isFastFall = 0;
+			//No longer ghost
+			isGhost = 0;
 		}
 	}
 	//Melee
@@ -122,12 +127,4 @@ void BaseCharacter::onCollision(Entity *B) {
 		velY = -B->getVelY();
 		isGhost = 1;
 	}		
-	
-	/*
-	//Other Character
-	if (B->getID() == 2) {
-		addVelX(-B->getVelX() / 10);
-		addVelY(-B->getVelY() / 10);
-	}
-	*/
 }
