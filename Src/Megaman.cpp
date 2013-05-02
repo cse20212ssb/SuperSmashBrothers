@@ -15,15 +15,16 @@ Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 33, 31){
 	meleeSprite = SDL_LoadBMP("Images/Sprites/Megaman/Sword.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 
-	sfx.load("Sounds/Megaman_Melee.wav", "Sounds/Megaman_Shot.wav", "Sounds/Megaman_SpecDown.wav", "Sounds/Megaman_Aerial.wav");
+	sfx.load("Sounds/Megaman/melee.wav", "Sounds/Megaman/proj.wav", "Sounds/Megaman/specDown.wav", "Sounds/Megaman/aerial.wav");
+	projTimer = 5;
 }
 
 //Movement in both x and y directions
 void Megaman::move() {	
-	maxVelX = 3;
+	maxVelX = 5;
 	if (isAerial) {
-		accelX = 1.2;
-		maxVelX = 7;
+		accelX = 2.4;
+		maxVelX = 10;
 		velY -= .2;
 	}	
 	if (moveDir != 0 && !isGhost) {
@@ -55,6 +56,10 @@ void Megaman::move() {
 
 	updateBorders();
 	offScreen();
+	
+	if (isSpecial == 0) {
+		projTimer--;
+	}
 
 	//Loop through all projectiles and provide movement
 	for(int i = 0; i < projectileList.size(); i++){
@@ -101,9 +106,9 @@ void Megaman::move() {
 
 void Megaman::onCollision(Entity *B) {
 	//Platform
-	if (B->getID() == 3) {
+	if (B->getID() == 1) {
 		//If bottom border is in a certain range of the platform
-		if (velY > 0 && getBot() > B->getTop() - 5 && getBot() < (B->getBot() + B->getTop()) / 2) {
+		if (velY > 0 && getBot() > B->getTop()-10 && getBot() < (B->getBot() + B->getTop()) / 2 + 5) {
 			if (!isSpecDown) {
 				//Gives the character a "bounce"
 				if (velY > 3)
@@ -118,37 +123,36 @@ void Megaman::onCollision(Entity *B) {
 				isAerial = 0;
 			}
 			else {
-				//Special down sound
-				sfx.play(2);
-				//Special Down projectiles created
 				velY = 0;
 				posY = B->getTop() - height;
-				Projectile *pj0 = new Projectile(posX + width/2, posY + 25, 6, 12, 3, faceDir, 1, projSprite);
-				Projectile *pj1 = new Projectile(posX + width/2 - 10, posY + 25, 6, 12, -3, faceDir, 1, projSprite);
-				projectileList.push_back(pj0);
-				projectileList.push_back(pj1);
+				specialDown();
 				isSpecDown = 0;
 				isFastFall = 0;
 			}
 		}
 	}
 	//Melee
-	else if (B->getID() == 4 && !isGhost) {
+	else if (B->getID() == 2 && !isGhost) {
 		velX = B->getFaceDir() * 1.5;
 		velY = -3;
 		isGhost = 1;
 	}
 	//Projectile
-	else if (B->getID() == 5) {
+	else if (B->getID() == 3) {
 		velX += B->getVelX() * .1;
 	}	
 	//SpecDown Proj
-	else if (B->getID() == 6) {
+	else if (B->getID() == 4) {
 		velX = 7 * B->getVelX() * .5;
 		velY = -7 * B->getVelX() * .2;
 		isGhost = 1;
 	}
-			
+	//FOOTBALL
+	else if (B->getID() == 5) {
+		velX = B->getVelX();
+		velY = -B->getVelY();
+		isGhost = 1;
+	}			
 	
 	/*
 	//Other Character
@@ -159,23 +163,36 @@ void Megaman::onCollision(Entity *B) {
 	*/
 }
 
-void Megaman::specialAtk() {
-	sfx.play(1);
-	//Velocity of projectiles
-	int vel = faceDir * 10;
+void Megaman::specialDown() {
+	//Special down sound
+	sfx.play(2);
+	//Special Down projectiles created
+	Projectile *pj0 = new Projectile(posX + width/2, posY + 25, 6, 12, 3, 1, 1, projSprite);
+	Projectile *pj1 = new Projectile(posX + width/2 - 10, posY + 25, 6, 12, -3, -1, 1, projSprite);
+	projectileList.push_back(pj0);
+	projectileList.push_back(pj1);
+}
 
-	Projectile *pj;
-	//Create a new projectile and add it to list
-	if (!isFastFall) {
-		if(faceDir == 1)
-			pj = new Projectile(posX + width, posY + 15, 6, 12, vel, faceDir, 0, projSprite);
+void Megaman::specialAtk() {
+	if (projTimer < 0) {
+		projTimer = 5;
+		sfx.play(1);
+		//Velocity of projectiles
+		int vel = faceDir * 10;
+
+		Projectile *pj;
+		//Create a new projectile and add it to list
+		if (!isFastFall) {
+			if(faceDir == 1)
+				pj = new Projectile(posX + width, posY + 15, 6, 12, vel, faceDir, 0, projSprite);
+			else
+				pj = new Projectile(posX, posY + 15, 6, 12, vel, faceDir, 0, projSprite);
+			projectileList.push_back(pj);
+			isSpecial = 1;
+		}
 		else
-			pj = new Projectile(posX, posY + 15, 6, 12, vel, faceDir, 0, projSprite);
-		projectileList.push_back(pj);
-		isSpecial = 1;
+			isSpecDown = 1;
 	}
-	else
-		isSpecDown = 1;
 }
 
 void Megaman::releaseSpecialAtk() {

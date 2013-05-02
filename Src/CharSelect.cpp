@@ -19,16 +19,11 @@ void CharSelect::toggle(int t) {
 }
 */
 void CharSelect::draw() {
-	SDL_Rect boxes_0;
-	boxes_0.x = 0;
-	boxes_0.y = 0;
-	boxes_0.w = 0;
-	boxes_0.h = 0;
-	SDL_Rect boxes_1;
-	boxes_1.x = 400;
-	boxes_1.y = 0;
-	boxes_1.w = 0;
-	boxes_1.h = 0;
+	SDL_Rect boxes;
+	boxes.x = 0;
+	boxes.y = 0;
+	boxes.w = 0;
+	boxes.h = 0;
 
 	SDL_Rect selDst_0;
 	selDst_0.x = (head_0->index % 2) * 200;
@@ -55,8 +50,7 @@ void CharSelect::draw() {
 
 	SDL_FillRect(screen, NULL, 0);
 
-	SDL_BlitSurface(boxes_sprite, NULL, screen, &boxes_0);
-	SDL_BlitSurface(boxes_sprite, NULL, screen, &boxes_1);
+	SDL_BlitSurface(boxes_sprite, NULL, screen, &boxes);
 	SDL_BlitSurface(sel_sprite, &selSrc_0, screen, &selDst_0);
 	SDL_BlitSurface(sel_sprite, &selSrc_1, screen, &selDst_1);
 
@@ -67,7 +61,7 @@ CharSelect::CharSelect(SDL_Surface *surf) {
 	isConfirm_0 = 0;
 	isConfirm_1 = 0;
 	boxes_sprite = SDL_LoadBMP("Images/Misc/CharSelect.bmp");
-	sel_sprite = SDL_LoadBMP("Images/Misc/Selection.bmp");
+	sel_sprite = SDL_LoadBMP("Images/Misc/CharSelBox.bmp");
 	SDL_SetColorKey(sel_sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sel_sprite->format, 255, 0, 0) );
 
 	screen = surf;

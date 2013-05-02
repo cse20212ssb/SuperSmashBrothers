@@ -1,0 +1,25 @@
+ID	Type
+0	Entities
+1	Platform
+2	Melee			0
+3	Normal proj 	0
+4	Specdown	1
+5	Football	2
+6	Weak Melee		1
+7	Powerful Melee		2
+
+width: 800
+height: 628
+
+628
+
+159, 318
+480, 318
+324, 242
+155, 20
+
+160, 405
+475, 15
+
+600, 18
+100, 470

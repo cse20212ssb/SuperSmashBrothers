@@ -24,8 +24,8 @@ void MapSelect::draw() {
 }
 
 MapSelect::MapSelect(SDL_Surface *surf) {
-	map = SDL_LoadBMP("Images/Maps/MapSelect.bmp");
-	sprite = SDL_LoadBMP("Images/Maps/Selection.bmp");
+	map = SDL_LoadBMP("Images/Misc/MapSelect.bmp");
+	sprite = SDL_LoadBMP("Images/Misc/MapSelBox.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 
 	screen = surf;

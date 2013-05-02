@@ -14,6 +14,7 @@
 #include "Megaman.h"
 #include "BigSmoke.h"
 #include "Firebat.h"
+#include "Leprechaun.h"
 #include "BaseCharacter.h"
 #include "CharSelect.h"
 #include "MapSelect.h"

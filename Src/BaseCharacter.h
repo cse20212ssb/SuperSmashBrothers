@@ -19,15 +19,14 @@ class BaseCharacter : public Entity{
 		BaseCharacter(int, int, int, int);
 		virtual ~BaseCharacter();
 
-		//Behavior on collision
-		virtual void onCollision(Entity *) {}
-		virtual int getID() {return 2;}
+		//Standard behavior on collision
+		virtual void onCollision(Entity *);
 		virtual void drawTo(SDL_Surface *){}
 
 		virtual void move() {}
 		void jump();
 		//If possible to jump
-		int jumpable();
+		virtual int jumpable();
 		void fastFall();
 		
 		virtual void Atk() {}
@@ -46,6 +45,7 @@ class BaseCharacter : public Entity{
 		void offScreen();
 
 	protected:
+		int projTimer;
 		SDL_Surface *meleeSprite;
 		SDL_Surface *projSprite;
 		//Audio for class
@@ -62,6 +62,7 @@ class BaseCharacter : public Entity{
 		int isSpecDown;
 		int isGhost;
 		int isAerial;
+		int isRest;
 };
 
 #endif

@@ -14,6 +14,7 @@ BigSmoke::BigSmoke(int x, int y) : BaseCharacter(x, y, 30, 33){
 	projSprite = SDL_LoadBMP("Images/Sprites/BigSmoke/bullet.bmp");
 	meleeSprite = SDL_LoadBMP("Images/Sprites/BigSmoke/Bat.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
+	sfx.load("Sounds/BigSmoke/melee.wav", "Sounds/BigSmoke/proj.wav", NULL, NULL);
 }
 
 //Movement in both x and y directions
@@ -92,55 +93,9 @@ void BigSmoke::move() {
 	}
 }
 
-void BigSmoke::onCollision(Entity *B) {
-	//Platform
-	if (B->getID() == 3) {
-		//If bottom border is in a certain range of the platform
-		if (velY > 0 && getBot() > B->getTop() - 5 && getBot() < (B->getBot() + B->getTop()) / 2) {
-			if (!isSpecDown) {
-				//Gives the character a "bounce"
-				if (velY > 3)
-					velY = -velY / 5;
-				else
-					velY = 0;
-				jumpCount = 0;
-				posY = B->getTop() - height;
-				//No longer fastfalling
-				isFastFall = 0;
-				//No longer ghost
-				isGhost = 0;
-			}
-			else {
-				//Special down here
-				velY = 0;
-				posY = B->getTop() - height;
-				isSpecDown = 0;
-				isFastFall = 0;
-			}
-		}
-	}
-	//Melee
-	else if (B->getID() == 5 && !isGhost) {
-		if (B->getLeft() > getLeft())
-			velX -= 1.5;
-		else if (B->getRight() < getRight())
-			velX += 1.5;
-		velY -= 5;
-		isGhost = 1;
-	}		
-	
-	/*
-	//Other Character
-	if (B->getID() == 2) {
-		addVelX(-B->getVelX() / 10);
-		addVelY(-B->getVelY() / 10);
-	}
-	*/
-}
-
 void BigSmoke::specialAtk() {
 	int vel = faceDir * 10;
-
+	sfx.play(1);
 	Projectile *pj;
 	//Create a new projectile and add it to list
 	if (!isFastFall) {
@@ -160,15 +115,16 @@ void BigSmoke::releaseSpecialAtk() {
 }
 
 void BigSmoke::Atk(){
-	Melee *sword;
-	//Create a new sword and add it to list
+	Melee *bat;
+	sfx.play(0);
+	//Create a new bat and add it to list
 	if(faceDir == 1)
 		//Ignore position here, actually set in move function
-		sword = new Melee(posX + width, posY + 15, 13, 28, faceDir, meleeSprite);
+		bat = new Melee(posX + width, posY + 15, 13, 28, faceDir, meleeSprite);
 	else
-		sword = new Melee(posX, posY + 15, 13, 28, faceDir, meleeSprite);
+		bat = new Melee(posX, posY + 15, 13, 28, faceDir, meleeSprite);
 	
-	meleeList.push_back(sword);
+	meleeList.push_back(bat);
 	isAtk = 1;
 }
 void BigSmoke::releaseAtk(){

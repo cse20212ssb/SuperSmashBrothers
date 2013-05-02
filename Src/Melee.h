@@ -14,7 +14,7 @@ class Melee : public Entity{
 		Melee(int, int, int, int, int, SDL_Surface *);
 
 		virtual void onCollision(Entity *);
-		virtual int getID() {return 4;}
+		virtual int getID() {return 2;}
 		virtual void drawTo(SDL_Surface *);
 
 	private:

@@ -11,21 +11,18 @@
 class Firebat : public BaseCharacter{
 	public:
 		Firebat() {}
-		Firebat(int x, int y);
-
-		//Behavior on collision
-		virtual void onCollision(Entity *);
+		Firebat(int x, int y);;
 		virtual void move();
-		virtual int getID() {return 2;}
 		
 		virtual void Atk();
 		virtual void releaseAtk();
-		virtual void upAtk() {}
-		virtual void downAtk() {}
 
 		virtual void specialAtk();
 		virtual void releaseSpecialAtk();
 		virtual void drawTo(SDL_Surface *);
+
+	private:
+		SDL_Surface *stimSprite;
 
 	
 };

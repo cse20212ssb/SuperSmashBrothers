@@ -1,6 +1,6 @@
 SDL= `sdl-config --libs` -lSDL -lSDL_mixer 
 
-OBJ=main.o SSB.o Events.o BaseCharacter.o Megaman.o Entity.o Platform.o Projectile.o CharSelect.o Melee.o MapSelect.o BigSmoke.o startScreen.o Jukebox.o Firebat.o
+OBJ=main.o SSB.o Events.o BaseCharacter.o Megaman.o Entity.o Projectile.o CharSelect.o Melee.o MapSelect.o BigSmoke.o startScreen.o Jukebox.o Firebat.o Leprechaun.o Platform.o
 
 all:	main
 

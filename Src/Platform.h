@@ -10,15 +10,15 @@ using namespace std;
 
 class Platform : public Entity {
 	public:
-		Platform() {}
+		Platform(){}
 		virtual ~Platform() {}
-		Platform(int, int, int, int, int);
+		Platform(int, int, int, int);
 	
 		//No behavior on collision
 		virtual void onCollision(Entity *) {}
-		virtual int getID() {return 3;}
+		virtual int getID() {return 1;}
 		
-		virtual void drawTo(SDL_Surface *);
+		virtual void drawTo(SDL_Surface *) {}
 };
 					
 #endif

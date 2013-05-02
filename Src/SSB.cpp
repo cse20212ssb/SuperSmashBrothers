@@ -61,40 +61,38 @@ void SSB::select() {
 
 	//If statement with mapSelect's isDone to load map
 	if(mapSel->isDone() == 0)
-		map = SDL_LoadBMP("Images/Maps/FinalDest.bmp");
+		map = SDL_LoadBMP("Images/Maps/NDStadium.bmp");
 	else
-		map = SDL_LoadBMP("Images/Maps/Battlefield.bmp");
+		map = SDL_LoadBMP("Images/Maps/SwissAlps.bmp");
 	
 	//Establish the platforms depending on map selected
 	if(mapSel->isDone() == 0)
-		entityList.push_back(new Platform(50, 400 , 20, 700, 1));
+		entityList.push_back(new Platform(100, 470 , 18, 600));
 	else{
-		entityList.push_back(new Platform(145, 400 ,20, 400, 1));
-		entityList.push_back(new Platform(160, 310, 28, 154, 0));
-		entityList.push_back(new Platform(480, 310, 28, 154, 0));
-		entityList.push_back(new Platform(325, 235, 28, 154, 0));
-		entityList.push_back(new Platform(155, 125, 28, 154, 0));
-		entityList.push_back(new Platform(555, 125, 28, 154, 0));
+		entityList.push_back(new Platform(324, 242, 20, 155));
+		entityList.push_back(new Platform(159, 318, 20, 155));
+		entityList.push_back(new Platform(480, 318, 20, 155));
+		entityList.push_back(new Platform(160, 405, 15, 475));
 	}
 	cout << "Platform clear" << endl;
 
 	if(sel->returnIndex(0) == 0)
-		player0 = new Megaman(330, 50);
+		player0 = new Megaman(300, 200);
 	else if(sel->returnIndex(0) == 1)
-		player0 = new BigSmoke(330, 50);
+		player0 = new BigSmoke(300, 200);
 	else if(sel->returnIndex(0) == 3)
-		player0 = new Firebat(330, 50);
+		player0 = new Firebat(300, 200);
 	else
-		player0 = new Megaman(330, 50);
+		player0 = new Leprechaun(300, 200);
 
 	if(sel->returnIndex(1) == 0)
-		player1 = new Megaman(430, 50);
+		player1 = new Megaman(500, 50);
 	else if(sel->returnIndex(1) == 1)
-		player1 = new BigSmoke(430, 50);
+		player1 = new BigSmoke(500, 50);
 	else if(sel->returnIndex(1) == 3)
-		player1 = new Firebat(430, 50);
+		player1 = new Firebat(500, 50);
 	else
-		player1 = new Megaman(430, 50);
+		player1 = new Leprechaun(500, 50);
 
 	//Loads players and CharSelect to the events class
 	queue.add(player0, player1);
@@ -109,7 +107,7 @@ int SSB::init() {
 		return 0;
 	}
 
-	screen = SDL_SetVideoMode(800, 550, 32, SDL_HWSURFACE);
+	screen = SDL_SetVideoMode(800, 628, 32, SDL_HWSURFACE);
 
 	if (screen == NULL) {
 		cout << "Screen init failed" << endl;

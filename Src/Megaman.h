@@ -12,10 +12,8 @@ class Megaman : public BaseCharacter{
 		Megaman() {}
 		Megaman(int x, int y);
 
-		//Behavior on collision
-		virtual void onCollision(Entity *);
-		virtual int getID() {return 2;}
 		virtual void drawTo (SDL_Surface *);
+		virtual void onCollision(Entity *);
 		virtual void move();
 		
 		virtual void Atk();
@@ -25,6 +23,8 @@ class Megaman : public BaseCharacter{
 
 		virtual void specialAtk();
 		virtual void releaseSpecialAtk();
+	private:
+		void specialDown();
 
 	
 };

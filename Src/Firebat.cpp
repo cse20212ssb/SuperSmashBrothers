@@ -3,7 +3,8 @@
 #include <iostream>
 
 #define WALKING 0
-#define AERIAL 1
+#define STIMPACK 1
+#define ATK 2
 
 using namespace std;
 
@@ -13,14 +14,17 @@ Firebat::Firebat(int x, int y) : BaseCharacter(x, y, 30, 31){
 	sprite = SDL_LoadBMP("Images/Sprites/Firebat/Firebat.bmp");
 	projSprite = NULL;
 	meleeSprite = SDL_LoadBMP("Images/Sprites/Firebat/fire.bmp");
+	stimSprite = SDL_LoadBMP("Images/Sprites/Firebat/FirebatStimpack.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 0, 255, 0) );
-	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 0, 255, 0) );
+	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 255,0,0) );
+	SDL_SetColorKey(stimSprite, SDL_SRCCOLORKEY, SDL_MapRGB(stimSprite->format, 0, 255, 0) );
+	sfx.load("Sounds/Firebat/attack.wav", "Sounds/Firebat/stim1.wav", "Sounds/Firebat/stim2.wav", NULL);
 }
 
 //Movement in both x and y directions
 void Firebat::move() {	
 	maxVelX = 3;
-	if (moveDir != 0 && !isGhost) {
+	if (moveDir != 0 && !isGhost && !isRest) {
 		accelX = .33 * moveDir;
 	}
 	else {
@@ -44,6 +48,20 @@ void Firebat::move() {
 	if (velY > maxVelY) velY = maxVelY;
 	if (velY < -maxVelY) velY = -maxVelY;
 
+	if (isSpecial) {
+		if ((SDL_GetTicks() - aniCounter[STIMPACK]) / 1000 > 6) {
+			isSpecial = 0;
+			isRest = 1;
+			aniCounter[STIMPACK] = SDL_GetTicks();
+		}
+		velX = 6 * moveDir;
+	}
+	else if (isRest) {
+		if ((SDL_GetTicks() - aniCounter[STIMPACK]) / 1000 > 3) {
+			isRest = 0;
+		}
+	}
+
 	posX += velX;
 	posY += velY;
 
@@ -65,21 +83,21 @@ void Firebat::move() {
 		//Right
 		if (faceDir == 1)
 			if(jumpCount > 0 || velY > 3){
-				meleeList[i] -> setPosX(posX + width * faceDir - 11);
-				meleeList[i] -> setPosY(posY+1);
+				meleeList[i] -> setPosX(posX + width * faceDir - 6);
+				meleeList[i] -> setPosY(posY+4);
 			}
 			else{
-				meleeList[i] -> setPosX(posX + width * faceDir - 11);
+				meleeList[i] -> setPosX(posX + width * faceDir - 6);
 				meleeList[i] -> setPosY(posY+9);
 			}
 		//Left
 		else {
 			if(jumpCount > 0 || velY > 3){
-				meleeList[i] -> setPosX(posX + width * faceDir + 14);
+				meleeList[i] -> setPosX(posX + width * faceDir - 10);
 				meleeList[i] -> setPosY(posY+3);
 			}
 			else{
-				meleeList[i] -> setPosX(posX + width * faceDir + 10);
+				meleeList[i] -> setPosX(posX + width * faceDir - 5);
 				meleeList[i] -> setPosY(posY+11);
 			}
 		}
@@ -93,69 +111,12 @@ void Firebat::move() {
 	}
 }
 
-void Firebat::onCollision(Entity *B) {
-	//Platform
-	if (B->getID() == 3) {
-		//If bottom border is in a certain range of the platform
-		if (velY > 0 && getBot() > B->getTop() - 5 && getBot() < (B->getBot() + B->getTop()) / 2) {
-			if (!isSpecDown) {
-				//Gives the character a "bounce"
-				if (velY > 3)
-					velY = -velY / 5;
-				else
-					velY = 0;
-				jumpCount = 0;
-				posY = B->getTop() - height;
-				//No longer fastfalling
-				isFastFall = 0;
-				//No longer ghost
-				isGhost = 0;
-			}
-			else {
-				//Special Down here
-				velY = 0;
-				posY = B->getTop() - height;
-				isSpecDown = 0;
-				isFastFall = 0;
-			}
-		}
-	}
-	//Melee
-	else if (B->getID() == 5 && !isGhost) {
-		if (B->getLeft() > getLeft())
-			velX -= 1.5;
-		else if (B->getRight() < getRight())
-			velX += 1.5;
-		velY -= 5;
-		isGhost = 1;
-	}		
-	
-	/*
-	//Other Character
-	if (B->getID() == 2) {
-		addVelX(-B->getVelX() / 10);
-		addVelY(-B->getVelY() / 10);
-	}
-	*/
-}
-
 void Firebat::specialAtk() {
-	/*
-	int vel = faceDir * 10;
-
-	Projectile *pj;
-	//Create a new projectile and add it to list
-	if (!isFastFall) {
-		if(faceDir == 1)
-			pj = new Projectile(posX + width, posY + 15, 6, 12, vel,faceDir, 0, projSprite);
-		else
-			pj = new Projectile(posX, posY + 15, 6, 12, vel, faceDir, 0, projSprite);
-		projectileList.push_back(pj);
+	if (isSpecial == 0 && !isRest) {
+		sfx.play(1);
 		isSpecial = 1;
+		aniCounter[STIMPACK] = SDL_GetTicks();
 	}
-	else
-		isSpecDown = 1;
-	*/
 }
 
 void Firebat::releaseSpecialAtk() {
@@ -163,17 +124,21 @@ void Firebat::releaseSpecialAtk() {
 }
 
 void Firebat::Atk(){
-	Melee *atk;
-	//Create a new sword and add it to list
-	if(faceDir == 1){
-		atk = new Melee(posX + width, posY + 40, 15, 45, faceDir, meleeSprite);
-	}
-	else{
-		atk = new Melee(posX, posY + 25, 15, 45, faceDir, meleeSprite);
-	}
+	if ((((aniCounter[ATK] - SDL_GetTicks()) / 1000 > 3 && !isSpecial) || ((aniCounter[ATK] - SDL_GetTicks()) / 1000 > 1 && isSpecial)) && !isRest) {
+		sfx.play(0);
+		Melee *atk;
+		//Create a new sword and add it to list
+		if(faceDir == 1){
+			atk = new Melee(posX + width, posY + 40, 15, 45, faceDir, meleeSprite);
+		}
+		else{
+			atk = new Melee(posX, posY + 25, 15, 45, faceDir, meleeSprite);
+		}
 
-	meleeList.push_back(atk);
-	isAtk = 1;
+		meleeList.push_back(atk);
+		isAtk = 1;
+		aniCounter[ATK] = SDL_GetTicks();
+	}
 }
 
 void Firebat::releaseAtk(){
@@ -188,14 +153,12 @@ void Firebat::releaseAtk(){
 void Firebat::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
 	
-	if (isGhost && jumpCount == 0)
-		src.x = 5 * width;
+	if (isRest) 
+		src.x = 0;
+	else if (isGhost && jumpCount == 0)
+		src.x = 11 * width;
 	//if in air
 	else if (jumpCount > 0 || velY > 3 || velY < -3) {
-		src.x = 4 * width;
-		//If jumping and special attacking
-		//if (isSpecial) src.x += width * 8;
-		//If jumping and attacking
 		if (isAtk) src.x = width * 10;
 		else src.x = width * 4;
 	}
@@ -207,21 +170,21 @@ void Firebat::drawTo(SDL_Surface *surf) {
 			aniCounter[WALKING] = 0;
 		int frame = aniCounter[WALKING] / timePerSprite;
 		
-		if (frame == 1) src.x = width * 2;
-		else if (frame == 2) src.x = width * 3;
-		else if (frame == 3) src.x = width * 2;
-		else src.x = width;
+		if (frame == 1) src.x = width;
+		else if (frame == 2) src.x = width * 2;
+		else if (frame == 3) src.x = width * 3;
+		else src.x = width * 2;
 
 		//If running and special attacking
-		if (isSpecial || isAtk) src.x += width * 8;
+		if (isAtk) src.x += width * 6;
 
 		aniCounter[WALKING]++;
 	}
 	else {
 		aniCounter[WALKING] = 0;
 		//If standing and special attacking
-		if (isSpecial || isAtk){
-			src.x = width * 7;
+		if (isAtk){
+			src.x = width * 6;
 		}
 		else{
 			src.x = 0;
@@ -241,6 +204,8 @@ void Firebat::drawTo(SDL_Surface *surf) {
 	dst.h = 0;
 	dst.w = 0;
 
+	SDL_BlitSurface(getSprite(), &src, surf, &dst);
+
 	//Loop through all projectiles and provide movement
 	for(int i = 0; i < projectileList.size(); i++){
 		projectileList[i] -> drawTo(surf);
@@ -251,5 +216,22 @@ void Firebat::drawTo(SDL_Surface *surf) {
 		meleeList[i] -> drawTo(surf);
 	}
 
-	SDL_BlitSurface(getSprite(), &src, surf, &dst);
+	if (isSpecial || isRest) {
+		if (faceDir == 1)
+			dst.x = posX + width / 2 - 10;
+		else 
+			dst.x = posX + width/2;
+		dst.y = posY - 10;
+		if (isSpecial) {
+			src.x = 0;
+			src.y = 0;
+		}
+		else if (isRest) {
+			src.x = 10;
+			src.y = 0;
+		}
+		src.h = 10;
+		src.w = 10;
+		SDL_BlitSurface(stimSprite, &src, surf, &dst);
+	}
 }
