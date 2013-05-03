@@ -1,3 +1,15 @@
+/* CharSelect class
+
+This is the CharSelect class, which is utilized for determining which character each player selected. This is the 
+cpp implementation for the class. The non-default contructor, draw, and deconstructor functions are defined here.
+They are elaborated on below.
+
+*/
+
+
+
+
+
 //#include "stdafx.h"
 #include "CharSelect.h"
 
@@ -18,6 +30,10 @@ void CharSelect::toggle(int t) {
 		isConfirm_1 = !isConfirm_1;
 }
 */
+
+//This is the draw function which is used to blit the charSelect.bmp established in the
+//constructor on the screen. It also draws the sprite for the selection box.
+
 void CharSelect::draw() {
 	SDL_Rect boxes;
 	boxes.x = 0;
@@ -25,23 +41,30 @@ void CharSelect::draw() {
 	boxes.w = 0;
 	boxes.h = 0;
 
+
+	//Player 1's selection area
 	SDL_Rect selDst_0;
-	selDst_0.x = (head_0->index % 2) * 200;
+	//Draw the selection box in the appropriate area by multiplying the current index by 200 since the box is 400X400
+	selDst_0.x = (head_0->index % 2) * 200; 
 	selDst_0.y = (head_0->index / 2) * 200;
 	selDst_0.w = 0;
 	selDst_0.h = 0;
 	SDL_Rect selSrc_0;
+	//Draw the confirmation box in the appropriate location
 	selSrc_0.x = 200 * isConfirm_0;
 	selSrc_0.y = 0;
 	selSrc_0.w = 200;
 	selSrc_0.h = 200;
 	
+	//Player 2's selection area
 	SDL_Rect selDst_1;
+	//Draw the selection box in the appropriate area by multiplying the current index by 200 since the box is 400X400
 	selDst_1.x = (head_1->index % 2) * 200 + 400;
 	selDst_1.y = (head_1->index / 2) * 200;
 	selDst_1.w = 0;
 	selDst_1.h = 0;
 	SDL_Rect selSrc_1;
+	//Draw the confirmation box in the appropriate location
 	selSrc_1.x = 200 * isConfirm_1;
 	selSrc_1.y = 0;
 	selSrc_1.w = 200;

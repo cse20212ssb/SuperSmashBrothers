@@ -1,9 +1,20 @@
+/* SSB class
+
+This is the SSB class, which is utilized for processing all the events of the program. The main file
+will run an instance of this class in order to run the program. This class processes the initial setup
+of the joystick, goes to the various screens, then loops through the gameplay portion of the program 
+until the user exits
+
+*/
+
+
 //#include "stdafx.h"
 #include "SSB.h"
 #include <iostream>
 
 using namespace std;
 
+//This is the execute function, which orders all the events in this class together
 void SSB::execute() {
 	if (init()) {
 		cout << "Init clear" << endl;
@@ -27,12 +38,14 @@ void SSB::execute() {
 	SDL_Quit();
 }
 
+//This is utilized for standardizing the speed of the program 
 void SSB::fps_control() {
 	if (nextTick > SDL_GetTicks()) 
 		SDL_Delay(nextTick - SDL_GetTicks());
 	nextTick = SDL_GetTicks() + 1000 / FPS;
 }
 
+//This function is used for the varius selection processes
 void SSB::select() {
 	startSel = new startScreen(screen);
 	cout << "Start screen cleared" << endl;
@@ -101,6 +114,7 @@ void SSB::select() {
 	entityList.push_back(player1);
 }
 
+//This is used to establish the screen
 int SSB::init() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
 		cout << "SDL init failed" << endl;
@@ -131,6 +145,7 @@ int SSB::init() {
 	return 1;
 }
 
+//Used to call the resolve function
 int SSB::events() {
 	return queue.resolve();
 }
@@ -180,6 +195,7 @@ void SSB::loop() {
 	}
 }
 
+//Draw objects onto the screen
 void SSB::render() {
 	SDL_FillRect(screen, NULL, 0);
 	SDL_BlitSurface(map, NULL, screen, NULL);
@@ -190,6 +206,7 @@ void SSB::render() {
 	SDL_Flip(screen);
 }
 
+//Deletes all instances when this goes out of scope
 void SSB::cleanUp() {
 	//Screen deleted in SDL_Quit
 	delete map, js_0, js_1, sel, mapSel;

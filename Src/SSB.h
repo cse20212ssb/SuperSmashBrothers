@@ -1,3 +1,13 @@
+/* SSB class
+
+This is the SSB class, which is utilized for processing all the events of the program. The main file
+will run an instance of this class in order to run the program. This class processes the initial setup
+of the joystick, goes to the various screens, then loops through the gameplay portion of the program 
+until the user exits
+
+*/
+
+
 #ifndef SSB_H
 #define SSB_H
 
@@ -31,18 +41,19 @@ class SSB {
 		void execute();
 	
 	private:
-		int init();
-		void select();
+		int init(); //This function initializes gameplay
+		void select(); //These is for initializing the user's various selections
 
-		int events();
-		void loop();
-		void render();
-		void cleanUp();
-		void fps_control();
+		int events(); //Processes all events
+		void loop(); //The gameplay loop
+		void render(); //Draws items on the screen
+		void cleanUp(); //Removes items as they go out of scope
+		void fps_control(); //Ensures that the program runs at a constant speed regardless of the machine
 	
 		//Variables for fps_control
 		int FPS, nextTick;
 
+		//Establishing the entity and player objects
 		BaseCharacter *player0, *player1;
 		
 		vector<Entity*> entityList;

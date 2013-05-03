@@ -1,3 +1,11 @@
+/* Platform class
+
+This is the platform class, which is used to create platforms for the program. It derives from the entity
+class and utilizes a few simple functions from entity to draw the platforms and determine if an object
+collided with the platform. Since platforms don't move, they don't shift during collisions.
+
+*/
+
 #ifndef PLATFORM_H
 #define PLATFORM_H
 
@@ -10,9 +18,9 @@ using namespace std;
 
 class Platform : public Entity {
 	public:
-		Platform(){}
-		virtual ~Platform() {}
-		Platform(int, int, int, int);
+		Platform(){} //Constructor
+		virtual ~Platform() {} //Destructor
+		Platform(int, int, int, int); //Non-default constructor
 	
 		//No behavior on collision
 		virtual void onCollision(Entity *) {}
