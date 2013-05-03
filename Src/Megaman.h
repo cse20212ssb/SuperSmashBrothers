@@ -6,8 +6,8 @@ Takes inspiration from the classic NES game "Megaman". Has fast movement and a c
 #ifndef MEGAMAN_H
 #define MEGAMAN_H
 
-#include "SDL.h"
-#include "stdafx.h"
+//#include "SDL.h"
+//#include "stdafx.h"
 #include "BaseCharacter.h"
 #include "Entity.h"
 

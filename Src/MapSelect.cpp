@@ -1,5 +1,5 @@
-#include "SDL.h"
-#include "stdafx.h"
+//#include "SDL.h"
+//#include "stdafx.h"
 #include "MapSelect.h"
 
 using namespace std;

@@ -1,7 +1,7 @@
 #ifndef JUKEBOX_H
 #define JUKEBOX_H
 
-//#include <SDL/SDL.h>
+#include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 
 using namespace std;

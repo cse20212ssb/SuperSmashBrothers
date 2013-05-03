@@ -3,7 +3,7 @@
 This class takes inspiration from the game StarCraft (the original). His only attack is through the use of his flamethrower. The special is the iconic stimpack, which boosts both the attack speed and the movement speed of the character.  The stimpack lasts a few seconds and when it runs out, the character is stunned. Stimpack is indicated by the yellow icon and the stun is indicated by the red icon. This class, just as all the other character classes, derives from the BaseCharacter classes.
 */ 
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Firebat.h"
 #include <iostream>
 
@@ -19,10 +19,10 @@ Firebat::Firebat(int x, int y) : BaseCharacter(x, y, 30, 31){
 	//Load sprite sheets
 	sprite = SDL_LoadBMP("Images/Sprites/Firebat/Firebat.bmp");
 	projSprite = NULL;
-	meleeSprite = SDL_LoadBMP("Images/Sprites/Firebat/fire.bmp");
+	meleeSprite = SDL_LoadBMP("Images/Sprites/Firebat/fire2.bmp");
 	stimSprite = SDL_LoadBMP("Images/Sprites/Firebat/FirebatStimpack.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 0, 255, 0) );
-	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 255,0,0) );
+	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 0, 255, 0) );
 	SDL_SetColorKey(stimSprite, SDL_SRCCOLORKEY, SDL_MapRGB(stimSprite->format, 0, 255, 0) );
 	//Loads sounds
 	sfx.load("Sounds/Firebat/attack.wav", "Sounds/Firebat/stim1.wav", "Sounds/Firebat/stim2.wav", NULL);
@@ -130,7 +130,12 @@ void Firebat::specialAtk() {
 
 //Flame thrower, usable with certain parameters such as time
 void Firebat::Atk(){
-	if ((((aniCounter[ATK] - SDL_GetTicks()) / 1000 > 3 && !isSpecial) || ((aniCounter[ATK] - SDL_GetTicks()) / 1000 > 1 && isSpecial)) && !isRest) {
+	double timeC;
+	if (isSpecial)
+		timeC = .5;
+	else
+		timeC = 1.5;
+	if ((SDL_GetTicks() - aniCounter[ATK]) / 1000.0 > timeC && !isRest) {
 		sfx.play(0);
 		Melee *atk;
 		//Create a new sword and add it to list

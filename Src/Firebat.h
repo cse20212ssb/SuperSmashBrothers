@@ -6,8 +6,8 @@ This class takes inspiration from the game StarCraft (the original). His only at
 #ifndef Firebat_H
 #define Firebat_H
 
-#include "SDL.h"
-#include "stdafx.h"
+//#include "SDL.h"
+//#include "stdafx.h"
 #include "BaseCharacter.h"
 #include "Entity.h"
 #include "Projectile.h"

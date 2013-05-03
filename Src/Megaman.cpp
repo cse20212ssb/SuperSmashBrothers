@@ -3,7 +3,7 @@
 Takes inspiration from the classic NES game "Megaman". Has fast movement and a cool aerial movement buff activated by hold "A" during your second jump. Attacks however are fairly weak and shooting has a time constraint. It also has a special down attack which is activated by fastfalling and pressing "B". This class, just as all the other character classes, derives from the BaseCharacter classes.
 */
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Megaman.h"
 #include <iostream>
 
@@ -19,9 +19,9 @@ Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 33, 31){
 	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Megaman.bmp");
 	projSprite = SDL_LoadBMP("Images/Sprites/Megaman/Projectiles.bmp");
 	meleeSprite = SDL_LoadBMP("Images/Sprites/Megaman/Sword.bmp");
-	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
-	SDL_SetColorKey(projSprite, SDL_SRCCOLORKEY, SDL_MapRGB(projSprite->format, 255, 0, 0) );
-	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 255, 0, 0) );
+	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 0, 255, 0) );
+	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 0, 255, 0) );
+	SDL_SetColorKey(projSprite, SDL_SRCCOLORKEY, SDL_MapRGB(projSprite->format, 0, 255, 0) );
 	//Loads sounds
 	sfx.load("Sounds/Megaman/melee.wav", "Sounds/Megaman/proj.wav", "Sounds/Megaman/specDown.wav", "Sounds/Megaman/aerial.wav");
 }

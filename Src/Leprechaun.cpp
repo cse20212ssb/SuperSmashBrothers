@@ -1,7 +1,7 @@
 /* Leprechaun class
 Taken from our beloved Notre Dame. The Leprechaun throws footballs of mass destruction that cause massive knockback. Because he's a real man, he don't need no melee weapon and punches people. In addition to that, he does not flinch, meaning he is impervious to knockbacks. This class, just as all the other character classes, derives from the BaseCharacter classes.
 */
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Leprechaun.h"
 #include <iostream>
 
@@ -15,10 +15,10 @@ Leprechaun::Leprechaun(int x, int y) : BaseCharacter(x, y, 28, 34){
 	//Load sprite sheets
 	sprite = SDL_LoadBMP("Images/Sprites/Leprechaun/Leprechaun.bmp");
 	projSprite = SDL_LoadBMP("Images/Sprites/Leprechaun/Football.bmp");
-	meleeSprite = SDL_LoadBMP("Images/Sprites/Leprechaun/Pawnch.bmp");
-	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
-	SDL_SetColorKey(projSprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
-	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
+	meleeSprite = SDL_LoadBMP("Images/Sprites/Leprechaun/Pawnch.bmp");	
+	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 0, 255, 0) );
+	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 0, 255, 0) );
+	SDL_SetColorKey(projSprite, SDL_SRCCOLORKEY, SDL_MapRGB(projSprite->format, 0, 255, 0) );
 	//Load sounds
 	sfx.load("Sounds/Leprechaun/melee.wav", "Sounds/Leprechaun/proj.wav", NULL, NULL);
 	aniCounter[SPECIAL] = 0;

@@ -5,8 +5,8 @@ Inspriation for this class was taken from Grand Theft Auto: San Andreas. While h
 #ifndef BIGSMOKE_H
 #define BIGSMOKE_H
 
-#include "SDL.h"
-#include "stdafx.h"
+//#include "SDL.h"
+//#include "stdafx.h"
 #include "BaseCharacter.h"
 #include "Entity.h"
 #include "Projectile.h"

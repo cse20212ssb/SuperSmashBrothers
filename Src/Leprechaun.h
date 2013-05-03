@@ -4,8 +4,8 @@ Taken from our beloved Notre Dame. The Leprechaun throws footballs of mass destr
 #ifndef LEPRECHAUN_H
 #define LEPRECHAUN_H
 
-#include "SDL.h"
-#include "stdafx.h"
+//#include "SDL.h"
+//#include "stdafx.h"
 #include "BaseCharacter.h"
 #include "Entity.h"
 #include "Projectile.h"
