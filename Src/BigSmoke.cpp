@@ -17,9 +17,9 @@ BigSmoke::BigSmoke(int x, int y) : BaseCharacter(x, y, 30, 33){
 	sprite = SDL_LoadBMP("Images/Sprites/BigSmoke/BigSmoke.bmp");
 	projSprite = SDL_LoadBMP("Images/Sprites/BigSmoke/bullet.bmp");
 	meleeSprite = SDL_LoadBMP("Images/Sprites/BigSmoke/Bat.bmp");
-	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 0, 255, 0) );
-	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 0, 255, 0) );
-	SDL_SetColorKey(projSprite, SDL_SRCCOLORKEY, SDL_MapRGB(projSprite->format, 0, 255, 0) );
+	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 0, 0xFF, 0) );
+	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 0, 0xFF, 0) );
+	SDL_SetColorKey(projSprite, SDL_SRCCOLORKEY, SDL_MapRGB(projSprite->format, 0, 0xFF, 0) );
 	//Loads sounds
 	sfx.load("Sounds/BigSmoke/melee.wav", "Sounds/BigSmoke/proj.wav", NULL, NULL);
 	//Overwrites the original maxVels

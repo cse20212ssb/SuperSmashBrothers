@@ -11,7 +11,6 @@ void SSB::execute() {
 		//Main game loop
 		int running = 1;
 		Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
-		bgMusic.load("Sounds/backgroundMusic.wav");
 		bgMusic.play(-1);
 		while (running) {
 			fps_control();
@@ -19,7 +18,6 @@ void SSB::execute() {
 			loop();
 			render();
 		}
-		Mix_CloseAudio();
 		cleanUp();
 	}
 	else cout << "SSB init failed" << endl;
@@ -49,21 +47,27 @@ void SSB::select() {
 
 
 	//Change to or later
-	while (!sel->isConfirm(0) && !sel->isConfirm(1)) {
+	while (!sel->isConfirm(0) || !sel->isConfirm(1) ||!sel->isDone()) {
 		queue.resolveCharSelect();
 		sel->draw();
 	}
+	SDL_Delay(1000);
 
 	while(mapSel->isDone() < 0){
 		queue.resolveMapSel();
 		mapSel->draw();
 	}
+		
 
 	//If statement with mapSelect's isDone to load map
-	if(mapSel->isDone() == 0)
+	if(mapSel->isDone() == 0) {
+		bgMusic.load("Sounds/backgroundMusicND.wav");
 		map = SDL_LoadBMP("Images/Maps/NDStadium.bmp");
-	else
+	}
+	else {
+		bgMusic.load("Sounds/backgroundMusic.wav");
 		map = SDL_LoadBMP("Images/Maps/SwissAlps.bmp");
+	}
 	
 	//Establish the platforms depending on map selected
 	if(mapSel->isDone() == 0)
@@ -125,8 +129,8 @@ int SSB::init() {
 	if (!js_1) 
 		cout << "Joystick 2 failed to init" << endl;
 
-	if (!js_0 && !js_1) {
-		cout << "No controller was found" << endl;
+	if (!js_0 || !js_1) {
+		return 0;
 	}
 	return 1;
 }
@@ -191,12 +195,9 @@ void SSB::render() {
 }
 
 void SSB::cleanUp() {
-	//Screen deleted in SDL_Quit
-	delete map, js_0, js_1, sel, mapSel;
-	cout << "Non-Entity objects deleted" << endl;
+	//Screen and map deleted in SDL_Quit
+	delete sel, mapSel, startSel;
 	for (int i = 0; i < entityList.size(); i++) {
-		cout << i << endl;
-		cout << "Object of type " << entityList[i]->getID() << " begin deletion" << endl;
 		delete entityList[i];
 	}
 }

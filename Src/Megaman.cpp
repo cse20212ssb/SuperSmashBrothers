@@ -19,9 +19,9 @@ Megaman::Megaman(int x, int y) : BaseCharacter(x, y, 33, 31){
 	sprite = SDL_LoadBMP("Images/Sprites/Megaman/Megaman.bmp");
 	projSprite = SDL_LoadBMP("Images/Sprites/Megaman/Projectiles.bmp");
 	meleeSprite = SDL_LoadBMP("Images/Sprites/Megaman/Sword.bmp");
-	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 0, 255, 0) );
-	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 0, 255, 0) );
-	SDL_SetColorKey(projSprite, SDL_SRCCOLORKEY, SDL_MapRGB(projSprite->format, 0, 255, 0) );
+	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, 0x00FF00 );
+	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, 0x00FF00 );
+	SDL_SetColorKey(projSprite, SDL_SRCCOLORKEY, SDL_MapRGB(projSprite->format, 0, 0xFF, 0) );
 	//Loads sounds
 	sfx.load("Sounds/Megaman/melee.wav", "Sounds/Megaman/proj.wav", "Sounds/Megaman/specDown.wav", "Sounds/Megaman/aerial.wav");
 }

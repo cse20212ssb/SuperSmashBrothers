@@ -52,7 +52,6 @@ class SSB {
 
 		CharSelect *sel;
 		MapSelect *mapSel;
-
 		startScreen *startSel;
 
 		Events queue;

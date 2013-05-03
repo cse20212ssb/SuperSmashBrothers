@@ -16,9 +16,9 @@ Leprechaun::Leprechaun(int x, int y) : BaseCharacter(x, y, 28, 34){
 	sprite = SDL_LoadBMP("Images/Sprites/Leprechaun/Leprechaun.bmp");
 	projSprite = SDL_LoadBMP("Images/Sprites/Leprechaun/Football.bmp");
 	meleeSprite = SDL_LoadBMP("Images/Sprites/Leprechaun/Pawnch.bmp");	
-	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 0, 255, 0) );
-	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 0, 255, 0) );
-	SDL_SetColorKey(projSprite, SDL_SRCCOLORKEY, SDL_MapRGB(projSprite->format, 0, 255, 0) );
+	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 0, 0xFF, 0) );
+	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 0, 0xFF, 0) );
+	SDL_SetColorKey(projSprite, SDL_SRCCOLORKEY, SDL_MapRGB(projSprite->format, 0, 0xFF, 0) );
 	//Load sounds
 	sfx.load("Sounds/Leprechaun/melee.wav", "Sounds/Leprechaun/proj.wav", NULL, NULL);
 	aniCounter[SPECIAL] = 0;

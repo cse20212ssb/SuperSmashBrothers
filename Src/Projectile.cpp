@@ -19,7 +19,6 @@ Projectile::Projectile(int x,int y, int h, int w, int t_vel, int t_faceDir, int 
 	}
 
 	sprite  = t_sprite;
-	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 	isGone = 0;
 }
 

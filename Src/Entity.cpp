@@ -26,7 +26,6 @@ Entity::Entity(int x, int y, int h, int w) {
 
 Entity::~Entity() {
 	SDL_FreeSurface(sprite);
-	cout << "Entity Deconstructed" << endl;
 }
 
 void Entity::updateBorders() {

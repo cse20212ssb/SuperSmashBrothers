@@ -3,21 +3,37 @@
 
 using namespace std;
 
-/*
->>>>>>> BigSmoke
+void CharSelect::tryIsDone() {
+	if (isConfirm_0 && isConfirm_1)
+		done = 1;
+	else done = 0;
+}
+
+void CharSelect::toggle(int t) {
+	if (t == 0) {
+		if (!isConfirm_0)
+			intros.play(head_0->index);
+		isConfirm_0 = !isConfirm_0;
+	}
+	else {
+		if (!isConfirm_1)
+			intros.play(head_1->index);
+		isConfirm_1 = !isConfirm_1;
+	}
+}
+
 int CharSelect::isConfirm(int t) {
 	if (t == 0) 
 		return isConfirm_0;
 	return isConfirm_1;
 }
 
-void CharSelect::toggle(int t) {
-	if (t == 0)
-		isConfirm_0 = !isConfirm_0;
-	else
-		isConfirm_1 = !isConfirm_1;
+int CharSelect::returnIndex(int index) {
+	if (index == 0)
+		return head_0->index;
+	return head_1->index;
 }
-*/
+
 void CharSelect::draw() {
 	SDL_Rect boxes;
 	boxes.x = 0;
@@ -58,6 +74,7 @@ void CharSelect::draw() {
 }
 
 CharSelect::CharSelect(SDL_Surface *surf) {
+	done = 0;
 	isConfirm_0 = 0;
 	isConfirm_1 = 0;
 	boxes_sprite = SDL_LoadBMP("Images/Misc/CharSelect.bmp");
@@ -98,10 +115,14 @@ CharSelect::CharSelect(SDL_Surface *surf) {
 	head_0 = collection[0];
 	head_1 = collection[0];
 	root = collection[0];
+
+	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+	intros.load("Sounds/CharSelect/Megaman.wav" , "Sounds/CharSelect/ForDaGrove.wav", "Sounds/CharSelect/NDfight.wav", "Sounds/CharSelect/firebat.wav");
 }
 
 CharSelect::~CharSelect() {
 	SDL_FreeSurface(boxes_sprite);
 	SDL_FreeSurface(sel_sprite);
+	Mix_CloseAudio();
 	delete [] collection;
 }

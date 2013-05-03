@@ -19,13 +19,13 @@ Firebat::Firebat(int x, int y) : BaseCharacter(x, y, 30, 31){
 	//Load sprite sheets
 	sprite = SDL_LoadBMP("Images/Sprites/Firebat/Firebat.bmp");
 	projSprite = NULL;
-	meleeSprite = SDL_LoadBMP("Images/Sprites/Firebat/fire2.bmp");
+	meleeSprite = SDL_LoadBMP("Images/Sprites/Firebat/fire.bmp");
 	stimSprite = SDL_LoadBMP("Images/Sprites/Firebat/FirebatStimpack.bmp");
 	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 0, 255, 0) );
 	SDL_SetColorKey(meleeSprite, SDL_SRCCOLORKEY, SDL_MapRGB(meleeSprite->format, 0, 255, 0) );
 	SDL_SetColorKey(stimSprite, SDL_SRCCOLORKEY, SDL_MapRGB(stimSprite->format, 0, 255, 0) );
 	//Loads sounds
-	sfx.load("Sounds/Firebat/attack.wav", "Sounds/Firebat/stim1.wav", "Sounds/Firebat/stim2.wav", NULL);
+	sfx.load("Sounds/Firebat/attack.wav", "Sounds/Firebat/stim1.wav", "Sounds/Firebat/rest.wav", NULL);
 }
 
 //Movement in both x and y directions
@@ -60,6 +60,7 @@ void Firebat::move() {
 		if ((SDL_GetTicks() - aniCounter[STIMPACK]) / 1000 > 4) {
 			isSpecial = 0;
 			isRest = 1;
+			sfx.play(2);
 			aniCounter[STIMPACK] = SDL_GetTicks();
 		}
 		velX = 6 * moveDir;
@@ -164,11 +165,10 @@ void Firebat::releaseAtk(){
 void Firebat::drawTo(SDL_Surface *surf) {
 	SDL_Rect src;
 	
-	//If stunned
-	if (isRest) 
-		src.x = 0;
-	else if (isGhost && jumpCount == 0)
+	if (isGhost && jumpCount == 0)
 		src.x = 11 * width;
+	else if (isRest) 
+		src.x = 0;
 	//if in air
 	else if (jumpCount > 0 || velY > 3 || velY < -3) {
 		if (isAtk) src.x = width * 10;

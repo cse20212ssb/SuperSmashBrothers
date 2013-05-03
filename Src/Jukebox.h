@@ -15,10 +15,10 @@ class Jukebox {
 		void play(int);		
 	
 	private:
-		Mix_Chunk *atk;
-		Mix_Chunk *specialAtk;
-		Mix_Chunk *specDown;
-		Mix_Chunk *aerial;
+		Mix_Chunk *sound0;
+		Mix_Chunk *sound1;
+		Mix_Chunk *sound2;
+		Mix_Chunk *sound3;
 
 		Mix_Music *background;
 };

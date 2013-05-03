@@ -8,6 +8,7 @@
 class startScreen {
 	public:
 		startScreen();
+		~startScreen();
 		startScreen(SDL_Surface *);
 		void draw();
 		void select(){sel = 1;}

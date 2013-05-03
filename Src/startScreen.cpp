@@ -29,3 +29,7 @@ startScreen::startScreen(SDL_Surface *surf) {
 
 	sel = -1;
 }
+
+startScreen::~startScreen() {
+	SDL_FreeSurface(map);
+}

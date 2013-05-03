@@ -8,7 +8,6 @@ Melee::Melee(int x,int y, int h, int w, int dir, SDL_Surface *t_sprite) : Entity
 	faceDir = dir;
 	sprite = t_sprite;
 
-	SDL_SetColorKey(sprite, SDL_SRCCOLORKEY, SDL_MapRGB(sprite->format, 255, 0, 0) );
 	isGone = 0;
 	counter = 0;
 

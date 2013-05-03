@@ -20,6 +20,7 @@ BaseCharacter::BaseCharacter(int x, int y, int h, int w) : Entity(x, y, h, w){
 	maxVelX = 3;
 	maxVelY = 9;
 	jumpCount = 0;
+	isSpecDown = 0;
 	isSpecial = 0;
 	isRest = 0;
 	isAtk = 0;
