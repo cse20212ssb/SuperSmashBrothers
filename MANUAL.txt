@@ -1,0 +1,69 @@
+GITHUB LINK: https://github.com/cse20212ssb/SuperSmashBrothers
+
+==========================
+1. Necessary libraries
+==========================
+1. SDL and its associated header and dll files
+2. SDL_Mixer and its associated header and dll files
+
+==========================
+2. Compiling Instructions
+==========================
+1. Makefile is available for running in Chan Lee's drop box
+-> Binary will also be made available for immediate running if issues arise in compilation
+
+To successfully run the program and play, two NES controllers are necessary. Feel free to contact us for a demonstration.
+
+==========================
+3. Controls
+==========================
+To successfully run the program and play, two NES controllers are necessary. Feel free to contact us for a demonstration.
+
+1. Press the start button to advance from the Title Screen into the Character Select Screen
+2. Each player selects their character by using the D-pad to move the selection box. Press A to lock-in and press A again
+if you want to cancel your lock-in and choose a different character. Once both players have selected their characters, the
+map select screen appears.
+3. Either player can choose from the two maps and cause the program to advance. Press start to confirm a map selection. 
+4.  All characters move with the D-pad. The left and right are standard directional buttons. The up button performs a jump,
+pressing up two-times consecutively will result in a double jump. Certain characters have aerial specials, perform them by
+pressing A during a double jump. Pressing down will result in a fast-fall. Pressing down and b in the air will produce a 
+special down attack. Characters can shoot and attack while running.
+
+->Each character has unique gameplay:
+	Megaman
+		* Increased movement speed and movement versatility
+		* A: Sword attack
+		* B: Buster Shot
+		* Pressing Down and B in the air: Fast fall stomp
+		* Pressing A during a double jump: Performs a spin move
+		  that increases Megaman's velocity during the duration
+	Big Smoke
+		* High rate of bullet fire due to his Tec9
+		* A: Swing bat
+		* B: Shoot in rapid-fire from Tec9
+	Fire Bat
+		* Medium range
+		* Fire attack
+		* A: Spray Fire
+		* B: Use stim pack, which provides a boost in speed 
+		  and damage but then leads to a resting, immobile period
+	Leprechaun
+		* Unique projectiles
+		* Doesn't flinch because he's a Leprechaun (i.e. doesn't recoil)
+		* A: Punch
+		* B: Throw football
+		* Hold B to wind up football and throw it further
+	
+
+
+=============
+Known Bugs
+=============
+1. Occasionally the controllers don't initialize and thus it is necessary to unplug and re-plug the controllers
+and run the program again. This error is likely due to the computer having difficultly recognizing the controllers.
+2. Program will encounter a segmentation fault or memory dump upon exit of the program.
+
+=============
+Other Info
+=============
+NES controllers necessary for gameplay. Feel free to e-mail someone in the group to schedule an appointment
