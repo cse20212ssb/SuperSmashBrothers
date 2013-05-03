@@ -1,6 +1,7 @@
 //#include "SDL.h"
 //#include "stdafx.h"
 #include "startScreen.h"
+#include <iostream>
 
 using namespace std;
 
@@ -31,5 +32,7 @@ startScreen::startScreen(SDL_Surface *surf) {
 }
 
 startScreen::~startScreen() {
+	cout << "Closing startScreen" << endl;
 	SDL_FreeSurface(map);
+	cout << "Closed" << endl;
 }

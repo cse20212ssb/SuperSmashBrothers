@@ -1,12 +1,22 @@
+/* SSB class
+
+This is the SSB class, which is utilized for processing all the events of the program. The main file
+will run an instance of this class in order to run the program. This class processes the initial setup
+of the joystick, goes to the various screens, then loops through the gameplay portion of the program 
+until the user exits
+
+*/
+
+
 //#include "stdafx.h"
 #include "SSB.h"
 #include <iostream>
 
 using namespace std;
 
+//This is the execute function, which orders all the events in this class together
 void SSB::execute() {
 	if (init()) {
-		cout << "Init clear" << endl;
 		select();
 		//Main game loop
 		int running = 1;
@@ -18,6 +28,7 @@ void SSB::execute() {
 			loop();
 			render();
 		}
+		Mix_CloseAudio();
 		cleanUp();
 	}
 	else cout << "SSB init failed" << endl;
@@ -25,19 +36,18 @@ void SSB::execute() {
 	SDL_Quit();
 }
 
+//This is utilized for standardizing the speed of the program 
 void SSB::fps_control() {
 	if (nextTick > SDL_GetTicks()) 
 		SDL_Delay(nextTick - SDL_GetTicks());
 	nextTick = SDL_GetTicks() + 1000 / FPS;
 }
 
+//This function is used for the varius selection processes
 void SSB::select() {
 	startSel = new startScreen(screen);
-	cout << "Start screen cleared" << endl;
 	sel = new CharSelect(screen);
-	cout << "CharSel clear" << endl;
 	mapSel = new MapSelect(screen);
-	cout << "Selection objects cleared" << endl;
 
 	queue.addSel(startSel, sel, mapSel);
 	while(startSel->isDone() < 0){
@@ -78,7 +88,6 @@ void SSB::select() {
 		entityList.push_back(new Platform(480, 318, 20, 155));
 		entityList.push_back(new Platform(160, 405, 15, 475));
 	}
-	cout << "Platform clear" << endl;
 
 	if(sel->returnIndex(0) == 0)
 		player0 = new Megaman(300, 200);
@@ -105,6 +114,7 @@ void SSB::select() {
 	entityList.push_back(player1);
 }
 
+//This is used to establish the screen
 int SSB::init() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
 		cout << "SDL init failed" << endl;
@@ -135,6 +145,7 @@ int SSB::init() {
 	return 1;
 }
 
+//Used to call the resolve function
 int SSB::events() {
 	return queue.resolve();
 }
@@ -184,6 +195,7 @@ void SSB::loop() {
 	}
 }
 
+//Draw objects onto the screen
 void SSB::render() {
 	SDL_FillRect(screen, NULL, 0);
 	SDL_BlitSurface(map, NULL, screen, NULL);
@@ -194,9 +206,11 @@ void SSB::render() {
 	SDL_Flip(screen);
 }
 
+//Deletes all instances when this goes out of scope
 void SSB::cleanUp() {
-	//Screen and map deleted in SDL_Quit
-	delete sel, mapSel, startSel;
+	delete mapSel;
+	delete startSel;
+	delete sel;
 	for (int i = 0; i < entityList.size(); i++) {
 		delete entityList[i];
 	}

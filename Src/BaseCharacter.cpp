@@ -1,6 +1,9 @@
 /* BaseCharacter class
 
-Is the base for all character classes. This class contains the basic information of a class, such as  whether or not it's attacking or which direction it's facing, as well as some basic functions, such as jump(). Some of these classes are updated further in its derived classes, if the vision of the new class requires us to do so. The BaseCharacter class derives from the Entity class, which hold information such as position and hitboxes. 
+Is the base for all character classes. This class contains the basic information of a class, such as  whether or not it's attacking 
+or which direction it's facing, as well as some basic functions, such as jump(). Some of these classes are updated further in its derived 
+classes, if the vision of the new class requires us to do so. The BaseCharacter class derives from the Entity class, which hold information 
+such as position and hitboxes. 
 */
 
 //#include "stdafx.h"
@@ -29,6 +32,7 @@ BaseCharacter::BaseCharacter(int x, int y, int h, int w) : Entity(x, y, h, w){
 
 //Deconstructor, is virtual 
 BaseCharacter::~BaseCharacter() {
+	cout << "Destroying BaseCharacter ..." << endl;
 	for (int i = 0; i < projectileList.size(); i++) {
 		projectileList.erase(projectileList.begin() + i);
 	}
@@ -38,6 +42,7 @@ BaseCharacter::~BaseCharacter() {
 	}
 
 	Mix_CloseAudio();
+	cout << "... done" << endl;
 }
 
 //"Fast fall"

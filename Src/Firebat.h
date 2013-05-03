@@ -18,6 +18,7 @@ class Firebat : public BaseCharacter{
 		//Constructor
 		Firebat() {}
 		Firebat(int x, int y);
+
 		//Moves the character
 		virtual void move();
 		
